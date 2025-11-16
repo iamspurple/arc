@@ -1,15 +1,25 @@
+// app/layout.tsx
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Lunasima } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.scss";
+import Header from "@/components/Header/Header";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const lunasima = Lunasima({
   subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-lunasima",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const athelas = localFont({
+  src: [
+    {
+      path: "../../public/fonts/athelas/Athelas-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+  ],
+  variable: "--font-athelas-regular",
 });
 
 export const metadata: Metadata = {
@@ -17,14 +27,11 @@ export const metadata: Metadata = {
   description: "clothing brand",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ru">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${lunasima.variable} ${athelas.className}`}>
+        <Header />
         {children}
       </body>
     </html>
