@@ -8,6 +8,7 @@ const Header = () => {
       <nav className="header__nav">
         <div className="header__left">
           <Link href="/about" className="header__link">О проекте</Link>
+          <Link href="/catalog" className="header__link">Каталог</Link>
         </div>
         
         <div className="header__center">

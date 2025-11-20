@@ -31,8 +31,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ru">
       <body className={`${lunasima.variable} ${athelas.className}`}>
+        <div className="container">
         <Header />
-        {children}
+        <main className="main-content">
+            {children}
+          </main>
+        </div>
       </body>
     </html>
   );
