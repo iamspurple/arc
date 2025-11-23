@@ -9,8 +9,16 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/material": "^7.3.5",
+    "@prisma/client": "^6.19.0",
     "next": "16.0.3",
+    "pg": "^8.16.3",
+    "prisma": "^6.19.0",
+    "ra-data-simple-rest": "^5.13.2",
     "react": "19.2.0",
+    "react-admin": "^5.13.2",
     "react-dom": "19.2.0",
     "sass": "^1.94.0"
   },
