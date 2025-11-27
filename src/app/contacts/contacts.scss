@@ -1,0 +1,31 @@
+.contacts-page {
+    margin: 0 auto;
+    color: #333;
+    font-size: 13px;
+    line-height: 1.6;
+  
+    &__title {
+      font-size: 15;
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+  
+    &__content {
+     &-subtitle {
+       
+        margin-bottom: 30px;
+     }
+  
+      a {
+        color: #3a3a3a;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        text-decoration-thickness: 1px;
+  
+        &:hover {
+          opacity: 0.7;
+        }
+      }
+    }
+  }
+  
