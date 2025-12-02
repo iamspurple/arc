@@ -62,13 +62,25 @@ export async function PUT(req: Request, context: ParamsContext) {
 		)
 	}
 }
-
 export async function DELETE(req: Request, context: ParamsContext) {
-	const id = await getId(context)
-
-	await prisma.product.delete({
+	try {
+	  const id = await getId(context)
+  
+	  await prisma.productImage.deleteMany({
+		where: { productId: id },
+	  })
+  
+	  await prisma.product.delete({
 		where: { id },
-	})
-
-	return NextResponse.json({ success: true })
-}
+	  })
+  
+	  return NextResponse.json({ success: true })
+	} catch (e: any) {
+	  console.error('DELETE /products/[id] error:', e)
+	  return NextResponse.json(
+		{ error: 'Internal Server Error' },
+		{ status: 500 }
+	  )
+	}
+  }
+  

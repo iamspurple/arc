@@ -10,10 +10,10 @@ datasource db {
 model Product {
   id          String        @id @default(cuid())
   title       String
-  description String?       // текстовое описание товара
-  composition String?       // состав материала
-  care        String?       // инструкции по уходу
-  sizes       String?       // размерные характеристики (JSON или текст)
+  description String?      
+  composition String?      
+  care        String?   
+  sizes       String?      
   price       Int
   inStock     Boolean       @default(true)
   createdAt   DateTime      @default(now())
@@ -24,7 +24,7 @@ model Product {
 
 model ProductImage {
   id        String   @id @default(cuid())
-  url       String   // ссылка на изображение
+  url       String   
   product   Product  @relation(fields: [productId], references: [id])
   productId String
 }
