@@ -27,15 +27,17 @@ export const metadata: Metadata = {
   description: "clothing brand",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="ru">
-      <body className={`${lunasima.variable} ${athelas.className}`}>
+      <body className={`${lunasima.variable} ${athelas.variable}`}>
         <div className="container">
-        <Header />
-        <main className="main-content">
-            {children}
-          </main>
+          <Header />
+          <main className="main-content">{children}</main>
         </div>
       </body>
     </html>
