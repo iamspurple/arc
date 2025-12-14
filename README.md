@@ -1,5 +1,31 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Установка и настройка
+
+### Требования
+
+- Node.js 18+ 
+- PostgreSQL 14+
+- npm или yarn
+
+### Настройка базы данных
+
+Перед запуском проекта необходимо настроить PostgreSQL. Подробная инструкция по установке PostgreSQL на другом компьютере находится в файле [SETUP_POSTGRES.md](./SETUP_POSTGRES.md).
+
+**Краткая инструкция:**
+
+1. Установите PostgreSQL
+2. Создайте базу данных и пользователя
+3. Создайте файл `.env` в корне проекта:
+```env
+DATABASE_URL="postgresql://пользователь:пароль@localhost:5432/база_данных?schema=public"
+```
+4. Примените миграции:
+```bash
+npx prisma generate
+npx prisma migrate deploy
+```
+
 ## Getting Started
 
 First, run the development server:

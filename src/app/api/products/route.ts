@@ -14,13 +14,22 @@ export async function POST(req: Request) {
     try {
       const data = await req.json();
   
+      // Валидация обязательных полей
+      if (!data.title || !data.price) {
+        return NextResponse.json(
+          { error: "Title and price are required" },
+          { status: 400 }
+        );
+      }
+  
       const product = await prisma.product.create({
         data: {
           title: data.title,
-          description: data.description,
-          composition: data.composition,
-          care: data.care,
-          price: data.price,
+          description: data.description || null,
+          composition: data.composition || null,
+          care: data.care || null,
+          sizes: data.sizes || null,
+          price: parseInt(data.price),
           inStock: data.inStock ?? true,
           images: {
             create: (data.images || []).map((img: { url: string }) => ({
@@ -28,12 +37,16 @@ export async function POST(req: Request) {
             }))
           },
         },
+        include: { images: true },
       });
   
       return NextResponse.json(product, { status: 201 });
     } catch (e) {
       console.error(e);
-      return NextResponse.json({ error: "Invalid data" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Invalid data", details: e instanceof Error ? e.message : "Unknown error" },
+        { status: 400 }
+      );
     }
   }
   
