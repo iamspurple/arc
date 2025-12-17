@@ -1,12 +1,13 @@
 .contacts-page {
 	margin: 0 auto;
-	color: #333;
+	color: #4b4b4b;
 	font-size: 16px;
 	line-height: 1.6;
 
 	&__title {
+		color: black;
 		font-size: 18px;
-		font-weight: 600;
+		font-weight: 400;
 		margin-bottom: 30px;
 	}
 
@@ -16,7 +17,6 @@
 		}
 
 		a {
-			color: #3a3a3a;
 			text-decoration: underline;
 			text-underline-offset: 3px;
 			text-decoration-thickness: 1px;
