@@ -1,5 +1,5 @@
-import './contacts.scss'
-import Link from 'next/link'
+import "./contacts.scss";
+import Link from "next/link";
 
 const Page = () => {
 	return (
@@ -8,8 +8,7 @@ const Page = () => {
 
 			<div className="contacts-page__content">
 				<p className="contacts-page__content-subtitle">
-					Если у вас возникнут вопросы или сложности с заказом, пожалуйста,
-					свяжитесь с нами.
+					Если у вас возникнут вопросы или сложности с заказом, пожалуйста, свяжитесь с нами.
 				</p>
 
 				<p>
@@ -19,12 +18,11 @@ const Page = () => {
 				<p>Telegram:</p>
 
 				<p>
-					Также вы можете связаться с нами в{' '}
-					<Link href="https://t.me/xxx">direct message</Link>
+					Также вы можете связаться с нами в <Link href="https://t.me/xxx">direct message</Link>
 				</p>
 			</div>
 		</div>
-	)
-}
+	);
+};
 
-export default Page
+export default Page;
