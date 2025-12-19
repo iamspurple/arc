@@ -1,83 +1,89 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+	--background: #ffffff;
+	--foreground: #171717;
 }
 
 html,
 body {
-
-  max-width: 100vw;
-  height: 100vh;
-  overflow-x: hidden;
-  font-family: var(--font-lunasima);
-  
+	max-width: 100vw;
+	height: 100vh;
+	overflow-x: hidden;
+	font-family: var(--font-lunasima);
 }
 
-a, button {
-  text-transform: none !important;
+a,
+button {
+	text-transform: none !important;
 }
 
 .container {
-  margin: 0 auto;
-  padding: 0 5%;
-  box-sizing: border-box;
+	margin: 0 auto;
+	padding: 0 5%;
+	box-sizing: border-box;
 }
 * {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+	color: inherit;
+	text-decoration: none;
 }
 
 .background {
-  position: fixed; 
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-image: url('/main-page-background.jpg');
-  background-size: cover;
-  background-position: center;
-  z-index: -1;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	background-image: url("/main-page-background.jpg");
+	background-size: cover;
+	background-position: center;
+	z-index: -1;
 }
 
 .main-content {
-  margin-top: 190px;
+	margin-top: 190px;
 }
 
 @media (max-width: 1350px) {
-  .container {
-    padding: 0 70px;
-  }
+	.container {
+		padding: 0 70px;
+	}
 }
 
 .circle-wrapper {
-  position: fixed;
-  right: 40px;
-  bottom: 40px;
-  width: 200px;
-  height: 200px;
-  pointer-events: none;
-  z-index: 9999; /* ADD THIS */
+	position: fixed;
+	right: 40px;
+	bottom: 40px;
+	width: 200px;
+	height: 200px;
+	pointer-events: none;
+	z-index: 9999; /* ADD THIS */
 }
 
 .circle-wrapper img {
-  width: 100%;
-  height: 100%;
-  animation: spin 9s linear infinite;
+	width: 100%;
+	height: 100%;
+	animation: spin 9s linear infinite;
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
 }
 
-
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
 }

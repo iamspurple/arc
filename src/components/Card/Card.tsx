@@ -1,11 +1,11 @@
-import Image from 'next/image'
-import Link from 'next/link'
-import './Card.scss'
+import Image from "next/image";
+import Link from "next/link";
+import "./Card.scss";
 
 type ProductImage = {
-	id: string
-	url: string
-}
+	id: string;
+	url: string;
+};
 
 export type Product = {
 	id: string
@@ -16,8 +16,8 @@ export type Product = {
 }
 
 type Props = {
-	product: Product
-}
+	product: Product;
+};
 
 const Card = ({ product }: Props) => {
 	console.log(product)
@@ -26,13 +26,13 @@ const Card = ({ product }: Props) => {
 	return (
 		<Link href={`/catalog/${product.slug}`} className='product-card'>
 			{imageUrl && (
-				<div className='product-card__image-wrapper'>
+				<div className="product-card__image-wrapper">
 					<Image
 						src={imageUrl}
 						alt={product.title}
 						fill
-						sizes='(max-width: 600px) 100vw, (max-width: 1200px) 33vw, 25vw'
-						className='product-card__image'
+						sizes="(max-width: 600px) 100vw, (max-width: 1200px) 33vw, 25vw"
+						className="product-card__image"
 					/>
 				</div>
 			)}
@@ -44,7 +44,7 @@ const Card = ({ product }: Props) => {
 				</span>
 			</div>
 		</Link>
-	)
-}
+	);
+};
 
-export default Card
+export default Card;

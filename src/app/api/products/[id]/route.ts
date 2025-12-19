@@ -1,7 +1,7 @@
-import { prisma } from '@/lib/prisma'
-import { NextResponse } from 'next/server'
+import { prisma } from "@/lib/prisma";
+import { NextResponse } from "next/server";
 
-type ParamsContext = { params: Promise<{ id: string }> }
+type ParamsContext = { params: Promise<{ id: string }> };
 
 async function getSlug(context: ParamsContext) {
 	const { id } = await context.params
@@ -17,16 +17,12 @@ export async function GET(req: Request, context: ParamsContext) {
 			include: { images: true },
 		})
 
-		if (!product)
-			return NextResponse.json({ error: 'Not found' }, { status: 404 })
+		if (!product) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-		return NextResponse.json(product)
+		return NextResponse.json(product);
 	} catch (e) {
-		console.error(e)
-		return NextResponse.json(
-			{ error: 'Internal Server Error' },
-			{ status: 500 }
-		)
+		console.error(e);
+		return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
 	}
 }
 
@@ -88,15 +84,12 @@ export async function PUT(req: Request, context: ParamsContext) {
 			where: { slug },
 			data: updateData,
 			include: { images: true },
-		})
+		});
 
-		return NextResponse.json(updated)
+		return NextResponse.json(updated);
 	} catch (e) {
-		console.error(e)
-		return NextResponse.json(
-			{ error: 'Internal Server Error' },
-			{ status: 500 }
-		)
+		console.error(e);
+		return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
 	}
 }
 export async function DELETE(req: Request, context: ParamsContext) {

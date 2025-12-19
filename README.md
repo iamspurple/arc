@@ -4,7 +4,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ### Требования
 
-- Node.js 18+ 
+- Node.js 18+
 - PostgreSQL 14+
 - npm или yarn
 
@@ -17,10 +17,13 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 1. Установите PostgreSQL
 2. Создайте базу данных и пользователя
 3. Создайте файл `.env` в корне проекта:
+
 ```env
 DATABASE_URL="postgresql://пользователь:пароль@localhost:5432/база_данных?schema=public"
 ```
+
 4. Примените миграции:
+
 ```bash
 npx prisma generate
 npx prisma migrate deploy
