@@ -1,13 +1,14 @@
 .catalog-page {
     margin: 80px auto 0;
     padding: 0 16px; // меньше паддинг на мобилках
+    margin-bottom: 140px;
   }
   
   .catalog-page__grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    column-gap: 40px;
-    row-gap: 80px;
+    column-gap: 50px;
+    row-gap: 140px;
   
     @media (max-width: 1200px) {
       grid-template-columns: repeat(3, 1fr);

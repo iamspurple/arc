@@ -9,6 +9,7 @@ type ProductImage = {
 
 export type Product = {
 	id: string
+	slug: string
 	title: string
 	price: number
 	images: ProductImage[]
@@ -20,10 +21,10 @@ type Props = {
 
 const Card = ({ product }: Props) => {
 	console.log(product)
-	const imageUrl = product.images?.[0]?.url // добавили ?.
+	const imageUrl = product.images?.[0]?.url
 
 	return (
-		<Link href={`/catalog/${product.id}`} className='product-card'>
+		<Link href={`/catalog/${product.slug}`} className='product-card'>
 			{imageUrl && (
 				<div className='product-card__image-wrapper'>
 					<Image
@@ -39,7 +40,7 @@ const Card = ({ product }: Props) => {
 			<div className='product-card__info'>
 				<span className='product-card__title'>{product.title}</span>
 				<span className='product-card__price'>
-					{product.price.toLocaleString('ru-RU', { minimumFractionDigits: 0 })}
+					{product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
 				</span>
 			</div>
 		</Link>
