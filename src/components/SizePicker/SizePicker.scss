@@ -1,0 +1,38 @@
+.size-picker {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 12px;
+
+	.label {
+		font-size: 18px;
+		font-weight: 500;
+		color: var(--foreground);
+	}
+
+	.options {
+		display: flex;
+		align-items: center;
+		gap: 15px;
+	}
+
+	.option {
+		background: #fff;
+		border: none;
+		padding-top: 2px;
+		border-bottom: 2px solid transparent;
+		font-size: 18px;
+		font-weight: 500;
+		color: var(--foreground);
+		cursor: pointer;
+		transition: all 0.2s;
+
+		&:hover {
+			background: #f9f9f9;
+		}
+
+		&--selected {
+			border-color: var(--foreground);
+		}
+	}
+}

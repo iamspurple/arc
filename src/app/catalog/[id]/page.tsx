@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
-// import SizePicker from "@/components/SizePicker/SizePicker";
 import "./product.scss";
+import SizePicker from "@/components/SizePicker/SizePicker";
 
 type Params = {
 	params: Promise<{ id: string }>;
@@ -53,6 +53,7 @@ const ProductPage = async ({ params }: Params) => {
 					</div>
 
 					<div className="info-container">
+						<SizePicker sizes={product.sizes} />
 						<button className="button" disabled={!product.inStock}>
 							{product.inStock ? "Добавить в корзину" : "Нет в наличии"}
 						</button>

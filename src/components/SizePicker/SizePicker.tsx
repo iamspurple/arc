@@ -1,0 +1,48 @@
+"use client";
+
+import { useState } from "react";
+import "./SizePicker.scss";
+
+type SizePickerProps = {
+	sizes: string | null;
+	onSizeChange?: (size: string | null) => void;
+};
+
+const SizePicker = ({ sizes, onSizeChange }: SizePickerProps) => {
+	const availableSizes = sizes
+		?.split(",")
+		.map((size) => size.trim())
+		.filter(Boolean);
+
+	const [selectedSize, setSelectedSize] = useState<string | null>(null);
+
+	const handleSizeSelect = (size: string) => {
+		const newSize = selectedSize === size ? null : size;
+		setSelectedSize(newSize);
+		onSizeChange?.(newSize);
+	};
+
+	if (availableSizes?.length === 0) {
+		return null;
+	}
+
+	return (
+		<div className="size-picker">
+			<div className="label">Размер:</div>
+			<div className="options">
+				{availableSizes?.map((size) => (
+					<button
+						key={size}
+						type="button"
+						className={`option ${selectedSize === size ? "option--selected" : ""}`}
+						onClick={() => handleSizeSelect(size)}
+					>
+						{size}
+					</button>
+				))}
+			</div>
+		</div>
+	);
+};
+
+export default SizePicker;
