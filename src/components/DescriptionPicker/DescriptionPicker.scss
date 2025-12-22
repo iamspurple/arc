@@ -1,0 +1,51 @@
+.descr-picker {
+	padding-top: 25px;
+	display: flex;
+	flex-direction: column;
+	gap: 25px;
+	font-size: 12px;
+
+	.options {
+		display: flex;
+		gap: 20px;
+		align-items: center;
+	}
+
+	.option {
+		background: #fff;
+		border: none;
+		padding-top: 2px;
+		border-bottom: 1px solid transparent;
+		font-size: 12px;
+		font-weight: 500;
+		color: var(--foreground);
+		cursor: pointer;
+		transition: all 0.2s;
+
+		&:hover {
+			background: #f9f9f9;
+		}
+
+		&--selected {
+			border-color: var(--foreground);
+		}
+	}
+
+	.content-section {
+		display: flex;
+		flex-direction: column;
+		gap: 40px;
+		color: #4b4b4b;
+	}
+
+	.subsection {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.subsection-title {
+		font-weight: 400;
+		font-size: 12px;
+	}
+}
