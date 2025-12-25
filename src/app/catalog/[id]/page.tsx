@@ -1,69 +1,74 @@
-import { prisma } from '@/lib/prisma'
-import { notFound } from 'next/navigation'
-import Image from 'next/image'
+import Image from "next/image";
+import { prisma } from "@/lib/prisma";
+import { notFound } from "next/navigation";
+import "./product.scss";
+import SizePicker from "@/components/SizePicker/SizePicker";
+import DescriptionPicker from "@/components/DescriptionPicker/DescriptionPicker";
 
 type Params = {
-  params: Promise<{ id: string }>
+	params: Promise<{ id: string }>;
+};
+
+async function getProduct(id: string) {
+	const product = await prisma.product.findUnique({
+		where: { id }, // заменить на slug
+		include: { images: true },
+	});
+
+	return product;
 }
 
-async function getProduct(slug: string) {
-  const product = await prisma.product.findUnique({
-    where: { slug },
-    include: { images: true },
-  })
-  return product
-}
+const ProductPage = async ({ params }: Params) => {
+	const { id } = await params;
+	const product = await getProduct(id); // заменить на slug
 
-export default async function ProductPage({ params }: Params) {
-  const { id: slug } = await params
-  const product = await getProduct(slug)
+	if (!product) {
+		notFound();
+	}
 
-  if (!product) {
-    notFound()
-  }
+	const mainImage = product.images[0];
 
-  return (
-    <div className="product-page">
-      <div className="product-page__images">
-        {product.images.map((image) => (
-          <div key={image.id} className="product-page__image-wrapper">
-            <Image
-              src={image.url}
-              alt={product.title}
-              width={500}
-              height={600}
-              className="product-page__image"
-            />
-          </div>
-        ))}
-      </div>
-      <div className="product-page__info">
-        <h1 className="product-page__title">{product.title}</h1>
-        {product.description && (
-          <p className="product-page__description">{product.description}</p>
-        )}
-        {product.composition && (
-          <p className="product-page__composition">
-            <strong>Состав:</strong> {product.composition}
-          </p>
-        )}
-        {product.care && (
-          <p className="product-page__care">
-            <strong>Уход:</strong> {product.care}
-          </p>
-        )}
-        {product.sizes && (
-          <p className="product-page__sizes">
-            <strong>Размеры:</strong> {product.sizes}
-          </p>
-        )}
-        <p className="product-page__price">
-          {product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} ₽
-        </p>
-        <p className="product-page__stock">
-          {product.inStock ? 'В наличии' : 'Нет в наличии'}
-        </p>
-      </div>
-    </div>
-  )
-}
+	return (
+		<main className="product-page container">
+			<div className="content">
+				<div className="images">
+					{mainImage && (
+						<div className="main-image">
+							<Image
+								src={mainImage.url}
+								alt={product.title}
+								fill
+								sizes="(max-width: 900px) 100vw, 50vw"
+								className="image"
+								priority
+							/>
+						</div>
+					)}
+				</div>
+
+				<div className="info">
+					<div className="info-container">
+						<h1 className="title">{product.title}</h1>
+
+						<span className="price">{product.price}</span>
+					</div>
+
+					<div className="info-container">
+						<SizePicker sizes={product.sizes} />
+						<button className="button" disabled={!product.inStock}>
+							{product.inStock ? "Добавить в корзину" : "Нет в наличии"}
+						</button>
+					</div>
+
+					<DescriptionPicker
+						description={product.description}
+						composition={product.composition}
+						care={product.care}
+					/>
+				</div>
+			</div>
+		</main>
+	);
+};
+
+export default ProductPage;
