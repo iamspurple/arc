@@ -1,17 +1,18 @@
-import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import "./product.scss";
 import SizePicker from "@/components/SizePicker/SizePicker";
 import DescriptionPicker from "@/components/DescriptionPicker/DescriptionPicker";
 
+import ImagePicker from "@/components/ImagePicker/ImagePicker";
+
 type Params = {
 	params: Promise<{ id: string }>;
 };
 
-async function getProduct(id: string) {
+async function getProduct(slug: string) {
 	const product = await prisma.product.findUnique({
-		where: { id }, // заменить на slug
+		where: { slug },
 		include: { images: true },
 	});
 
@@ -19,32 +20,17 @@ async function getProduct(id: string) {
 }
 
 const ProductPage = async ({ params }: Params) => {
-	const { id } = await params;
-	const product = await getProduct(id); // заменить на slug
+	const { id: slug } = await params;
+	const product = await getProduct(slug);
 
 	if (!product) {
 		notFound();
 	}
 
-	const mainImage = product.images[0];
-
 	return (
-		<main className="product-page container">
+		<div className="product-page">
 			<div className="content">
-				<div className="images">
-					{mainImage && (
-						<div className="main-image">
-							<Image
-								src={mainImage.url}
-								alt={product.title}
-								fill
-								sizes="(max-width: 900px) 100vw, 50vw"
-								className="image"
-								priority
-							/>
-						</div>
-					)}
-				</div>
+				<ImagePicker images={product.images} title={product.title} />
 
 				<div className="info">
 					<div className="info-container">
@@ -67,7 +53,7 @@ const ProductPage = async ({ params }: Params) => {
 					/>
 				</div>
 			</div>
-		</main>
+		</div>
 	);
 };
 
