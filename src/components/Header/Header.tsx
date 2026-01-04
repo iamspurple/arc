@@ -1,5 +1,6 @@
 // components/Header/Header.tsx
 import Link from "next/link";
+import CartButton from "./CartButton";
 import "./Header.scss";
 
 const Header = () => {
@@ -7,11 +8,11 @@ const Header = () => {
 		<header className="header">
 			<nav className="header__nav">
 				<div className="header__left">
-					<Link href="/about" className="header__link">
-						О проекте
-					</Link>
 					<Link href="/catalog" className="header__link">
 						Каталог
+					</Link>
+					<Link href="/about" className="header__link">
+						О проекте
 					</Link>
 				</div>
 
@@ -28,13 +29,7 @@ const Header = () => {
 					<Link href="/contacts" className="header__link">
 						Контакты
 					</Link>
-					<button
-						type="button"
-						className="header__link"
-						style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
-					>
-						Корзина
-					</button>
+					<CartButton />
 				</div>
 			</nav>
 		</header>

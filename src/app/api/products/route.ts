@@ -14,7 +14,6 @@ export async function POST(req: Request) {
 	try {
 		const data = await req.json()
 
-		// Валидация обязательных полей
 		if (!data.title || !data.price) {
 			return NextResponse.json(
 				{ error: 'Title and price are required' },
@@ -22,12 +21,10 @@ export async function POST(req: Request) {
 			)
 		}
 
-		// Генерируем slug из названия
 		const baseSlug = createSlug(data.title)
 		let slug = baseSlug
 		let counter = 1
 
-		// Проверяем уникальность slug
 		while (await prisma.product.findUnique({ where: { slug } })) {
 			slug = `${baseSlug}-${counter}`
 			counter++
