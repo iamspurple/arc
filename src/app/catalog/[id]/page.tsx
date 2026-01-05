@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import "./product.scss";
+import style from "./product.module.scss";
 import SizePicker from "@/components/SizePicker/SizePicker";
 import DescriptionPicker from "@/components/DescriptionPicker/DescriptionPicker";
 
@@ -28,20 +28,20 @@ const ProductPage = async ({ params }: Params) => {
 	}
 
 	return (
-		<div className="product-page">
-			<div className="content">
+		<div className={style.product_page}>
+			<div className={style.content}>
 				<ImagePicker images={product.images} title={product.title} />
 
-				<div className="info">
-					<div className="info-container">
-						<h1 className="title">{product.title}</h1>
+				<div className={style.info}>
+					<div className={style.info_container}>
+						<h1 className={style.title}>{product.title}</h1>
 
-						<span className="price">{product.price}</span>
+						<span className={style.price}>{product.price}</span>
 					</div>
 
-					<div className="info-container">
+					<div className={style.info_container}>
 						<SizePicker sizes={product.sizes} />
-						<button className="button" disabled={!product.inStock}>
+						<button className={style.button} disabled={!product.inStock}>
 							{product.inStock ? "Добавить в корзину" : "Нет в наличии"}
 						</button>
 					</div>
