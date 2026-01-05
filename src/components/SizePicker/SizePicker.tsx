@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import "./SizePicker.scss";
+import style from "./SizePicker.module.scss";
 
 type SizePickerProps = {
 	sizes: string | null;
@@ -27,14 +27,14 @@ const SizePicker = ({ sizes, onSizeChange }: SizePickerProps) => {
 	}
 
 	return (
-		<div className="size-picker">
-			<div className="label">Размер:</div>
-			<div className="options">
+		<div className={style.size_picker}>
+			<div className={style.label}>Размер:</div>
+			<div className={style.options}>
 				{availableSizes?.map((size) => (
 					<button
 						key={size}
 						type="button"
-						className={`option ${selectedSize === size ? "option--selected" : ""}`}
+						className={`${style.option} ${selectedSize === size ? style.option__selected : ""}`}
 						onClick={() => handleSizeSelect(size)}
 					>
 						{size}
