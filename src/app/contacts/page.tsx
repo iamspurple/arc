@@ -1,13 +1,13 @@
-import "./contacts.scss";
+import style from "./contacts.module.scss";
 import Link from "next/link";
 
 const Page = () => {
 	return (
-		<div className="contacts-page">
-			<h1 className="contacts-page__title">Контакты</h1>
+		<div className={style.contacts_page}>
+			<h1 className={style.contacts_page__title}>Контакты</h1>
 
-			<div className="contacts-page__content">
-				<p className="contacts-page__content-subtitle">
+			<div className={style.contacts_page__content}>
+				<p className={style.contacts_page__content_subtitle}>
 					Если у вас возникнут вопросы или сложности с заказом, пожалуйста, свяжитесь с нами.
 				</p>
 
