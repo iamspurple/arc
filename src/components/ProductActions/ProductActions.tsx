@@ -3,7 +3,7 @@
 import AddToCartButton from "@/components/AddToCartButton/AddToCartButton";
 import SizePicker from "@/components/SizePicker/SizePicker";
 import { useState } from "react";
-import "./ProductActions.scss";
+import style from "./ProductActions.module.scss";
 
 type Props = {
 	product: {
@@ -31,9 +31,9 @@ const ProductActions = ({ product }: Props) => {
 	};
 
 	return (
-		<div className="product-actions">
+		<div className={style.product_actions}>
 			<SizePicker sizes={product.sizes} onSizeChange={handleSizeChange} />
-			{showSizeError && <span className="product-actions__error">Выберите размер</span>}
+			{showSizeError && <span className={style.error}>Выберите размер</span>}
 			<AddToCartButton product={product} selectedSize={selectedSize} onNoSize={handleNoSize} />
 		</div>
 	);
