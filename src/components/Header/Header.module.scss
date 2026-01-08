@@ -50,7 +50,9 @@
 		}
 	}
 
-	&__cart-btn {
+	.cart_btn {
+		font-family: Lunasima;
+		font-size: 15px;
 		background: none;
 		border: none;
 		cursor: pointer;
@@ -58,7 +60,7 @@
 		color: inherit;
 	}
 
-	&__cart-count {
+	.cart_count {
 		margin-left: 4px;
 	}
 }

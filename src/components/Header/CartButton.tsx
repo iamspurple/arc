@@ -2,12 +2,14 @@
 
 import { useCart } from "@/context/CartContext";
 
+import style from "./Header.module.scss";
+
 const CartButton = () => {
 	const { openCart, totalItems } = useCart();
 
 	return (
-		<button type="button" className="header__link header__cart-btn" onClick={openCart}>
-			Корзина{totalItems > 0 && <span className="header__cart-count">({totalItems})</span>}
+		<button type="button" className={style.cart_btn} onClick={openCart}>
+			Корзина{totalItems > 0 && <span className={style.cart_count}>({totalItems})</span>}
 		</button>
 	);
 };
