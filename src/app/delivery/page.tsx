@@ -1,14 +1,14 @@
-import "./delivery.scss";
+import style from "./delivery.module.scss";
 
 const page = () => {
 	return (
-		<div className="delivery-page">
-			<div className="content">
-				<div className="section">
-					<h3 className="title">Доставка</h3>
+		<div className={style.delivery_page}>
+			<div className={style.content}>
+				<div className={style.section}>
+					<h3 className={style.title}>Доставка</h3>
 
-					<div className="section-container">
-						<span className="subtitle">Доставка по России</span>
+					<div className={style.section_container}>
+						<span className={style.subtitle}>Доставка по России</span>
 						<ul>
 							<li>Доставка осуществляется компанией СДЭК</li>
 							<li>Стоимость и срок доставки рассчитываются во время оформления заказа</li>
@@ -18,8 +18,8 @@ const page = () => {
 							<li>Примерка и частичный выкуп не доступны</li>
 						</ul>
 					</div>
-					<div className="section-container">
-						<span className="subtitle">Доставка по Махачкале</span>
+					<div className={style.section_container}>
+						<span className={style.subtitle}>Доставка по Махачкале</span>
 						<ul>
 							<li>
 								Осуществляется сервисом курьерской доставки Яндекс на следующий день после
@@ -30,8 +30,8 @@ const page = () => {
 						</ul>
 					</div>
 				</div>
-				<div className="section">
-					<h3 className="title">Возврат</h3>
+				<div className={style.section}>
+					<h3 className={style.title}>Возврат</h3>
 
 					<ul>
 						<li>Возврат товара возможен в течение 7 дней с момента получения заказа</li>

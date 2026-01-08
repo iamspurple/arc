@@ -1,4 +1,4 @@
-.about-page {
+.about_page {
 	min-height: calc(100vh - 500px);
 	padding: 0 20px;
 	display: flex;
@@ -9,7 +9,7 @@
 	margin: 140px auto 60px;
 }
 
-.about-page__content {
+.about_page__content {
 	p {
 		font-family: var(--font-lunasima);
 		font-size: 16px;
@@ -25,13 +25,13 @@
 
 // Мобильные стили
 @media (max-width: 768px) {
-	.about-page {
+	.about_page {
 		min-height: calc(100vh - 500px);
 		margin: 120px auto 40px;
 		padding: 0 20px;
 	}
 
-	.about-page__content {
+	.about_page__content {
 		p {
 			font-size: 14px;
 			line-height: 1.5;
@@ -40,13 +40,13 @@
 }
 
 @media (max-width: 480px) {
-	.about-page {
+	.about_page {
 		min-height: calc(100vh - 500px);
 		margin: 100px auto 30px;
 		padding: 0 15px;
 	}
 
-	.about-page__content {
+	.about_page__content {
 		p {
 			font-size: 13px;
 		}

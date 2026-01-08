@@ -1,9 +1,9 @@
-import "./about.scss";
+import style from "./about.module.scss";
 
 const About = () => {
 	return (
-		<div className="about-page">
-			<div className="about-page__content">
+		<div className={style.about_page}>
+			<div className={style.about_page__content}>
 				<p>
 					Название отсылает к арке персонажа — внутреннему движению, которое проходит каждый
 					человек. Одежда здесь становится частью этой истории: отражает состояние, помогает
