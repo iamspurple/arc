@@ -1,4 +1,4 @@
-import "./catalog.scss";
+import style from "./catalog.module.scss";
 import Card, { Product } from "@/components/Card/Card";
 
 async function getProducts(): Promise<Product[]> {
@@ -15,8 +15,8 @@ const CatalogPage = async () => {
 	const products = await getProducts();
 
 	return (
-		<main className="catalog-page">
-			<div className="catalog-page__grid">
+		<main className={style.catalog_page}>
+			<div className={style.catalog_page__grid}>
 				{products.map((product) => (
 					<Card key={product.id} product={product} />
 				))}
