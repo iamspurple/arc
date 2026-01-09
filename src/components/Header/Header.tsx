@@ -1,5 +1,6 @@
 // components/Header/Header.tsx
 import Link from "next/link";
+import CartButton from "./CartButton";
 import styles from "./Header.module.scss";
 
 const Header = () => {
@@ -28,13 +29,7 @@ const Header = () => {
 					<Link href="/contacts" className={styles.header__link}>
 						Контакты
 					</Link>
-					<button
-						type="button"
-						className={styles.header__link}
-						style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
-					>
-						Корзина
-					</button>
+					<CartButton />
 				</div>
 			</nav>
 		</header>

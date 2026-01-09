@@ -1,0 +1,28 @@
+.button {
+	max-width: 264px;
+	padding: 15px 60px;
+	background: var(--background);
+	color: var(--foreground);
+	border: 1px solid black;
+	border-radius: 10px;
+	font-size: 12px;
+	font-weight: 400;
+	cursor: pointer;
+	transition: all 0.2s;
+	margin-top: 10px;
+
+	&:hover:not(:disabled) {
+		background: #f9f9f9;
+		border-color: rgba(0, 0, 0, 0.3);
+	}
+
+	&:disabled {
+		background: #ccc;
+		cursor: not-allowed;
+	}
+
+	@media (max-width: 600px) {
+		padding: 14px 24px;
+		font-size: 14px;
+	}
+}

@@ -1,9 +1,11 @@
 // app/layout.tsx
+import Cart from "@/components/Cart/Cart";
+import Header from "@/components/Header/Header";
+import { CartProvider } from "@/context/CartContext";
 import type { Metadata } from "next";
 import { Lunasima } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.scss";
-import Header from "@/components/Header/Header";
 
 const lunasima = Lunasima({
 	subsets: ["latin"],
@@ -31,10 +33,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	return (
 		<html lang="ru" suppressHydrationWarning>
 			<body className={`${lunasima.variable} ${athelas.variable}`} suppressHydrationWarning>
-				<div className="container">
-					<Header />
-					<main className="main-content">{children}</main>
-				</div>
+				<CartProvider>
+					<div className="container">
+						<Header />
+						<main className="main-content">{children}</main>
+					</div>
+					<Cart />
+				</CartProvider>
 			</body>
 		</html>
 	);

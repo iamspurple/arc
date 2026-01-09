@@ -1,0 +1,11 @@
+.product_actions {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+
+	.error {
+		color: #d32f2f;
+		font-size: 13px;
+		margin-top: -4px;
+	}
+}

@@ -1,22 +1,22 @@
 "use client";
 
+import simpleRestProvider from "ra-data-simple-rest";
 import {
 	Admin,
-	Resource,
-	List,
-	Datagrid,
-	TextField,
-	NumberField,
 	BooleanField,
-	Edit,
-	Create,
-	SimpleForm,
-	TextInput,
-	NumberInput,
 	BooleanInput,
+	Create,
+	Datagrid,
+	Edit,
+	List,
+	NumberField,
+	NumberInput,
+	Resource,
+	SimpleForm,
+	TextField,
+	TextInput,
 } from "react-admin";
 import { BrowserRouter } from "react-router-dom";
-import simpleRestProvider from "ra-data-simple-rest";
 
 const dataProvider = simpleRestProvider("http://localhost:3000/api");
 
