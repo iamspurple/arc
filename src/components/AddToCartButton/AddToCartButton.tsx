@@ -3,6 +3,8 @@
 import { useCart } from "@/context/CartContext";
 import { useState } from "react";
 
+import style from "./AddToCartButton.module.scss";
+
 type Props = {
 	product: {
 		id: string;
@@ -42,14 +44,14 @@ const AddToCartButton = ({ product, selectedSize, onNoSize }: Props) => {
 
 	if (!product.inStock) {
 		return (
-			<button className="button" disabled>
+			<button className={style.button} disabled>
 				Нет в наличии
 			</button>
 		);
 	}
 
 	return (
-		<button className="button" onClick={handleAddToCart} disabled={isAdding}>
+		<button className={style.button} onClick={handleAddToCart} disabled={isAdding}>
 			{isAdding ? "Добавлено!" : "Добавить в корзину"}
 		</button>
 	);
