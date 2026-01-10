@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 import Card, { Product } from "@/components/Card/Card";
 import style from "./catalog.module.scss";
-=======
-import style from "./catalog.module.scss";
-import Card, { Product } from "@/components/Card/Card";
->>>>>>> cart
+
 
 async function getProducts(): Promise<Product[]> {
 	const res = await fetch("http://localhost:3000/api/products", {
