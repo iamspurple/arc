@@ -12,11 +12,10 @@ type DescriptionPickerTypes = {
 const DescriptionPicker = ({ description, composition, care }: DescriptionPickerTypes) => {
 	const options = ["Описание", "Состав и уход", "Размерные характерисики"];
 
-	const [selectedOption, setSelectedOption] = useState<string | null>("Описание");
+	const [selectedOption, setSelectedOption] = useState<string>("Описание");
 
 	const handleOptionSelect = (option: string) => {
-		const newOption = selectedOption === option ? null : option;
-		setSelectedOption(newOption);
+		setSelectedOption(option);
 	};
 
 	const renderContent = () => {
