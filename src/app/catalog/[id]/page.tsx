@@ -38,7 +38,9 @@ const ProductPage = async ({ params }: Params) => {
 						<span className={style.price}>{product.price}</span>
 					</div>
 
-					<ProductActions product={product} />
+					<div className={style.info_container}>
+						<ProductActions product={product} />
+					</div>
 
 					<DescriptionPicker
 						description={product.description}

@@ -1,7 +1,8 @@
 "use client";
 
-import { CartItem as CartItemType } from "@/context/CartContext";
+import { CartItem as CartItemType, useCart } from "@/context/CartContext";
 import Image from "next/image";
+import Link from "next/link";
 
 type Props = {
 	item: CartItemType;
@@ -13,24 +14,28 @@ const formatPrice = (price: number) => {
 };
 
 const CartItem = ({ item, onUpdateQuantity }: Props) => {
+	const { closeCart } = useCart();
+
 	return (
 		<li className="cart__item">
-			{item.image && (
-				<div className="cart__item-image">
-					<Image
-						src={item.image}
-						alt={item.title}
-						fill
-						sizes="80px"
-						style={{ objectFit: "cover" }}
-					/>
+			<Link href={`/catalog/${item.slug}`} className="cart__item-link" onClick={closeCart}>
+				{item.image && (
+					<div className="cart__item-image">
+						<Image
+							src={item.image}
+							alt={item.title}
+							fill
+							sizes="80px"
+							style={{ objectFit: "cover" }}
+						/>
+					</div>
+				)}
+				<div className="cart__item-info">
+					<span className="cart__item-title">{item.title}</span>
+					<span className="cart__item-size">Размер: {item.size}</span>
+					<span className="cart__item-unit-price">{formatPrice(item.price)} за шт.</span>
 				</div>
-			)}
-			<div className="cart__item-info">
-				<span className="cart__item-title">{item.title}</span>
-				<span className="cart__item-size">Размер: {item.size}</span>
-				<span className="cart__item-unit-price">{formatPrice(item.price)} за шт.</span>
-			</div>
+			</Link>
 			<div className="cart__item-controls">
 				<button
 					className="cart__quantity-btn"

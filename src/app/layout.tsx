@@ -8,7 +8,7 @@ import localFont from "next/font/local";
 import "./globals.scss";
 
 const lunasima = Lunasima({
-	subsets: ["latin"],
+	subsets: ["latin", "cyrillic"],
 	weight: ["400", "700"],
 	variable: "--font-lunasima",
 });
