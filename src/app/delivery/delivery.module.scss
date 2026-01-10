@@ -1,4 +1,4 @@
-.delivery-page {
+.delivery_page {
 	margin: 0 auto;
 	color: #4b4b4b;
 	font-size: 13px;
@@ -21,7 +21,7 @@
 				font-size: 15px;
 			}
 
-			.section-container {
+			.section_container {
 				padding-left: 15px;
 
 				.subtitle {
@@ -42,7 +42,7 @@
 }
 
 @media screen and (max-width: 768px) {
-	.delivery-page {
+	.delivery_page {
 		font-size: 18px;
 		padding-block: 30px;
 		.content {
@@ -62,7 +62,7 @@
 }
 
 @media screen and (max-width: 480px) {
-	.delivery-page {
+	.delivery_page {
 		font-size: 16px;
 		padding-block: 20px;
 

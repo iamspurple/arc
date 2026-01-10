@@ -1,4 +1,4 @@
-.size-picker {
+.size_picker {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -31,7 +31,7 @@
 			background: #f9f9f9;
 		}
 
-		&--selected {
+		&__selected {
 			border-color: var(--foreground);
 		}
 	}

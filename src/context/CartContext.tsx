@@ -77,9 +77,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
 			if (existingIndex > -1) {
 				return prev.map((item, index) =>
-					index === existingIndex
-						? { ...item, quantity: item.quantity + 1 }
-						: item
+					index === existingIndex ? { ...item, quantity: item.quantity + 1 } : item
 				);
 			}
 

@@ -1,5 +1,5 @@
 import Card, { Product } from "@/components/Card/Card";
-import "./catalog.scss";
+import style from "./catalog.module.scss";
 
 async function getProducts(): Promise<Product[]> {
 	const res = await fetch("http://localhost:3000/api/products", {
@@ -15,8 +15,8 @@ const CatalogPage = async () => {
 	const products = await getProducts();
 
 	return (
-		<main className="catalog-page">
-			<div className="catalog-page__grid">
+		<main className={style.catalog_page}>
+			<div className={style.catalog_page__grid}>
 				{products.map((product) => (
 					<Card key={product.id} product={product} />
 				))}

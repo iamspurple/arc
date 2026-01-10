@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import "./ImagePicker.scss";
+import style from "./ImagePicker.module.scss";
 
 type Params = {
 	images: { id: string; url: string; productId: string }[];
@@ -19,16 +19,16 @@ const ImagePicker = ({ images, title }: Params) => {
 	};
 
 	return (
-		<div className="images">
-			<div className="gallery">
+		<div className={style.images}>
+			<div className={style.gallery}>
 				{images.map((image, index) => (
-					<div key={image.id} className="gallery-item">
+					<div key={image.id} className={style.gallery_item}>
 						<Image
 							src={image.url}
 							alt={title}
 							fill
 							sizes="(max-width: 900px) 100vw, 50vw"
-							className={`image ${index === mainImageIndex ? "active" : ""} `}
+							className={`${style.image} ${index === mainImageIndex ? style.active : ""} `}
 							priority
 							onClick={() => handleMainImageChange(index)}
 						/>
@@ -36,13 +36,13 @@ const ImagePicker = ({ images, title }: Params) => {
 				))}
 			</div>
 			{mainImage && (
-				<div className="main-image">
+				<div className={style.main_image}>
 					<Image
 						src={mainImage.url}
 						alt={title}
 						fill
 						sizes="(max-width: 900px) 100vw, 50vw"
-						className="image"
+						className={style.image}
 						priority
 					/>
 				</div>
