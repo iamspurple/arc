@@ -4,13 +4,11 @@ import { CartItem as CartItemType, useCart } from "@/context/CartContext";
 import Image from "next/image";
 import Link from "next/link";
 
+import { formatPrice } from "@/services";
+
 type Props = {
 	item: CartItemType;
 	onUpdateQuantity: (id: string, size: string, quantity: number) => void;
-};
-
-const formatPrice = (price: number) => {
-	return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 };
 
 const CartItem = ({ item, onUpdateQuantity }: Props) => {

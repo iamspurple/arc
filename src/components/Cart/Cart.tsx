@@ -5,15 +5,14 @@ import { useEffect, useRef, useState } from "react";
 import "./Cart.scss";
 import CartItem from "./CartItem";
 
+import { formatPrice } from "@/services";
+import Link from "next/link";
+
 const Cart = () => {
 	const { items, isOpen, closeCart, updateQuantity, clearCart, totalPrice } = useCart();
 	const [shouldRender, setShouldRender] = useState(false);
 	const [isClosing, setIsClosing] = useState(false);
 	const closingTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-	const formatPrice = (price: number) => {
-		return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-	};
 
 	useEffect(() => {
 		return () => {
@@ -79,7 +78,9 @@ const Cart = () => {
 							<span>Итого:</span>
 							<span>{formatPrice(totalPrice)}</span>
 						</div>
-						<button className="cart__checkout">Оформить заказ</button>
+						<Link href="/checkout" onClick={closeCart}>
+							<button className="cart__checkout">Оформить заказ</button>
+						</Link>
 						<button className="cart__clear" onClick={clearCart}>
 							Очистить корзину
 						</button>
