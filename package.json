@@ -14,28 +14,28 @@
 		"prisma:studio": "prisma studio"
 	},
 	"dependencies": {
-		"@emotion/react": "^11.14.0",
-		"@emotion/styled": "^11.14.1",
-		"@prisma/client": "^6.19.0",
-		"next": "^16.1.1",
-		"pg": "^8.16.3",
-		"prisma": "^6.19.0",
-		"ra-data-simple-rest": "^5.13.2",
-		"react": "19.2.0",
-		"react-admin": "^5.13.2",
-		"react-dom": "19.2.0",
-		"react-hook-form": "^7.70.0",
-		"react-router": "^7.10.1",
-		"sass": "^1.94.0"
+		"@emotion/react": "11.14.0",
+		"@emotion/styled": "11.14.1",
+		"@prisma/client": "6.19.0",
+		"next": "^16.1.2",
+		"pg": "8.16.3",
+		"prisma": "6.19.0",
+		"ra-data-simple-rest": "5.13.2",
+		"react": "19.2.3",
+		"react-admin": "5.13.2",
+		"react-dom": "19.2.3",
+		"react-hook-form": "7.70.0",
+		"react-router": "7.12.0",
+		"sass": "1.94.0"
 	},
 	"devDependencies": {
-		"@types/node": "^20",
-		"@types/react": "^19",
-		"@types/react-dom": "^19",
-		"dotenv-cli": "^11.0.0",
-		"eslint": "^9",
+		"@types/node": "20",
+		"@types/react": "19",
+		"@types/react-dom": "19",
+		"dotenv-cli": "11.0.0",
+		"eslint": "9",
 		"eslint-config-next": "16.0.3",
-		"prettier": "^3.7.4",
-		"typescript": "^5"
+		"prettier": "3.7.4",
+		"typescript": "5"
 	}
 }
