@@ -1,10 +1,11 @@
+import DescriptionPicker from "@/components/DescriptionPicker/DescriptionPicker";
+import ImagePicker from "@/components/ImagePicker/ImagePicker";
+import ProductActions from "@/components/ProductActions/ProductActions";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import style from "./product.module.scss";
-import SizePicker from "@/components/SizePicker/SizePicker";
-import DescriptionPicker from "@/components/DescriptionPicker/DescriptionPicker";
 
-import ImagePicker from "@/components/ImagePicker/ImagePicker";
+import { formatPrice } from "@/services";
 
 type Params = {
 	params: Promise<{ id: string }>;
@@ -36,15 +37,10 @@ const ProductPage = async ({ params }: Params) => {
 					<div className={style.info_container}>
 						<h1 className={style.title}>{product.title}</h1>
 
-						<span className={style.price}>{product.price}</span>
+						<span className={style.price}>{formatPrice(product.price)}</span>
 					</div>
 
-					<div className={style.info_container}>
-						<SizePicker sizes={product.sizes} />
-						<button className={style.button} disabled={!product.inStock}>
-							{product.inStock ? "Добавить в корзину" : "Нет в наличии"}
-						</button>
-					</div>
+					<ProductActions product={product} />
 
 					<DescriptionPicker
 						description={product.description}

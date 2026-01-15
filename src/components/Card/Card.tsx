@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import style from "./Card.module.scss";
+import { formatPrice } from "@/services";
 
 type ProductImage = {
 	id: string;
@@ -39,9 +40,7 @@ const Card = ({ product }: Props) => {
 
 			<div className={style.info}>
 				<span className={style.title}>{product.title}</span>
-				<span className={style.price}>
-					{product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
-				</span>
+				<span className={style.price}>{formatPrice(product.price)}</span>
 			</div>
 		</Link>
 	);
