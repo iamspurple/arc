@@ -5,6 +5,8 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import style from "./product.module.scss";
 
+import { formatPrice } from "@/services";
+
 type Params = {
 	params: Promise<{ id: string }>;
 };
@@ -35,7 +37,7 @@ const ProductPage = async ({ params }: Params) => {
 					<div className={style.info_container}>
 						<h1 className={style.title}>{product.title}</h1>
 
-						<span className={style.price}>{product.price}</span>
+						<span className={style.price}>{formatPrice(product.price)}</span>
 					</div>
 
 					<ProductActions product={product} />
