@@ -38,6 +38,7 @@ export async function PUT(req: Request, context: ParamsContext) {
 			description?: string | null;
 			composition?: string | null;
 			care?: string | null;
+			sizes?: string | null;
 			price?: number;
 			inStock?: boolean;
 			images?: {
@@ -48,6 +49,7 @@ export async function PUT(req: Request, context: ParamsContext) {
 			description: data.description,
 			composition: data.composition,
 			care: data.care,
+			sizes: data.sizes,
 			price: data.price,
 			inStock: data.inStock,
 			images: {
@@ -102,7 +104,7 @@ export async function DELETE(req: Request, context: ParamsContext) {
 
 		if (!product) {
 			return NextResponse.json({ error: "Not found" }, { status: 404 });
-		}https://www.avito.ru/groznyy/zapchasti_i_aksessuary/litye_diski_mitsubishi_6.5r16_5114.3_3738587805
+		}
 
 		await prisma.productImage.deleteMany({
 			where: { productId: product.id },
