@@ -23,7 +23,6 @@
 	}
 }
 
-// Мобильные стили
 @media (max-width: 768px) {
 	.about_page {
 		min-height: calc(100vh - 500px);
@@ -33,19 +32,15 @@
 	.content {
 		margin-top: 5vh;
 		p {
-			font-size: 16px;
+			font-size: 14px;
 			line-height: 1.5;
 		}
 	}
 }
 
 @media (max-width: 480px) {
-	.about_page {
-		min-height: calc(100vh - 500px);
-		padding: 0 15px;
-	}
-
 	.content {
+		margin-top: 0;
 		p {
 			font-size: 13px;
 		}

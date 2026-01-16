@@ -1,5 +1,6 @@
+import { ImagePicker } from "@/components/ImagePicker";
 import DescriptionPicker from "@/components/DescriptionPicker/DescriptionPicker";
-import ImagePicker from "@/components/ImagePicker/ImagePicker";
+
 import ProductActions from "@/components/ProductActions/ProductActions";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";

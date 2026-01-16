@@ -5,9 +5,13 @@
 
 	.container {
 		padding-block: 40px;
-		// padding-inline: 7%;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
+
+		@media screen and (max-width: 1024px) {
+			grid-template-columns: auto;
+			gap: 60px;
+		}
 	}
 }
 
@@ -17,6 +21,18 @@
 	gap: 30px;
 	width: 70%;
 	margin: 0 auto;
+
+	@media screen and (max-width: 1024px) {
+		width: 60%;
+	}
+
+	@media screen and (max-width: 768px) {
+		width: 80%;
+	}
+
+	@media screen and (max-width: 480px) {
+		width: 95%;
+	}
 }
 
 .total {

@@ -10,48 +10,37 @@ import Link from "next/link";
 
 const Cart = () => {
 	const { items, isOpen, closeCart, updateQuantity, clearCart, totalPrice } = useCart();
-	const [shouldRender, setShouldRender] = useState(false);
 	const [isClosing, setIsClosing] = useState(false);
-	const closingTimerRef = useRef<NodeJS.Timeout | null>(null);
+	const timerID = useRef<NodeJS.Timeout | null>(null);
+
+	const handleClose = () => {
+		setIsClosing(true);
+		timerID.current = setTimeout(() => {
+			closeCart();
+			setIsClosing(false);
+		}, 300);
+	};
 
 	useEffect(() => {
 		return () => {
-			if (closingTimerRef.current) {
-				clearTimeout(closingTimerRef.current);
+			if (timerID.current) {
+				clearTimeout(timerID.current);
 			}
 		};
 	}, []);
 
-	useEffect(() => {
-		if (isOpen) {
-			if (closingTimerRef.current) {
-				clearTimeout(closingTimerRef.current);
-				closingTimerRef.current = null;
-			}
-			setIsClosing(false);
-			setShouldRender(true);
-		} else if (shouldRender && !isClosing) {
-			setIsClosing(true);
-			closingTimerRef.current = setTimeout(() => {
-				setShouldRender(false);
-				setIsClosing(false);
-				closingTimerRef.current = null;
-			}, 300);
-		}
-	}, [isOpen, shouldRender, isClosing]);
-
-	if (!shouldRender) return null;
+	if (!isOpen) return null;
 
 	return (
 		<>
 			<div
 				className={`cart-overlay ${isClosing ? "cart-overlay--closing" : ""}`}
-				onClick={closeCart}
+				onClick={handleClose}
 			/>
 			<div className={`cart ${isClosing ? "cart--closing" : ""}`}>
 				<div className="cart__header">
-					<h2 className="cart__title">Корзина</h2>
-					<button className="cart__close" onClick={closeCart} aria-label="Закрыть корзину">
+					<span className="cart__title">Корзина</span>
+					<button className="cart__close" onClick={handleClose} aria-label="Закрыть корзину">
 						×
 					</button>
 				</div>
@@ -65,6 +54,7 @@ const Cart = () => {
 								<CartItem
 									key={`${item.id}-${item.size}`}
 									item={item}
+									handleClose={handleClose}
 									onUpdateQuantity={updateQuantity}
 								/>
 							))}

@@ -7,7 +7,7 @@
 	justify-content: right;
 
 	@media screen and (max-width: 1024px) {
-		width: 100%;
+		gap: 4%;
 	}
 }
 
@@ -16,12 +16,11 @@
 	width: 74%;
 	max-width: 370px;
 	max-height: 560px;
-	aspect-ratio: 3/4;
 	background: #f4f4f4;
 	overflow: hidden;
 
-	@media (max-width: 900px) {
-		max-width: 100%;
+	@media (max-width: 1024px) {
+		width: 80%;
 	}
 }
 
@@ -44,6 +43,10 @@
 	&:hover {
 		opacity: 0.8;
 	}
+
+	@media (max-width: 1024px) {
+		aspect-ratio: 4/5;
+	}
 }
 
 .image {
@@ -54,4 +57,26 @@
 
 .active {
 	border: 1px solid #4b4b4b;
+}
+
+.slider_container {
+	position: relative;
+	overflow: auto;
+}
+
+.slider {
+	width: 100%;
+	aspect-ratio: 7/6;
+	display: flex;
+	gap: 10px;
+}
+
+.slide {
+	width: 65%;
+	aspect-ratio: 3/4;
+	position: relative;
+
+	img {
+		object-fit: cover;
+	}
 }

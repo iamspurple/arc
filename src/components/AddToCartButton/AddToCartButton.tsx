@@ -1,7 +1,7 @@
 "use client";
 
 import { useCart } from "@/context/CartContext";
-import { useState } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
 
 import style from "./AddToCartButton.module.scss";
 
@@ -19,16 +19,24 @@ type Props = {
 };
 
 const AddToCartButton = ({ product, selectedSize, onNoSize }: Props) => {
-	const { addItem } = useCart();
-	const [isAdding, setIsAdding] = useState(false);
+	const { addItem, items, openCart } = useCart();
+	const [isInCart, setIsInCart] = useState(() => {
+		return items.some((item) => item.id == product.id && item.size == selectedSize);
+	});
+
+	const handleSetIsInCart = useEffectEvent(() => {
+		setIsInCart(items.some((item) => item.id == product.id && item.size == selectedSize));
+	});
+
+	useEffect(() => {
+		handleSetIsInCart();
+	}, [items, selectedSize]);
 
 	const handleAddToCart = () => {
 		if (!selectedSize) {
 			onNoSize?.();
 			return;
 		}
-
-		setIsAdding(true);
 
 		addItem({
 			id: product.id,
@@ -38,8 +46,6 @@ const AddToCartButton = ({ product, selectedSize, onNoSize }: Props) => {
 			size: selectedSize,
 			image: product.images?.[0]?.url,
 		});
-
-		setTimeout(() => setIsAdding(false), 300);
 	};
 
 	if (!product.inStock) {
@@ -51,8 +57,11 @@ const AddToCartButton = ({ product, selectedSize, onNoSize }: Props) => {
 	}
 
 	return (
-		<button className={style.button} onClick={handleAddToCart} disabled={isAdding}>
-			{isAdding ? "Добавлено!" : "Добавить в корзину"}
+		<button
+			className={style.button}
+			onClick={isInCart ? () => openCart() : () => handleAddToCart()}
+		>
+			{isInCart ? "Перейти в корзину" : "Добавить в корзину"}
 		</button>
 	);
 };

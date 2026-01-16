@@ -1,6 +1,6 @@
 "use client";
 
-import { CartItem as CartItemType, useCart } from "@/context/CartContext";
+import { CartItem as CartItemType } from "@/context/CartContext";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -8,24 +8,17 @@ import { formatPrice } from "@/services";
 
 type Props = {
 	item: CartItemType;
+	handleClose: () => void;
 	onUpdateQuantity: (id: string, size: string, quantity: number) => void;
 };
 
-const CartItem = ({ item, onUpdateQuantity }: Props) => {
-	const { closeCart } = useCart();
-
+const CartItem = ({ item, handleClose, onUpdateQuantity }: Props) => {
 	return (
 		<li className="cart__item">
-			<Link href={`/catalog/${item.slug}`} className="cart__item-link" onClick={closeCart}>
+			<Link href={`/catalog/${item.slug}`} className="cart__item-link" onClick={handleClose}>
 				{item.image && (
 					<div className="cart__item-image">
-						<Image
-							src={item.image}
-							alt={item.title}
-							fill
-							sizes="80px"
-							style={{ objectFit: "cover" }}
-						/>
+						<Image src={item.image} alt={item.title} fill style={{ objectFit: "cover" }} />
 					</div>
 				)}
 				<div className="cart__item-info">
