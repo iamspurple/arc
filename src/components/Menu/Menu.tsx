@@ -1,9 +1,12 @@
 "use client";
 
-import style from "./Menu.module.scss";
-import Link from "next/link";
-import { useCart } from "@/context/CartContext";
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+
+import { useCart } from "@/context/CartContext";
+import { routes } from "@/constants/routes";
+
+import style from "./Menu.module.scss";
 
 const Menu = () => {
 	const { closeMenu, isMenuOpen } = useCart();
@@ -43,22 +46,22 @@ const Menu = () => {
 				<nav>
 					<ul className={style.list}>
 						<li className={style.item}>
-							<Link href="/catalog" className={style.link} onClick={handleClose}>
+							<Link href={routes.catalog} className={style.link} onClick={handleClose}>
 								Каталог
 							</Link>
 						</li>
 						<li className={style.item}>
-							<Link href="/about" className={style.link} onClick={handleClose}>
+							<Link href={routes.about} className={style.link} onClick={handleClose}>
 								О проекте
 							</Link>
 						</li>
 						<li className={style.item}>
-							<Link href="/delivery" className={style.link} onClick={handleClose}>
+							<Link href={routes.delivery} className={style.link} onClick={handleClose}>
 								Доставка
 							</Link>
 						</li>
 						<li className={style.item}>
-							<Link href="/contacts" className={style.link} onClick={handleClose}>
+							<Link href={routes.contacts} className={style.link} onClick={handleClose}>
 								Контакты
 							</Link>
 						</li>

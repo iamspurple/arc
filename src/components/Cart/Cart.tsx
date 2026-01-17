@@ -1,12 +1,15 @@
 "use client";
 
-import { useCart } from "@/context/CartContext";
 import { useEffect, useRef, useState } from "react";
-import "./Cart.scss";
+import Link from "next/link";
+
+import { useCart } from "@/context/CartContext";
+import { formatPrice } from "@/services";
+import { routes } from "@/constants/routes";
+
 import CartItem from "./CartItem";
 
-import { formatPrice } from "@/services";
-import Link from "next/link";
+import styles from "./Cart.module.scss";
 
 const Cart = () => {
 	const { items, isOpen, closeCart, updateQuantity, clearCart, totalPrice } = useCart();
@@ -34,22 +37,22 @@ const Cart = () => {
 	return (
 		<>
 			<div
-				className={`cart-overlay ${isClosing ? "cart-overlay--closing" : ""}`}
+				className={`${styles.overlay} ${isClosing ? styles.overlayClosing : ""}`}
 				onClick={handleClose}
 			/>
-			<div className={`cart ${isClosing ? "cart--closing" : ""}`}>
-				<div className="cart__header">
-					<span className="cart__title">Корзина</span>
-					<button className="cart__close" onClick={handleClose} aria-label="Закрыть корзину">
+			<div className={`${styles.cart} ${isClosing ? styles.cartClosing : ""}`}>
+				<div className={styles.header}>
+					<span className={styles.title}>Корзина</span>
+					<button className={styles.close} onClick={handleClose} aria-label="Закрыть корзину">
 						×
 					</button>
 				</div>
 
-				<div className="cart__content">
+				<div className={styles.content}>
 					{items.length === 0 ? (
-						<p className="cart__empty">Корзина пуста</p>
+						<p className={styles.empty}>Корзина пуста</p>
 					) : (
-						<ul className="cart__items">
+						<ul className={styles.items}>
 							{items.map((item) => (
 								<CartItem
 									key={`${item.id}-${item.size}`}
@@ -63,15 +66,15 @@ const Cart = () => {
 				</div>
 
 				{items.length > 0 && (
-					<div className="cart__footer">
-						<div className="cart__total">
+					<div className={styles.footer}>
+						<div className={styles.total}>
 							<span>Итого:</span>
 							<span>{formatPrice(totalPrice)}</span>
 						</div>
-						<Link href="/checkout" onClick={closeCart}>
-							<button className="cart__checkout">Оформить заказ</button>
+						<Link href={routes.checkout} onClick={closeCart}>
+							<button className={styles.checkout}>Оформить заказ</button>
 						</Link>
-						<button className="cart__clear" onClick={clearCart}>
+						<button className={styles.clear} onClick={clearCart}>
 							Очистить корзину
 						</button>
 					</div>
