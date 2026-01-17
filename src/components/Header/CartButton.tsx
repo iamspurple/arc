@@ -1,11 +1,11 @@
 "use client";
+import Image from "next/image";
 
 import { useCart } from "@/context/CartContext";
-import Image from "next/image";
 
 import style from "./Header.module.scss";
 
-import useMediaQuery from "@/services/useMediaQuery";
+import { useMediaQuery } from "@/services/useMediaQuery";
 const CartButton = () => {
 	const { openCart, totalItems } = useCart();
 	const matches = useMediaQuery("(max-width: 768px)");

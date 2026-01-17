@@ -1,7 +1,8 @@
 "use client";
 
-import { useCart } from "@/context/CartContext";
 import { useEffect, useEffectEvent, useState } from "react";
+
+import { useCart } from "@/context/CartContext";
 
 import style from "./AddToCartButton.module.scss";
 
@@ -17,6 +18,9 @@ type Props = {
 	selectedSize: string | null;
 	onNoSize?: () => void;
 };
+
+const addToCart = "Добавить в корзину";
+const goToCart = "Перейти в корзину";
 
 const AddToCartButton = ({ product, selectedSize, onNoSize }: Props) => {
 	const { addItem, items, openCart } = useCart();
@@ -61,7 +65,7 @@ const AddToCartButton = ({ product, selectedSize, onNoSize }: Props) => {
 			className={style.button}
 			onClick={isInCart ? () => openCart() : () => handleAddToCart()}
 		>
-			{isInCart ? "Перейти в корзину" : "Добавить в корзину"}
+			{isInCart ? goToCart : addToCart}
 		</button>
 	);
 };

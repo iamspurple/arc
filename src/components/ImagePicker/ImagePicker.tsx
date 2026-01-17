@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import Image from "next/image";
+
+import { useMediaQuery } from "@/services/useMediaQuery";
+
 import style from "./ImagePicker.module.scss";
-import useMediaQuery from "@/services/useMediaQuery";
 
 type Params = {
 	images: { id: string; url: string; productId: string }[];

@@ -100,19 +100,19 @@
 			bottom: 7;
 		}
 	}
-}
 
-.menu_btn {
-	width: 45px;
-	height: 45px;
-	position: relative;
-	background: none;
-	border: none;
-	cursor: pointer;
-	padding: 0;
+	.menu_btn {
+		width: 45px;
+		height: 45px;
+		position: relative;
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0;
 
-	@media screen and (max-width: 480px) {
-		width: 30px;
-		height: 30px;
+		@media screen and (max-width: 480px) {
+			width: 30px;
+			height: 30px;
+		}
 	}
 }

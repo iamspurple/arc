@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-const useMediaQuery = (query: string) => {
+export const useMediaQuery = (query: string) => {
 	const [matches, setMatches] = useState(() => {
 		if (typeof window !== "undefined") {
 			return window.matchMedia(query).matches;
@@ -26,5 +26,3 @@ const useMediaQuery = (query: string) => {
 
 	return matches;
 };
-
-export default useMediaQuery;
