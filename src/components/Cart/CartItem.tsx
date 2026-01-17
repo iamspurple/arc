@@ -1,57 +1,53 @@
 "use client";
 
-import { CartItem as CartItemType, useCart } from "@/context/CartContext";
 import Image from "next/image";
 import Link from "next/link";
 
+import type { CartItem as CartItemType } from "@/context/CartContext";
+
 import { formatPrice } from "@/services";
+
+import styles from "./Cart.module.scss";
 
 type Props = {
 	item: CartItemType;
+	handleClose: () => void;
 	onUpdateQuantity: (id: string, size: string, quantity: number) => void;
 };
 
-const CartItem = ({ item, onUpdateQuantity }: Props) => {
-	const { closeCart } = useCart();
-
+const CartItem = ({ item, handleClose, onUpdateQuantity }: Props) => {
 	return (
-		<li className="cart__item">
-			<Link href={`/catalog/${item.slug}`} className="cart__item-link" onClick={closeCart}>
+		<li className={styles.item}>
+			<Link href={`/catalog/${item.slug}`} className={styles["item-link"]} onClick={handleClose}>
 				{item.image && (
-					<div className="cart__item-image">
-						<Image
-							src={item.image}
-							alt={item.title}
-							fill
-							sizes="80px"
-							style={{ objectFit: "cover" }}
-						/>
+					<div className={styles["item-image"]}>
+						<Image src={item.image} alt={item.title} fill sizes="80px" />
 					</div>
 				)}
-				<div className="cart__item-info">
-					<span className="cart__item-title">{item.title}</span>
-					<span className="cart__item-size">Размер: {item.size}</span>
-					<span className="cart__item-unit-price">{formatPrice(item.price)} за шт.</span>
+				<div className={styles["item-info"]}>
+					<span className={styles["item-title"]}>{item.title}</span>
+					<span className={styles["item-size"]}>Размер: {item.size}</span>
+					<span className={styles["item-unit-price"]}>{formatPrice(item.price)} за шт.</span>
 				</div>
 			</Link>
-			<div className="cart__item-controls">
+			<div className={styles["item-controls"]}>
 				<button
-					className="cart__quantity-btn"
+					className={styles["quantity-btn"]}
 					onClick={() => onUpdateQuantity(item.id, item.size, item.quantity - 1)}
 					aria-label="Уменьшить количество"
 				>
 					−
 				</button>
-				<span className="cart__quantity">{item.quantity}шт</span>
+				<span className={styles["quantity"]}>{item.quantity}шт</span>
 				<button
-					className="cart__quantity-btn"
+					className={styles["quantity-btn"]}
 					onClick={() => onUpdateQuantity(item.id, item.size, item.quantity + 1)}
 					aria-label="Увеличить количество"
 				>
 					+
 				</button>
 			</div>
-			<span className="cart__item-total">{formatPrice(item.price * item.quantity)}</span>
+			<span className={styles["item-total"]}>{formatPrice(item.price * item.quantity)}</span>
 		</li>
 	);
 };

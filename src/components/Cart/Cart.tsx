@@ -1,70 +1,63 @@
 "use client";
 
-import { useCart } from "@/context/CartContext";
 import { useEffect, useRef, useState } from "react";
-import "./Cart.scss";
+import Link from "next/link";
+
+import { useCart } from "@/context/CartContext";
+import { formatPrice } from "@/services";
+import { routes } from "@/constants/routes";
+
 import CartItem from "./CartItem";
 
-import { formatPrice } from "@/services";
-import Link from "next/link";
+import styles from "./Cart.module.scss";
 
 const Cart = () => {
 	const { items, isOpen, closeCart, updateQuantity, clearCart, totalPrice } = useCart();
-	const [shouldRender, setShouldRender] = useState(false);
 	const [isClosing, setIsClosing] = useState(false);
-	const closingTimerRef = useRef<NodeJS.Timeout | null>(null);
+	const timerID = useRef<NodeJS.Timeout | null>(null);
+
+	const handleClose = () => {
+		setIsClosing(true);
+		timerID.current = setTimeout(() => {
+			closeCart();
+			setIsClosing(false);
+		}, 300);
+	};
 
 	useEffect(() => {
 		return () => {
-			if (closingTimerRef.current) {
-				clearTimeout(closingTimerRef.current);
+			if (timerID.current) {
+				clearTimeout(timerID.current);
 			}
 		};
 	}, []);
 
-	useEffect(() => {
-		if (isOpen) {
-			if (closingTimerRef.current) {
-				clearTimeout(closingTimerRef.current);
-				closingTimerRef.current = null;
-			}
-			setIsClosing(false);
-			setShouldRender(true);
-		} else if (shouldRender && !isClosing) {
-			setIsClosing(true);
-			closingTimerRef.current = setTimeout(() => {
-				setShouldRender(false);
-				setIsClosing(false);
-				closingTimerRef.current = null;
-			}, 300);
-		}
-	}, [isOpen, shouldRender, isClosing]);
-
-	if (!shouldRender) return null;
+	if (!isOpen) return null;
 
 	return (
 		<>
 			<div
-				className={`cart-overlay ${isClosing ? "cart-overlay--closing" : ""}`}
-				onClick={closeCart}
+				className={`${styles.overlay} ${isClosing ? styles.overlayClosing : ""}`}
+				onClick={handleClose}
 			/>
-			<div className={`cart ${isClosing ? "cart--closing" : ""}`}>
-				<div className="cart__header">
-					<h2 className="cart__title">Корзина</h2>
-					<button className="cart__close" onClick={closeCart} aria-label="Закрыть корзину">
+			<div className={`${styles.cart} ${isClosing ? styles.cartClosing : ""}`}>
+				<div className={styles.header}>
+					<span className={styles.title}>Корзина</span>
+					<button className={styles.close} onClick={handleClose} aria-label="Закрыть корзину">
 						×
 					</button>
 				</div>
 
-				<div className="cart__content">
+				<div className={styles.content}>
 					{items.length === 0 ? (
-						<p className="cart__empty">Корзина пуста</p>
+						<p className={styles.empty}>Корзина пуста</p>
 					) : (
-						<ul className="cart__items">
+						<ul className={styles.items}>
 							{items.map((item) => (
 								<CartItem
 									key={`${item.id}-${item.size}`}
 									item={item}
+									handleClose={handleClose}
 									onUpdateQuantity={updateQuantity}
 								/>
 							))}
@@ -73,15 +66,15 @@ const Cart = () => {
 				</div>
 
 				{items.length > 0 && (
-					<div className="cart__footer">
-						<div className="cart__total">
+					<div className={styles.footer}>
+						<div className={styles.total}>
 							<span>Итого:</span>
 							<span>{formatPrice(totalPrice)}</span>
 						</div>
-						<Link href="/checkout" onClick={closeCart}>
-							<button className="cart__checkout">Оформить заказ</button>
+						<Link href={routes.checkout} onClick={closeCart}>
+							<button className={styles.checkout}>Оформить заказ</button>
 						</Link>
-						<button className="cart__clear" onClick={clearCart}>
+						<button className={styles.clear} onClick={clearCart}>
 							Очистить корзину
 						</button>
 					</div>
