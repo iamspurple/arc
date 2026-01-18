@@ -8,24 +8,52 @@ datasource db {
 }
 
 model Product {
-  id          String        @id @default(cuid())
-  title       String
-  slug        String        @unique
-  description String?      
-  composition String?      
-  care        String?   
-  sizes       String?      
-  price       Int
-  inStock     Boolean       @default(true)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+    id                      String                      @id @default(cuid())
+    description             String?                     @db.VarChar(255)
+    composition             String?                     @db.VarChar(255)
+    care                    String?                     @db.VarChar(255)
+    createdAt               DateTime                    @default(now()) @map("created_at")
+    updatedAt               DateTime                    @updatedAt @map("updated_at")
+    options                 ProductOptions[]
+    @@map("product")
+}
 
-  images      ProductImage[]
+model ProductOptions {
+    id                      String                      @id @default(cuid())
+    title                   String                      @db.VarChar(255)
+    slug                    String                      @db.VarChar(255)
+    price                   Int
+    hex                     String                      @db.VarChar(12)
+    colorName               String                      @db.VarChar(255) @map("color_name")
+    createdAt               DateTime                    @default(now()) @map("created_at")
+    updatedAt               DateTime                    @updatedAt @map("updated_at")
+    products                Product                     @relation(fields: [productId], references: [id], onDelete: Cascade)
+    productId               String                      @map("product_id")
+    sizes                   ProductSize[]
+    images                  ProductImage[]
+    @@map("product_option")
+}
+
+model ProductSize {
+    id                      String                              @id @default(cuid())
+    order                   Int
+    size                    String                              @db.VarChar(255)
+    quantity                Int
+    parameters              String                              @db.VarChar(255)
+    createdAt               DateTime                            @default(now()) @map("created_at")
+    updatedAt               DateTime                            @updatedAt @map("updated_at")
+    option                  ProductOptions                       @relation(fields: [optionId], references: [id], onDelete: Cascade)
+    optionId                String                              @map("option_id")
+    @@map("product_size")
 }
 
 model ProductImage {
-  id        String   @id @default(cuid())
-  url       String   
-  product   Product  @relation(fields: [productId], references: [id])
-  productId String
+  id                        String                      @id @default(cuid())
+  alt                       String                      @db.VarChar(255)
+  createdAt                 DateTime                    @default(now()) @map("created_at")
+  updatedAt                 DateTime                    @updatedAt @map("updated_at")
+  option                    ProductOptions               @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  optionId                  String                      @map("option_id")
+  @@map("product_image")
 }
+
