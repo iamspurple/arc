@@ -1,4 +1,4 @@
-import { deleteProductSizeById } from "@/entities/product/services/productSize";
+import { deleteProductSizeById } from "@/entities/product/server";
 
 export const RemoveProductSizeBtn = ({
 	productSizeId,

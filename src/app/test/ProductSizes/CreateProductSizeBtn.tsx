@@ -1,5 +1,5 @@
 import { ProductSize } from "@prisma/client";
-import { createProductSize } from "@/entities/product/services/productSize";
+import { createProductSize } from "@/entities/product/server";
 
 export const CreateProductSizeBtn = ({
 	addNewProductSize,

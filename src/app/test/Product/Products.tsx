@@ -1,8 +1,8 @@
 "use client";
 import { Product } from "@prisma/client";
 import { useState } from "react";
-import { CreateProductBtn } from "@/app/test/Product/CreateProductBtn";
-import { RemoveProductBtn } from "@/app/test/Product/RemoveProductBtn";
+import { CreateProductBtn } from "./CreateProductBtn";
+import { RemoveProductBtn } from "./RemoveProductBtn";
 import { ChangeProductBtn } from "./ChangeProductBtn";
 
 export const Products = ({data}: {data: Product[]}) => {

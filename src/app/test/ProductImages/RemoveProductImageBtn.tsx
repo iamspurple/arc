@@ -1,4 +1,4 @@
-import { deleteProductImageById } from "@/entities/product/services/productImage";
+import { deleteProductImageById } from "@/entities/product/server";
 
 export const RemoveProductImageBtn = ({
 	productImageId,

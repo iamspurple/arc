@@ -1,5 +1,5 @@
-import { updateProductById } from "@/entities/product/services/product";
-import { ProductUpdateEntity } from "@/entities/product/types/product";
+import { updateProductById } from "@/entities/product/server";
+import { type ProductUpdateEntity } from "@/entities/product";
 import { Product } from "@prisma/client";
 
 export const ChangeProductBtn = ({

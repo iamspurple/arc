@@ -1,6 +1,6 @@
-import { ProductImageUpdateEntity } from "@/entities/product/types/product";
+import { type ProductImageUpdateEntity } from "@/entities/product";
 import { ProductImage } from "@prisma/client";
-import { updateProductImageById } from "@/entities/product/services/productImage";
+import { updateProductImageById } from "@/entities/product/server";
 
 export const ChangeProductImageBtn = ({
 	productImage,

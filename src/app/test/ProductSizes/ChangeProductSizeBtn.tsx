@@ -1,6 +1,6 @@
-import { ProductSizeUpdateEntity } from "@/entities/product/types/product";
+import { type ProductSizeUpdateEntity } from "@/entities/product";
 import { ProductSize } from "@prisma/client";
-import { updateProductSizeById } from "@/entities/product/services/productSize";
+import { updateProductSizeById } from "@/entities/product/server";
 
 export const ChangeProductSizeBtn = ({
 	productSize,

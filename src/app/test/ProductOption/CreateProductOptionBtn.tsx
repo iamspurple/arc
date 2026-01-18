@@ -1,5 +1,5 @@
 import { ProductOption } from "@prisma/client";
-import { createProductOption } from "@/entities/product/services/productOption";
+import { createProductOption } from "@/entities/product/server";
 
 export const CreateProductOptionBtn = ({
 	addNewProductOption,

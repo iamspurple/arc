@@ -1,13 +1,13 @@
 import {
-	getProducts
-} from "@/entities/product/services/product";
-import { getProductOptions } from "@/entities/product/services/productOption";
-import { getProductSizes } from "@/entities/product/services/productSize";
+	getProducts,
+	getProductOptions,
+	getProductSizes,
+	getProductImages
+} from "@/entities/product/server";
 import { Products } from "./Product/Products";
 import { ProductOptions } from "./ProductOption/ProductOptions";
-import { ProductSizes } from "@/app/test/ProductSizes/ProductSizes";
-import { ProductImages } from "@/app/test/ProductImages/ProductImages";
-import { getProductImages } from "@/entities/product/services/productImage";
+import { ProductSizes } from "./ProductSizes/ProductSizes";
+import { ProductImages } from "./ProductImages/ProductImages";
 
 const Test = async () => {
 	const productData = await getProducts();

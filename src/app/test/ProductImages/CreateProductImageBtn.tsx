@@ -1,5 +1,5 @@
 import { ProductImage } from "@prisma/client";
-import { createProductImage } from "@/entities/product/services/productImage";
+import { createProductImage } from "@/entities/product/server";
 
 export const CreateProductImageBtn = ({
 	addNewProductImage,
