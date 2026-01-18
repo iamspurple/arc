@@ -26,7 +26,3 @@ export {
 	updateProductImageById,
 	deleteProductImageById,
 } from "./services/productImage";
-export { productRepository } from "./repositories/product";
-export { productOptionRepository } from "./repositories/productOption";
-export { productSizeRepository } from "./repositories/productSize";
-export { productImageRepository } from "./repositories/productImage";
