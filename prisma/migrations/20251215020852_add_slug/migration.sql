@@ -65,7 +65,7 @@ BEGIN
         counter := 1;
         
         -- Проверяем уникальность
-        WHILE EXISTS (SELECT 1 FROM "Product" WHERE slug = final_slug) LOOP
+        WHILE EXISTS (SELECT 1 FROM "Products" WHERE slug = final_slug) LOOP
             final_slug := base_slug || '-' || counter;
             counter := counter + 1;
         END LOOP;
