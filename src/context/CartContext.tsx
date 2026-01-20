@@ -23,6 +23,9 @@ type CartContextType = {
 	clearCart: () => void;
 	totalItems: number;
 	totalPrice: number;
+	isMenuOpen: boolean;
+	openMenu: () => void;
+	closeMenu: () => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -34,7 +37,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isHydrated, setIsHydrated] = useState(false);
 
-	// Загрузка корзины из localStorage при монтировании
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
+
 	useEffect(() => {
 		const stored = localStorage.getItem(CART_STORAGE_KEY);
 		if (stored) {
@@ -47,16 +51,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
 		setIsHydrated(true);
 	}, []);
 
-	// Сохранение корзины в localStorage при изменении
 	useEffect(() => {
 		if (isHydrated) {
 			localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
 		}
 	}, [items, isHydrated]);
 
-	// Блокировка скролла при открытой корзине
 	useEffect(() => {
-		if (isOpen) {
+		if (isOpen || isMenuOpen) {
 			document.body.style.overflow = "hidden";
 		} else {
 			document.body.style.overflow = "";
@@ -64,10 +66,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
 		return () => {
 			document.body.style.overflow = "";
 		};
-	}, [isOpen]);
+	}, [isOpen, isMenuOpen]);
 
 	const openCart = () => setIsOpen(true);
 	const closeCart = () => setIsOpen(false);
+
+	const openMenu = () => setIsMenuOpen(true);
+	const closeMenu = () => setIsMenuOpen(false);
 
 	const addItem = (newItem: Omit<CartItem, "quantity">) => {
 		setItems((prev) => {
@@ -83,7 +88,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
 			return [...prev, { ...newItem, quantity: 1 }];
 		});
-		openCart();
 	};
 
 	const removeItem = (id: string, size: string) => {
@@ -121,6 +125,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
 				clearCart,
 				totalItems,
 				totalPrice,
+				isMenuOpen,
+				openMenu,
+				closeMenu,
 			}}
 		>
 			{children}

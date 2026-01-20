@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import Image from "next/image";
+
+import { useMediaQuery } from "@/services/useMediaQuery";
+
 import style from "./ImagePicker.module.scss";
 
 type Params = {
@@ -17,6 +20,22 @@ const ImagePicker = ({ images, title }: Params) => {
 		if (index === mainImageIndex) return;
 		setMainImageIndex(index);
 	};
+
+	const matches = useMediaQuery("(max-width: 768px)");
+
+	if (matches) {
+		return (
+			<div className={style.slider_container}>
+				<div className={style.slider}>
+					{images.map((image) => (
+						<div className={style.slide} key={image.id}>
+							<Image src={image.url} alt={title} fill sizes="(max-width: 768px) 60%" priority />
+						</div>
+					))}
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className={style.images}>

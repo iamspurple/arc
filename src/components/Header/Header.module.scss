@@ -8,6 +8,10 @@
 	background: transparent;
 	z-index: 1000;
 
+	@media screen and (max-width: 1024px) {
+		padding: 30px 4%;
+	}
+
 	&__nav {
 		display: flex;
 		justify-content: space-between;
@@ -21,6 +25,10 @@
 		display: flex;
 		gap: 40px;
 		flex: 1;
+
+		@media screen and (max-width: 1024px) {
+			gap: 20px;
+		}
 	}
 
 	&__right {
@@ -58,9 +66,53 @@
 		cursor: pointer;
 		padding: 0;
 		color: inherit;
+		position: relative;
+		transition: opacity 0.3s ease;
+
+		&:hover {
+			opacity: 0.7;
+		}
+
+		@media screen and (max-width: 768px) {
+			width: 45px;
+			height: 45px;
+		}
+
+		@media screen and (max-width: 480px) {
+			width: 30px;
+			height: 30px;
+		}
 	}
 
 	.cart_count {
 		margin-left: 4px;
+
+		@media screen and (max-width: 768px) {
+			position: absolute;
+			right: 50%;
+			transform: translateX(50%);
+			bottom: 10;
+			font-size: 12px;
+		}
+
+		@media screen and (max-width: 480px) {
+			font-size: 9px;
+			bottom: 7;
+		}
+	}
+
+	.menu_btn {
+		width: 45px;
+		height: 45px;
+		position: relative;
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0;
+
+		@media screen and (max-width: 480px) {
+			width: 30px;
+			height: 30px;
+		}
 	}
 }

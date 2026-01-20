@@ -1,0 +1,108 @@
+.overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.3);
+	z-index: 1200;
+	animation: fadeIn 0.3s ease forwards;
+
+	&_closing {
+		animation: fadeOut 0.3s ease forwards;
+	}
+}
+
+.menu {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	max-width: 65%;
+	height: 100vh;
+	background: #fff;
+	z-index: 1201;
+	display: flex;
+	flex-direction: column;
+	animation: slideIn 0.3s ease forwards;
+	box-shadow: -4px 0 20px rgba(0, 0, 0, 0.08);
+	padding: 28px 32px;
+
+	&_closing {
+		animation: slideOut 0.3s ease forwards;
+	}
+
+	@media (max-width: 480px) {
+		max-width: 75%;
+	}
+}
+
+.header {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 24px;
+
+	.title {
+		font-size: 18px;
+		font-weight: 400;
+		margin: 0;
+		letter-spacing: 0.5px;
+	}
+
+	.close_btn {
+		background: none;
+		border: none;
+		font-size: 24px;
+		cursor: pointer;
+		color: #333;
+		line-height: 1;
+		padding: 0;
+		transition: opacity 0.2s;
+
+		&:hover {
+			opacity: 0.6;
+		}
+	}
+}
+
+.list {
+	list-style: none;
+
+	.item {
+		font-size: 16px;
+		padding-block: 9px;
+	}
+}
+
+@keyframes slideIn {
+	from {
+		transform: translateX(-100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+
+@keyframes slideOut {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-100%);
+	}
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}

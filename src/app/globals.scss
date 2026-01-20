@@ -46,6 +46,11 @@ a {
 
 .main-content {
 	margin-top: 140px;
+	padding-inline: 5%;
+
+	@media screen and (max-width: 480px) {
+		margin-top: 115px;
+	}
 }
 
 .circle-wrapper {
