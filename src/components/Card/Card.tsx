@@ -25,7 +25,7 @@ const Card = ({ product }: Props) => {
 	const imageUrl = product.images?.[0]?.url;
 
 	return (
-		<Link href={`/catalog/${product.slug}`} className={style.product_card}>
+		<Link href={`/src/app/(shop)/catalog/${product.slug}`} className={style.product_card}>
 			{imageUrl && (
 				<div className={style.image_wrapper}>
 					<Image

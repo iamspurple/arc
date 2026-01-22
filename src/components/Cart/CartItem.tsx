@@ -18,7 +18,7 @@ type Props = {
 const CartItem = ({ item, handleClose, onUpdateQuantity }: Props) => {
 	return (
 		<li className={styles.item}>
-			<Link href={`/catalog/${item.slug}`} className={styles["item-link"]} onClick={handleClose}>
+			<Link href={`/src/app/(shop)/catalog/${item.slug}`} className={styles["item-link"]} onClick={handleClose}>
 				{item.image && (
 					<div className={styles["item-image"]}>
 						<Image src={item.image} alt={item.title} fill sizes="80px" />
