@@ -2,6 +2,8 @@
 import { CSSProperties } from "react";
 import { Layout } from "antd";
 import { DashboardSider } from "./DashboardSider";
+import { ContentSider } from "@/components/Dashboard/ContentSider";
+import { DashboardProvider } from "@/context/DashboardContext";
 
 const { Content } = Layout;
 
@@ -17,15 +19,19 @@ const contentStyle: CSSProperties = {
 	minHeight: "100%",
 	color: "black",
 	backgroundColor: "#F9FBFC",
+	paddingBlock: "24px",
 };
 
 export const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
-		<Layout style={layoutStyle}>
-			<DashboardSider />
-			<Layout>
-				<Content style={contentStyle}>{children}</Content>
+		<DashboardProvider>
+			<Layout style={layoutStyle}>
+				<DashboardSider />
+				<Layout>
+					<Content style={contentStyle}>{children}</Content>
+					<ContentSider />
+				</Layout>
 			</Layout>
-		</Layout>
+		</DashboardProvider>
 	);
 };

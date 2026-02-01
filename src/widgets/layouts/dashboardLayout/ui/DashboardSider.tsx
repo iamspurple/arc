@@ -9,6 +9,9 @@ const siderStyle: CSSProperties = {
 	color: "#101828",
 	backgroundColor: "#FFFFFF",
 	borderRight: "1px solid #e4e7ec",
+	position: "sticky",
+	top: 0,
+	height: "100vh",
 };
 
 export const DashboardSider = () => {
