@@ -3,13 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
-import { useCart } from "@/context/CartContext";
+import { useCartUI, useCartActions } from "@/context/CartContext";
 import { routes } from "@/constants/routes";
 
 import style from "./Menu.module.scss";
 
 const Menu = () => {
-	const { closeMenu, isMenuOpen } = useCart();
+	const { isMenuOpen } = useCartUI();
+	const { closeMenu } = useCartActions();
 	const [isClosing, setIsClosing] = useState(false);
 	const timerID = useRef<NodeJS.Timeout | null>(null);
 	const handleClose = () => {
