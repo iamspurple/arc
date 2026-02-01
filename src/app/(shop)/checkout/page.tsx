@@ -1,13 +1,13 @@
 "use client";
 
-import { useCart } from "@/context/CartContext";
+import { useCartData } from "@/context/CartContext";
 import style from "./checkout.module.scss";
 import { formatPrice } from "@/services";
 import Form from "@/components/Checkout/Form/Form";
 import TotalList from "@/components/Checkout/TotalList/TotalList";
 
 const CheckoutPage = () => {
-	const { items, totalPrice } = useCart();
+	const { items, totalPrice } = useCartData();
 
 	if (items.length === 0) return <p>Для оформления заказа добавьте товары в корзину</p>;
 
