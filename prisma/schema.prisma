@@ -9,16 +9,17 @@ datasource db {
 
 model Product {
     id                      String                      @id @default(cuid())
+    name                    String                      @db.VarChar(255)
     description             String?                     @db.VarChar(255)
     composition             String?                     @db.VarChar(255)
     care                    String?                     @db.VarChar(255)
     createdAt               DateTime                    @default(now()) @map("created_at")
     updatedAt               DateTime                    @updatedAt @map("updated_at")
-    options                 ProductOptions[]
+    options                 ProductOption[]
     @@map("product")
 }
 
-model ProductOptions {
+model ProductOption {
     id                      String                      @id @default(cuid())
     title                   String                      @db.VarChar(255)
     slug                    String                      @db.VarChar(255)
@@ -42,7 +43,7 @@ model ProductSize {
     parameters              String                              @db.VarChar(255)
     createdAt               DateTime                            @default(now()) @map("created_at")
     updatedAt               DateTime                            @updatedAt @map("updated_at")
-    option                  ProductOptions                       @relation(fields: [optionId], references: [id], onDelete: Cascade)
+    option                  ProductOption                       @relation(fields: [optionId], references: [id], onDelete: Cascade)
     optionId                String                              @map("option_id")
     @@map("product_size")
 }
@@ -52,7 +53,7 @@ model ProductImage {
   alt                       String                      @db.VarChar(255)
   createdAt                 DateTime                    @default(now()) @map("created_at")
   updatedAt                 DateTime                    @updatedAt @map("updated_at")
-  option                    ProductOptions               @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  option                    ProductOption               @relation(fields: [optionId], references: [id], onDelete: Cascade)
   optionId                  String                      @map("option_id")
   @@map("product_image")
 }
