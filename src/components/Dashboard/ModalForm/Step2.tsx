@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 
 import { useForm, Controller } from "react-hook-form";
-import { useDashboardActions } from "@/context/DashboardContext";
-import { useOptionForm } from "@/services/useOptionForm";
+
+import { useOptionForm } from "@/lib/useOptionForm";
 
 import { Flex, Typography, Form, Button, Input, ColorPicker } from "antd";
 import { DeleteOutlined, CloseOutlined, PlusSquareOutlined } from "@ant-design/icons";
@@ -13,28 +13,31 @@ export type FormData = {
 	[key: string]: string | number;
 };
 
-export const Step2 = ({ setStep }: { setStep: (step: number) => void }) => {
+export const Step2 = ({
+	setStep,
+	productId,
+}: {
+	setStep: (step: number) => void;
+	productId: string;
+}) => {
 	const {
 		control,
 		handleSubmit,
 		reset,
-		formState: { errors, isValid, isSubmitSuccessful },
+		formState: { errors, isValid },
 	} = useForm<FormData>({
 		defaultValues: {},
 	});
 
 	const { optionFormList, addOptionForm, deleteOptionForm, addSizeForm, deleteSizeForm, onSubmit } =
-		useOptionForm();
-
-	const { handleClose } = useDashboardActions();
+		useOptionForm({ productId });
 
 	useEffect(() => {
-		if (isSubmitSuccessful) {
+		return () => {
 			reset();
-			handleClose();
 			setStep(0);
-		}
-	}, [isSubmitSuccessful, reset, setStep, handleClose]);
+		};
+	}, []);
 
 	return (
 		<>

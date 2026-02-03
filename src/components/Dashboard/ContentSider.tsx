@@ -1,8 +1,11 @@
 import { CSSProperties } from "react";
 
-import { useProductOptionByIdQuery } from "@/entities/product/api/useProductsQuery";
+import {
+	useProductOptionByIdQuery,
+	useProductSizesQuery,
+} from "@/entities/product/api/useProductsQuery";
 
-import { useDashboardData, useDashboardUI, useDashboardActions } from "@/context/DashboardContext";
+import { useContentSider } from "@/context/ContentSiderContext";
 
 import { Layout, Flex, Typography, Image, Tag, Collapse, Button } from "antd";
 
@@ -23,76 +26,33 @@ const tagStyle: CSSProperties = {
 	fontSize: 16,
 };
 
-const items = [
-	{
-		key: "1",
-		label: (
-			<Flex justify="space-between">
-				<Tag style={tagStyle}>XS: </Tag>
-				<Tag style={tagStyle} color={"blue"}>
-					3шт.
-				</Tag>
-			</Flex>
-		),
-
-		children: (
-			<p>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur aliquid veniam, aspernatur
-				similique dolor voluptas pariatur, eum magni molestiae ab possimus architecto, unde
-				exercitationem sint doloribus animi. Placeat, laborum ad!
-			</p>
-		),
-	},
-	{
-		key: "2",
-		label: (
-			<Flex justify="space-between">
-				<Tag style={tagStyle}>S: </Tag>
-				<Tag style={tagStyle} color={"blue"}>
-					3шт.
-				</Tag>
-			</Flex>
-		),
-		children: (
-			<p>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur aliquid veniam, aspernatur
-				similique dolor voluptas pariatur, eum magni molestiae ab possimus architecto, unde
-				exercitationem sint doloribus animi. Placeat, laborum ad!
-			</p>
-		),
-	},
-	{
-		key: "3",
-		label: (
-			<Flex justify="space-between">
-				<Tag style={tagStyle}>M: </Tag>
-				<Tag style={tagStyle} color={"blue"}>
-					3шт.
-				</Tag>
-			</Flex>
-		),
-
-		children: (
-			<p>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur aliquid veniam, aspernatur
-				similique dolor voluptas pariatur, eum magni molestiae ab possimus architecto, unde
-				exercitationem sint doloribus animi. Placeat, laborum ad!
-			</p>
-		),
-	},
-];
-
 export const ContentSider = () => {
-	const { optionId } = useDashboardData();
-	const { isSiderOpen } = useDashboardUI();
-	const { handleCloseSider } = useDashboardActions();
+	const { optionId, isSiderOpen, handleCloseSider } = useContentSider();
 
 	const { data: option, isLoading, isError } = useProductOptionByIdQuery(optionId);
+	const { data: sizes } = useProductSizesQuery(optionId);
+
+	const sizeItems = sizes
+		?.sort((a, b) => a.order - b.order)
+		.map((size) => {
+			return {
+				key: size.id,
+				label: (
+					<Flex justify="space-between">
+						<Tag style={tagStyle}>{size.size} </Tag>
+						<Tag style={tagStyle} color={"blue"}>
+							{size.quantity}шт.
+						</Tag>
+					</Flex>
+				),
+
+				children: <p>{size.parameters}</p>,
+			};
+		});
 
 	if (!isSiderOpen) {
 		return null;
 	}
-
 	return (
 		<Sider width={"25%"} style={siderStyle}>
 			<Flex vertical>
@@ -124,7 +84,7 @@ export const ContentSider = () => {
 				</Flex>
 
 				<Typography.Text strong>Размеры:</Typography.Text>
-				<Collapse ghost items={items} expandIconPlacement="end" />
+				<Collapse ghost items={sizeItems} expandIconPlacement="end" />
 			</Flex>
 		</Sider>
 	);

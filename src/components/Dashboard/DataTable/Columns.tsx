@@ -1,4 +1,4 @@
-import { useDashboardActions } from "@/context/DashboardContext";
+import { useContentSider } from "@/context/ContentSiderContext";
 
 import { Flex, Button } from "antd";
 import type { TableColumnsType } from "antd";
@@ -6,7 +6,7 @@ import type { TableColumnsType } from "antd";
 import ActionPopover from "@/components/Dashboard/ActionPopover";
 
 export const Columns = () => {
-	const { handleOpenSider } = useDashboardActions();
+	const { handleOpenSider } = useContentSider();
 
 	const columns: TableColumnsType = [
 		{
@@ -54,6 +54,7 @@ export const Columns = () => {
 			render(_, record) {
 				return <ActionPopover id={record.id} />;
 			},
+			width: 70,
 		},
 	];
 

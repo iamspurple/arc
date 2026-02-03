@@ -1,15 +1,17 @@
 "use client";
 
-import { useDashboardActions } from "@/context/DashboardContext";
-
 import { Input, Space, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
 const { Search } = Input;
 
-export const Header = ({ handleSearch }: { handleSearch?: (value: string) => void }) => {
-	const { showModal } = useDashboardActions();
-
+export const Header = ({
+	handleSearch,
+	showModal,
+}: {
+	handleSearch: (value: string) => void;
+	showModal: () => void;
+}) => {
 	return (
 		<div
 			style={{

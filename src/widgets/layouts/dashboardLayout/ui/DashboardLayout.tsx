@@ -3,7 +3,7 @@ import { CSSProperties } from "react";
 import { Layout } from "antd";
 import { DashboardSider } from "./DashboardSider";
 import { ContentSider } from "@/components/Dashboard/ContentSider";
-import { DashboardProvider } from "@/context/DashboardContext";
+import { ContentSiderProvider } from "@/context/ContentSiderContext";
 
 const { Content } = Layout;
 
@@ -24,14 +24,14 @@ const contentStyle: CSSProperties = {
 
 export const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
-		<DashboardProvider>
+		<ContentSiderProvider>
 			<Layout style={layoutStyle}>
 				<DashboardSider />
 				<Layout>
 					<Content style={contentStyle}>{children}</Content>
-					<ContentSider />
 				</Layout>
+				<ContentSider />
 			</Layout>
-		</DashboardProvider>
+		</ContentSiderProvider>
 	);
 };

@@ -3,8 +3,6 @@
 import { useMemo, useState } from "react";
 import { useProductsQuery, useProductOptionsQuery } from "@/entities/product/api/useProductsQuery";
 
-import { useDashboardUI, useDashboardActions } from "@/context/DashboardContext";
-
 import { Modal } from "antd";
 
 import { Columns } from "@/components/Dashboard/DataTable/Columns";
@@ -16,13 +14,21 @@ import { ModalForm } from "@/components/Dashboard/ModalForm/ModalForm";
 
 export default function Product() {
 	const [search, setSearch] = useState("");
-	const { isModalOpen } = useDashboardUI();
-	const { handleCancel } = useDashboardActions();
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const showModal = () => {
+		setIsModalOpen(true);
+	};
+
+	const handleCancel = () => {
+		setIsModalOpen(false);
+	};
 
 	const columns = Columns();
 
 	const { data: products = [], isLoading, isError } = useProductsQuery();
 	const { data: options = [] } = useProductOptionsQuery();
+	// console.log("options", options);
 
 	const data = useMemo(
 		() =>
@@ -47,8 +53,9 @@ export default function Product() {
 
 	return (
 		<>
-			<Header handleSearch={(value) => setSearch(value)} />
+			<Header handleSearch={(value) => setSearch(value)} showModal={showModal} />
 			<DataTable columns={columns} dataSource={data} />
+
 			<Modal footer={null} open={isModalOpen} onCancel={handleCancel}>
 				<ModalForm />
 			</Modal>
