@@ -2,7 +2,7 @@
 
 import { useCartData } from "@/context/CartContext";
 import style from "./checkout.module.scss";
-import { formatPrice } from "@/services";
+import { formatPrice } from "@/lib";
 import Form from "@/components/Checkout/Form/Form";
 import TotalList from "@/components/Checkout/TotalList/TotalList";
 

@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 
 import { useCartActions } from "@/context/CartContext";
-import { useMediaQuery } from "@/services/useMediaQuery";
+import { useMediaQuery } from "@/lib/useMediaQuery";
 import { routes } from "@/constants/routes";
 
 import styles from "./Header.module.scss";

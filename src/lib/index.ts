@@ -8,18 +8,13 @@ export const createOrder = (size: string): number => {
 	switch (str) {
 		case "xs":
 			return 0;
-			break;
 		case "s":
 			return 1;
-			break;
 		case "m":
 			return 2;
-			break;
 		case "l":
 			return 3;
-			break;
 		default:
 			return 1;
-			break;
 	}
 };

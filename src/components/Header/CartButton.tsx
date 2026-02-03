@@ -5,7 +5,7 @@ import { useCartData, useCartActions } from "@/context/CartContext";
 
 import style from "./Header.module.scss";
 
-import { useMediaQuery } from "@/services/useMediaQuery";
+import { useMediaQuery } from "@/lib/useMediaQuery";
 const CartButton = () => {
 	const { totalItems } = useCartData();
 	const { openCart } = useCartActions();

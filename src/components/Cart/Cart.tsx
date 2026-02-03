@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 import { useCartData, useCartUI, useCartActions } from "@/context/CartContext";
-import { formatPrice } from "@/services";
+import { formatPrice } from "@/lib";
 import { routes } from "@/constants/routes";
 
 import CartItem from "./CartItem";

@@ -4,7 +4,6 @@ import { nanoid } from "nanoid";
 import { message } from "antd";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { useDashboardData } from "@/context/DashboardContext";
 import { PRODUCT_OPTIONS_QUERY_KEY } from "@/entities/product/api/useProductsQuery";
 
 import type { ProductOptionCreateEntity, ProductSizeCreateEntity } from "@/entities/product";
@@ -20,10 +19,8 @@ type optionFormType = {
 	size: string[];
 };
 
-export const useOptionForm = () => {
+export const useOptionForm = ({ productId }: { productId: string }) => {
 	const queryClient = useQueryClient();
-
-	const { productId } = useDashboardData();
 
 	const [optionFormList, setOptionFormList] = useState<optionFormType[]>(() => [
 		{ id: nanoid(8), complete: false, size: [nanoid(6)] },
