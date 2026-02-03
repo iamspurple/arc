@@ -23,7 +23,12 @@ export const DataTable = ({
 }) => {
 	return (
 		<div>
-			<Table columns={columns} dataSource={dataSource} />
+			<Table
+				scroll={{ y: "70vh", x: undefined }}
+				columns={columns}
+				dataSource={dataSource}
+				pagination={{ showSizeChanger: true }}
+			/>
 		</div>
 	);
 };
