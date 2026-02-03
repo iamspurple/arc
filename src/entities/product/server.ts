@@ -15,6 +15,7 @@ export {
 export {
 	getProductSizes,
 	getProductSizeById,
+	getProductSizesByOptionId,
 	createProductSize,
 	updateProductSizeById,
 	deleteProductSizeById,

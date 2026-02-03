@@ -11,6 +11,11 @@ export const productSizeRepository = {
 			where: { id: productSizeId },
 		});
 	},
+	productSizeListByOptionId: async (optionId: string): Promise<ProductSize[]> => {
+		return prisma.productSize.findMany({
+			where: { optionId: optionId },
+		});
+	},
 	createProductSize: async (productSize: ProductSizeCreateEntity): Promise<ProductSize> => {
 		return prisma.productSize.create({
 			data: productSize,

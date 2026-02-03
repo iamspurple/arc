@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import type { Product, ProductSize } from "@prisma/client";
-import { getProducts, getProductSizes } from "../server";
+import { getProducts, getProductSizesByOptionId } from "../server";
 
 import type { ProductOption } from "@prisma/client";
 import { getProductOptionById, getProductOptions } from "../server";
@@ -37,7 +37,7 @@ export const useProductOptionByIdQuery = (id: string) => {
 export const useProductSizesQuery = (id: string) => {
 	return useQuery<ProductSize[] | null>({
 		queryKey: ["product-size", id],
-		queryFn: () => getProductSizes(),
+		queryFn: () => getProductSizesByOptionId(id),
 		staleTime: 60_000,
 	});
 };

@@ -19,6 +19,16 @@ export const getProductSizeById = async (productSizeId: string): Promise<Product
 	}
 };
 
+export const getProductSizesByOptionId = async (
+	productOptionId: string
+): Promise<ProductSize[]> => {
+	try {
+		return await productSizeRepository.productSizeListByOptionId(productOptionId);
+	} catch {
+		throw new Error("Ошибка");
+	}
+};
+
 export const createProductSize = async (
 	productSize: ProductSizeCreateEntity
 ): Promise<ProductSize> => {
