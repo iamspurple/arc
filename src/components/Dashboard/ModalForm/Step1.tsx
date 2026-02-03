@@ -13,7 +13,7 @@ export const Step1 = ({ onSubmit }: { onSubmit: (data: ProductCreateEntity) => v
 		control,
 		handleSubmit,
 		reset,
-		formState: { errors, isSubmitSuccessful },
+		formState: { errors },
 	} = useForm<ProductCreateEntity>({
 		resolver: zodResolver(productEntityCreateSchema),
 		defaultValues: {
@@ -25,10 +25,10 @@ export const Step1 = ({ onSubmit }: { onSubmit: (data: ProductCreateEntity) => v
 	});
 
 	useEffect(() => {
-		if (isSubmitSuccessful) {
+		return () => {
 			reset();
-		}
-	}, [isSubmitSuccessful, reset]);
+		};
+	}, [reset]);
 
 	return (
 		<div>

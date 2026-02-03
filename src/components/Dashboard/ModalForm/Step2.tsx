@@ -37,7 +37,7 @@ export const Step2 = ({
 			reset();
 			setStep(0);
 		};
-	}, []);
+	}, [reset, setStep]);
 
 	return (
 		<>
