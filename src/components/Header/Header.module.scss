@@ -1,11 +1,12 @@
 .header {
-	position: fixed;
+	position: sticky;
 	top: 0;
-	left: 0;
+
 	width: 100%;
 	padding: 40px 5%;
 	color: var(--foreground);
-	background: transparent;
+	background: rgba(255, 255, 255, 0.4);
+	backdrop-filter: blur(10px);
 	z-index: 1000;
 
 	@media screen and (max-width: 1024px) {

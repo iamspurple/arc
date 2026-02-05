@@ -45,44 +45,9 @@ a {
 }
 
 .main-content {
-	margin-top: 140px;
 	padding-inline: 5%;
 
-	@media screen and (max-width: 480px) {
-		margin-top: 115px;
-	}
-}
-
-.circle-wrapper {
-	position: fixed;
-	right: 40px;
-	bottom: 40px;
-	width: 200px;
-	height: 200px;
-	pointer-events: none;
-	z-index: 9999; /* ADD THIS */
-}
-
-.circle-wrapper img {
-	width: 100%;
-	height: 100%;
-	animation: spin 9s linear infinite;
-}
-
-@keyframes spin {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
-}
-
-@keyframes spin {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
+	@media screen and (max-width: 1024px) {
+		padding-inline: 4%;
 	}
 }
