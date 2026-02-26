@@ -44,7 +44,7 @@ export const productOptionCreateEntitySchema = z.object({
 		.min(1, { message: "Обязательно к заполнению" })
 		.max(12, { message: "Максимальная длина 12 символов" }),
 	productId: z.string().min(1, { message: "Обязателен к заполнению" }),
-	// imagesId: z.array(z.string()).optional(),
+	images: z.array(z.file()).optional(),
 });
 export const productOptionUpdateEntitySchema = z
 	.object({
@@ -83,6 +83,7 @@ export const productImageCreateEntitySchema = z.object({
 		.min(1, { message: "Обязательно к заполнению" })
 		.max(255, { message: "Максимальная длина 255 символов" }),
 	optionId: z.string().min(1, { message: "Обязателен к заполнению" }),
+	fileObj: z.file()
 });
 export const productImageUpdateEntitySchema = z
 	.object({

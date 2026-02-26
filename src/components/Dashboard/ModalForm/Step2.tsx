@@ -189,7 +189,11 @@ export const Step2 = (props: Step2Props) => {
 											name={[field.name, "images"]}
 											validateDebounce={validateDebounceMs}
 										>
-											<ImageUpload />
+											<ImageUpload
+												onChangeFileList={(files) => {
+													form.setFieldValue(["options", field.name, "images"], files);
+												}}
+											/>
 										</Form.Item>
 										<Form.Item>
 											<Form.List name={[field.name, "sizes"]}>

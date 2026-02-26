@@ -11,11 +11,13 @@ import {
 	updateProductSizeById,
 	createProductSize,
 	createProductOption,
+	createProductImages,
 } from "@/entities/product/server";
 import { createOrder } from ".";
 import { createSlug } from "./slug";
 
 import type { Step2Props, FormData } from "@/components/Dashboard/ModalForm/Step2";
+import { UploadFile } from "antd";
 
 export const submitHandlers = (data: FormData, productId: string) => {
 	const handleUpdateSubmit = async (initialValues: Step2Props["initialValues"]) => {
@@ -115,6 +117,8 @@ export const submitHandlers = (data: FormData, productId: string) => {
 
 	const handleCreateSubmit = async () => {
 		for (const option of data.options) {
+			let images: File[] = [];
+
 			const optionPayload: ProductOptionCreateEntity = {
 				title: option.title,
 				slug: createSlug(option.title),
@@ -125,6 +129,19 @@ export const submitHandlers = (data: FormData, productId: string) => {
 			};
 
 			const result = await createProductOption(optionPayload);
+
+			if ("images" in option && Array.isArray(option.images)) {
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-expect-error
+				images = option.images.map<File>((img: UploadFile) => img.originFileObj);
+			}
+
+			console.log("foo", images[0]);
+			await createProductImages(images.map(img => ({
+				alt: '',
+				optionId: result.id,
+				fileObj: img
+			})));
 
 			for (const size of option.sizes || []) {
 				const sizePayload: ProductSizeCreateEntity = {
@@ -137,6 +154,7 @@ export const submitHandlers = (data: FormData, productId: string) => {
 
 				await createProductSize(sizePayload);
 			}
+			images = []
 		}
 	};
 

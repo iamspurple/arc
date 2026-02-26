@@ -26,4 +26,5 @@ export {
 	createProductImage,
 	updateProductImageById,
 	deleteProductImageById,
+	createProductImages
 } from "./services/productImage";

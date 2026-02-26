@@ -14,7 +14,9 @@ export const productOptionRepository = {
 			where: { id: productOptionId },
 		});
 	},
-	createProductOption: async (productOption: ProductOptionCreateEntity): Promise<ProductOption> => {
+	createProductOption: async (
+		productOption: Omit<ProductOptionCreateEntity, 'images'>
+	): Promise<ProductOption> => {
 		return prisma.productOption.create({
 			data: productOption,
 		});

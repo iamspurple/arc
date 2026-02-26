@@ -25,7 +25,7 @@ export const getProductOptionById = async (
 };
 
 export const createProductOption = async (
-	productOption: ProductOptionCreateEntity
+	productOption: Omit<ProductOptionCreateEntity, "images">
 ): Promise<ProductOption> => {
 	try {
 		return await productOptionRepository.createProductOption(productOption);

@@ -3,6 +3,11 @@ import { useState } from "react";
 import { GetProp, Image, Upload, UploadFile, UploadProps } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
+type ImageUploadProps = {
+	disabled?: boolean;
+	onChangeFileList: (fileList: UploadFile[]) => void;
+};
+
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
 const getBase64 = (file: FileType): Promise<string> =>
@@ -13,7 +18,7 @@ const getBase64 = (file: FileType): Promise<string> =>
 		reader.onerror = (error) => reject(error);
 	});
 
-export const ImageUpload = ({ disabled }: { disabled?: boolean }) => {
+export const ImageUpload = ({ disabled, onChangeFileList }: ImageUploadProps) => {
 	const [previewOpen, setPreviewOpen] = useState(false);
 	const [previewImage, setPreviewImage] = useState("");
 	const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -27,8 +32,10 @@ export const ImageUpload = ({ disabled }: { disabled?: boolean }) => {
 		setPreviewOpen(true);
 	};
 
-	const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) =>
+	const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
 		setFileList(newFileList);
+		onChangeFileList(fileList);
+	};
 
 	const uploadButton = (
 		<button style={{ border: 0, background: "none" }} type="button">
