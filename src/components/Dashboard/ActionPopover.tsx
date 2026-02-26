@@ -6,8 +6,13 @@ import { Button, Popover, Flex, Popconfirm, message } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 
 import { PRODUCTS_QUERY_KEY } from "@/entities/product/api/useProductsQuery";
+import { useState } from "react";
 
-const Content = (id: string) => {
+const Content = (
+	id: string,
+	showEditModal: (id: string) => void,
+	setOpen: (value: boolean) => void
+) => {
 	const queryClient = useQueryClient();
 
 	const handleDelete = async () => {
@@ -22,14 +27,28 @@ const Content = (id: string) => {
 
 	return (
 		<Flex vertical>
-			<Button type="text" onClick={() => console.log(id)}>
-				Редактировать
-			</Button>
+			<Popconfirm
+				title="Редактировать запись"
+				description="Открыть форму?"
+				onConfirm={() => {
+					showEditModal(id);
+					setOpen(false);
+				}}
+				okText="Да"
+				cancelText="Отмена"
+				placement="left"
+				onCancel={() => setOpen(false)}
+			>
+				<Button type="text">Редактировать</Button>
+			</Popconfirm>
 
 			<Popconfirm
 				title="Удалить запись"
 				description="Вы уверены, что хотите удалить запись?"
-				onConfirm={handleDelete}
+				onConfirm={() => {
+					handleDelete();
+					setOpen(false);
+				}}
 				okText="Да"
 				cancelText="Отмена"
 				placement="left"
@@ -42,9 +61,25 @@ const Content = (id: string) => {
 	);
 };
 
-export const ActionPopover = ({ id }: { id: string }) => {
+export const ActionPopover = ({
+	id,
+	showEditModal,
+}: {
+	id: string;
+	showEditModal: (id: string) => void;
+}) => {
+	const [open, setOpen] = useState(false);
+	const handleOpenChange = (newOpen: boolean) => {
+		setOpen(newOpen);
+	};
+
 	return (
-		<Popover content={Content(id)} trigger="click">
+		<Popover
+			open={open}
+			onOpenChange={handleOpenChange}
+			content={Content(id, showEditModal, setOpen)}
+			trigger="click"
+		>
 			<Button type="text" style={{ cursor: "pointer" }} icon={<MoreOutlined />} />
 		</Popover>
 	);

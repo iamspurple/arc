@@ -4,7 +4,11 @@ import { ProductCreateEntity, ProductUpdateEntity } from "@/entities/product/typ
 
 export const productRepository = {
 	productList: async (): Promise<Product[]> => {
-		return prisma.product.findMany();
+		return prisma.product.findMany({
+			orderBy: {
+				createdAt: "asc"
+			}
+		});
 	},
 	productFirst: async (productId: string): Promise<Product | null> => {
 		return prisma.product.findFirst({

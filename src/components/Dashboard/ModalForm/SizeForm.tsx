@@ -1,100 +1,66 @@
-import { Controller } from "react-hook-form";
-import type { FieldErrors, Control } from "react-hook-form";
-
-import type { FormData } from "./Step2";
-
-import { Flex, Form, Input, Button } from "antd";
+import { Flex, Form, Input, Button, InputNumber } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 
+import type { FormListFieldData } from "antd";
+
 type SizeFormProps = {
-	formId: string;
-	sizeId: string;
-	index: number;
-	errors: FieldErrors<FormData>;
-	control: Control<FormData>;
-	deleteSizeForm: (formId: string, sizeId: string) => void;
+	sizeField: FormListFieldData;
+	sizeIndex: number;
+	isFirstSize: boolean;
+	removeSize: (sizeIndex: number | number[]) => void;
+	validateDebounceMs: number;
 };
 
-export const SizeForm = ({
-	formId,
-	index,
-	errors,
-	control,
-	deleteSizeForm,
-	sizeId,
-}: SizeFormProps) => {
+export const SizeForm = (props: SizeFormProps) => {
+	const { sizeField, sizeIndex, isFirstSize, removeSize, validateDebounceMs } = props;
+
 	return (
 		<Flex justify="flex-start" gap={10} style={{ position: "relative" }}>
 			<Form.Item
 				label="Размер"
-				validateStatus={errors[`size_${formId}_${index}`] ? "error" : ""}
-				help={errors[`size_${formId}_${index}`]?.message as string}
+				name={[sizeField.name, "size"]}
+				style={{ width: "85%" }}
+				validateDebounce={validateDebounceMs}
+				rules={[
+					{ required: true, message: "Обязательно к заполнению" },
+					{ max: 255, message: "Максимальная длина 255 символов" },
+				]}
 			>
-				<Controller
-					name={`size_${formId}_${index}`}
-					control={control}
-					rules={{
-						required: "Обязательно к заполнению",
-						maxLength: { value: 50, message: "Максимальная длина 50 символов" },
-					}}
-					render={({ field }) => (
-						<>
-							<Input {...field} value={field.value as string} />
-						</>
-					)}
-				/>
+				<Input />
 			</Form.Item>
 			<Form.Item
 				label="Количество"
-				validateStatus={errors[`quantity_${formId}_${index}`] ? "error" : ""}
-				help={errors[`quantity_${formId}_${index}`]?.message as string}
-			>
-				<Controller
-					name={`quantity_${formId}_${index}`}
-					control={control}
-					rules={{
-						required: "Обязательно к заполнению",
-						min: { value: 1, message: "Минимальное значение 1" },
-						max: { value: 2147483647, message: "Максимальное значение 2147483647" },
-						validate: (value) => {
-							const num = Number(value);
-							return !isNaN(num) || "Должно быть числом";
+				name={[sizeField.name, "quantity"]}
+				validateDebounce={validateDebounceMs}
+				rules={[
+					{ required: true, message: "Обязательно к заполнению" },
+
+					{
+						validator: (_, value) => {
+							if (value > 0 && value < 2147483647) {
+								return Promise.resolve();
+							} else {
+								return Promise.reject(new Error("Число должно быть больше 0 и меньше 2147483637"));
+							}
 						},
-					}}
-					render={({ field }) => (
-						<>
-							<Input
-								type="number"
-								min={1}
-								{...field}
-								value={field.value as number | string}
-								onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : "")}
-							/>
-						</>
-					)}
-				/>
+					},
+				]}
+			>
+				<InputNumber />
 			</Form.Item>
 			<Form.Item
 				label="Параметры"
+				name={[sizeField.name, "parameters"]}
 				style={{ width: "100%" }}
-				validateStatus={errors[`parameters_${formId}_${index}`] ? "error" : ""}
-				help={errors[`parameters_${formId}_${index}`]?.message as string}
+				validateDebounce={validateDebounceMs}
+				rules={[
+					{ required: true, message: "Обязательно к заполнению" },
+					{ max: 255, message: "Максимальная длина 255 символов" },
+				]}
 			>
-				<Controller
-					name={`parameters_${formId}_${index}`}
-					control={control}
-					rules={{
-						required: "Обязательно к заполнению",
-						maxLength: { value: 255, message: "Максимальная длина 255 символов" },
-					}}
-					render={({ field }) => (
-						<>
-							<Input.TextArea rows={1} {...field} value={field.value as string} />
-						</>
-					)}
-				/>
+				<Input.TextArea rows={1} />
 			</Form.Item>
-			{index > 0 && (
+			{!isFirstSize && (
 				<Button
 					danger
 					type="link"
@@ -102,7 +68,7 @@ export const SizeForm = ({
 					title="Удалить размер"
 					icon={<CloseOutlined />}
 					style={{ position: "absolute", top: 0, right: 0 }}
-					onClick={() => deleteSizeForm(formId, sizeId)}
+					onClick={() => removeSize(sizeIndex)}
 				/>
 			)}
 		</Flex>

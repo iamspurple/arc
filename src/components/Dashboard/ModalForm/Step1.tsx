@@ -3,20 +3,39 @@ import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { productEntityCreateSchema } from "@/entities/product/types/product";
-import type { ProductCreateEntity } from "@/entities/product/types/product";
+import {
+	productEntityCreateSchema,
+	productEntityUpdateSchema,
+} from "@/entities/product/types/product";
+import type { ProductCreateEntity, ProductUpdateEntity } from "@/entities/product/types/product";
 
 import { Form, Input, Button } from "antd";
 
-export const Step1 = ({ onSubmit }: { onSubmit: (data: ProductCreateEntity) => void }) => {
+type Step1Props = {
+	onSubmit: (data: ProductCreateEntity | ProductUpdateEntity) => void;
+	initialValues?: {
+		id?: string;
+		name: string;
+		description: string;
+		composition: string;
+		care: string;
+	};
+	productId?: string;
+};
+
+export const Step1 = ({ onSubmit, initialValues, productId }: Step1Props) => {
+	const isEditMode = !!productId || !!initialValues?.id;
+	const schema = isEditMode ? productEntityUpdateSchema : productEntityCreateSchema;
+
 	const {
 		control,
 		handleSubmit,
 		reset,
 		formState: { errors },
-	} = useForm<ProductCreateEntity>({
-		resolver: zodResolver(productEntityCreateSchema),
+	} = useForm<ProductCreateEntity | ProductUpdateEntity>({
+		resolver: zodResolver(schema),
 		defaultValues: {
+			...(isEditMode && productId ? { id: productId } : {}),
 			name: "",
 			description: "",
 			composition: "",
@@ -25,10 +44,16 @@ export const Step1 = ({ onSubmit }: { onSubmit: (data: ProductCreateEntity) => v
 	});
 
 	useEffect(() => {
+		if (initialValues) {
+			reset({
+				...(isEditMode && productId ? { id: productId } : {}),
+				...initialValues,
+			});
+		}
 		return () => {
 			reset();
 		};
-	}, [reset]);
+	}, [reset, initialValues, isEditMode, productId]);
 
 	return (
 		<div>
@@ -71,7 +96,7 @@ export const Step1 = ({ onSubmit }: { onSubmit: (data: ProductCreateEntity) => v
 				</Form.Item>
 				<Form.Item>
 					<Button type="primary" htmlType="submit">
-						Далее
+						{isEditMode ? "Сохранить и продолжить" : "Далее"}
 					</Button>
 				</Form.Item>
 			</Form>

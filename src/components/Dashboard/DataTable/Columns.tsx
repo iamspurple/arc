@@ -5,7 +5,7 @@ import type { TableColumnsType } from "antd";
 
 import ActionPopover from "@/components/Dashboard/ActionPopover";
 
-export const Columns = () => {
+export const Columns = (showEditModal: (id: string) => void) => {
 	const { handleOpenSider } = useContentSider();
 
 	const columns: TableColumnsType = [
@@ -52,7 +52,7 @@ export const Columns = () => {
 			title: "",
 			dataIndex: "actions",
 			render(_, record) {
-				return <ActionPopover id={record.id} />;
+				return <ActionPopover id={record.id} showEditModal={showEditModal} />;
 			},
 			width: 70,
 		},

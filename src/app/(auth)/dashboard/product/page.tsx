@@ -11,24 +11,34 @@ import { Error } from "@/components/Dashboard/Error";
 import { Header } from "@/components/Dashboard/Header";
 import { Loading } from "@/components/Dashboard/Loading";
 import { ModalForm } from "@/components/Dashboard/ModalForm/ModalForm";
+import { useFormValues } from "@/lib/useFormValues";
 
 export default function Product() {
+	const [productId, setProductId] = useState<string | null>(null);
+	const { formValues, isLoading: isFormValuesLoading } = useFormValues(productId ?? "");
+
 	const [search, setSearch] = useState("");
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
+	const showEditModal = (productId: string) => {
+		setIsModalOpen(true);
+		setProductId(productId);
+	};
+
 	const showModal = () => {
 		setIsModalOpen(true);
+		setProductId(null);
 	};
 
 	const handleCancel = () => {
 		setIsModalOpen(false);
+		setProductId(null);
 	};
 
-	const columns = Columns();
+	const columns = Columns(showEditModal);
 
 	const { data: products = [], isLoading, isError } = useProductsQuery();
 	const { data: options = [] } = useProductOptionsQuery();
-	// console.log("options", options);
 
 	const data = useMemo(
 		() =>
@@ -56,8 +66,14 @@ export default function Product() {
 			<Header handleSearch={(value) => setSearch(value)} showModal={showModal} />
 			<DataTable columns={columns} dataSource={data} />
 
-			<Modal footer={null} open={isModalOpen} onCancel={handleCancel}>
-				<ModalForm />
+			<Modal loading={isFormValuesLoading} footer={null} open={isModalOpen} onCancel={handleCancel}>
+				<ModalForm
+					key={productId || "create"}
+					formValues={formValues}
+					isLoading={isFormValuesLoading}
+					productId={productId || undefined}
+					handleClose={handleCancel}
+				/>
 			</Modal>
 		</>
 	);

@@ -13,7 +13,7 @@ const getBase64 = (file: FileType): Promise<string> =>
 		reader.onerror = (error) => reject(error);
 	});
 
-export const ImageUpload = () => {
+export const ImageUpload = ({ disabled }: { disabled?: boolean }) => {
 	const [previewOpen, setPreviewOpen] = useState(false);
 	const [previewImage, setPreviewImage] = useState("");
 	const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -44,6 +44,7 @@ export const ImageUpload = () => {
 				fileList={fileList}
 				onPreview={handlePreview}
 				onChange={handleChange}
+				disabled={disabled}
 				maxCount={5}
 				multiple
 			>
