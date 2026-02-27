@@ -50,7 +50,17 @@ export const ImageUpload = ({ disabled, onChangeFileList }: ImageUploadProps) =>
 				listType="picture-card"
 				fileList={fileList}
 				onPreview={handlePreview}
-				onChange={handleChange}
+				beforeUpload={() => {
+					return false
+				}}
+				onChange={(files) => {
+					setFileList(files.fileList);
+					onChangeFileList(files.fileList);
+				}}
+				onRemove={(fileRemove) => {
+					setFileList((prevState) => prevState.filter((file) => file.uid !== fileRemove?.uid));
+					onChangeFileList(fileList)
+				}}
 				disabled={disabled}
 				maxCount={5}
 				multiple
