@@ -26,12 +26,22 @@ export const getProductImageById = async (productImageId: string): Promise<Produ
 	}
 };
 
+export const getProductImageByOptionId = async (optionId: string): Promise<ProductImage[]> => {
+	try {
+		return await productImageRepository.productImageListByOptionId(optionId);
+	} catch {
+		throw new Error("Ошибка");
+	}
+};
+
 export const createProductImage = async (
 	productImage: ProductImageCreateEntity
 ): Promise<ProductImage> => {
 	try {
 		return await productImageRepository.createProductImage({
-			id: '', alt: 'ferf', optionId: 'grfr'
+			id: "",
+			alt: "ferf",
+			optionId: "grfr",
 		});
 	} catch {
 		throw new Error("Ошибка");
@@ -63,7 +73,7 @@ export const createProductImages = async (
 			});
 			result.push(createdImg);
 		}
-		return result
+		return result;
 	} catch {
 		throw new Error("Ошибка");
 	}

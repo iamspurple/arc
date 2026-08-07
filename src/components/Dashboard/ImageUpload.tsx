@@ -1,11 +1,11 @@
-import { useState } from "react";
-
 import { GetProp, Image, Upload, UploadFile, UploadProps } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
 type ImageUploadProps = {
-	disabled?: boolean;
+	fileList: UploadFile[];
+	setFileList: (value: SetStateAction<UploadFile<any>[]>) => void;
 	onChangeFileList: (fileList: UploadFile[]) => void;
+	isEditMode: boolean;
 };
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
@@ -18,10 +18,14 @@ const getBase64 = (file: FileType): Promise<string> =>
 		reader.onerror = (error) => reject(error);
 	});
 
-export const ImageUpload = ({ disabled, onChangeFileList }: ImageUploadProps) => {
+export const ImageUpload = ({
+	onChangeFileList,
+	fileList,
+	setFileList,
+	isEditMode,
+}: ImageUploadProps) => {
 	const [previewOpen, setPreviewOpen] = useState(false);
 	const [previewImage, setPreviewImage] = useState("");
-	const [fileList, setFileList] = useState<UploadFile[]>([]);
 
 	const handlePreview = async (file: UploadFile) => {
 		if (!file.url && !file.preview) {
@@ -30,11 +34,6 @@ export const ImageUpload = ({ disabled, onChangeFileList }: ImageUploadProps) =>
 
 		setPreviewImage(file.url || (file.preview as string));
 		setPreviewOpen(true);
-	};
-
-	const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
-		setFileList(newFileList);
-		onChangeFileList(fileList);
 	};
 
 	const uploadButton = (
@@ -46,12 +45,11 @@ export const ImageUpload = ({ disabled, onChangeFileList }: ImageUploadProps) =>
 	return (
 		<>
 			<Upload
-				// action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
 				listType="picture-card"
 				fileList={fileList}
 				onPreview={handlePreview}
 				beforeUpload={() => {
-					return false
+					return false;
 				}}
 				onChange={(files) => {
 					setFileList(files.fileList);
@@ -59,9 +57,8 @@ export const ImageUpload = ({ disabled, onChangeFileList }: ImageUploadProps) =>
 				}}
 				onRemove={(fileRemove) => {
 					setFileList((prevState) => prevState.filter((file) => file.uid !== fileRemove?.uid));
-					onChangeFileList(fileList)
+					onChangeFileList(fileList);
 				}}
-				disabled={disabled}
 				maxCount={5}
 				multiple
 			>

@@ -1,5 +1,15 @@
-import { useEffect } from "react";
-import { Button, Flex, Form, Input, InputNumber, Typography, ColorPicker, message } from "antd";
+import { useEffect, useState } from "react";
+import {
+	Button,
+	Flex,
+	Form,
+	Input,
+	InputNumber,
+	Typography,
+	ColorPicker,
+	message,
+	UploadFile,
+} from "antd";
 import { DeleteOutlined, CloseOutlined, PlusSquareOutlined } from "@ant-design/icons";
 
 import type {
@@ -16,6 +26,7 @@ import { ImageUpload } from "../ImageUpload";
 import type { QueryClient } from "@tanstack/react-query";
 import { submitHandlers } from "@/lib/submitHandlers";
 import { SizeForm } from "./SizeForm";
+import { UIImageUpload } from "./UIImageUpload";
 
 type SizeFormData = Omit<ProductSizeCreateEntity, "order">;
 type OptionFormData = Omit<ProductOptionCreateEntity, "slug">;
@@ -28,6 +39,7 @@ export type FormData = {
 
 export type Step2Props = {
 	productId: string;
+	productName: string;
 	queryClient: QueryClient;
 	setStep: (step: number) => void;
 	handleClose: () => void;
@@ -44,19 +56,24 @@ export type Step2Props = {
 				quantity: number;
 				parameters: string;
 			}>;
+			images: Array<{
+				id: string;
+				alt: string;
+			}>;
 		}>;
 	};
 };
 
 export const Step2 = (props: Step2Props) => {
-	const { productId, queryClient, setStep, initialValues, handleClose } = props;
+	const { productId, productName, queryClient, setStep, initialValues, handleClose } = props;
 	const [form] = Form.useForm();
 	const isEditMode = !!initialValues;
 
 	const validateDebounceMs = 1500;
+	const [fileList, setFileList] = useState<UploadFile[]>([]);
 
 	const handleSubmit = async (data: FormData) => {
-		const { handleCreateSubmit, handleUpdateSubmit } = submitHandlers(data, productId);
+		const { handleCreateSubmit, handleUpdateSubmit } = submitHandlers(data, productId, productName);
 		try {
 			if (isEditMode) {
 				await handleUpdateSubmit(initialValues);
@@ -74,7 +91,7 @@ export const Step2 = (props: Step2Props) => {
 			}
 
 			setStep(0);
-			queryClient.invalidateQueries({ queryKey: PRODUCT_OPTIONS_QUERY_KEY });
+			queryClient.invalidateQueries({ queryKey: [PRODUCT_OPTIONS_QUERY_KEY] });
 			form.resetFields();
 		} catch (e) {
 			console.error(e);
@@ -184,16 +201,8 @@ export const Step2 = (props: Step2Props) => {
 												<ColorPicker format="hex" />
 											</Form.Item>
 										</Flex>
-										<Form.Item
-											label="Изображения (5)"
-											name={[field.name, "images"]}
-											validateDebounce={validateDebounceMs}
-										>
-											<ImageUpload
-												onChangeFileList={(files) => {
-													form.setFieldValue(["options", field.name, "images"], files);
-												}}
-											/>
+										<Form.Item label="Изображения" rules={[{ required: true }]}>
+											<UIImageUpload initialData={[]} />
 										</Form.Item>
 										<Form.Item>
 											<Form.List name={[field.name, "sizes"]}>

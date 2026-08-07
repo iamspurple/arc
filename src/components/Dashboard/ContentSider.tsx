@@ -1,6 +1,7 @@
 import { CSSProperties } from "react";
 
 import {
+	useProductImagesQuery,
 	useProductOptionByIdQuery,
 	useProductSizesQuery,
 } from "@/entities/product/api/useProductsQuery";
@@ -31,6 +32,7 @@ export const ContentSider = () => {
 
 	const { data: option, isLoading, isError } = useProductOptionByIdQuery(optionId);
 	const { data: sizes } = useProductSizesQuery(optionId);
+	const { data: images } = useProductImagesQuery(optionId);
 
 	const sizeItems = sizes
 		?.sort((a, b) => a.order - b.order)
@@ -61,11 +63,16 @@ export const ContentSider = () => {
 				</Button>
 				<Flex wrap gap={4} style={{ marginBottom: 16 }}>
 					<Image.PreviewGroup>
-						<Image alt="img" width={80} height={80} src="/images/tshirt-white-1.jpg" />
-						<Image alt="img" width={80} height={80} src="/images/tshirt-white-1.jpg" />
-						<Image alt="img" width={80} height={80} src="/images/tshirt-white-1.jpg" />
-						<Image alt="img" width={80} height={80} src="/images/tshirt-white-1.jpg" />
-						<Image alt="img" width={80} height={80} src="/images/tshirt-white-1.jpg" />
+						{images?.map((image) => (
+							<Image
+								key={image.id}
+								alt="img"
+								width={80}
+								height={80}
+								style={{ objectFit: "cover" }}
+								src={`/static/products/${image.id}`}
+							/>
+						))}
 					</Image.PreviewGroup>
 				</Flex>
 				<Typography.Title level={4}>{option?.title}</Typography.Title>

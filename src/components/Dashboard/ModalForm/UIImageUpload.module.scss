@@ -1,0 +1,39 @@
+.upload {
+	padding: 16px;
+	background: white;
+	border: 1px solid #1677ff;
+	border-radius: 10px;
+}
+
+.imageList {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	align-items: center;
+}
+
+.imageWrapper {
+	position: relative;
+	width: 200px;
+	height: 200px;
+}
+
+.delete {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	width: 24px;
+	height: 24px;
+	background-color: white;
+	border-radius: 5px;
+	border: 1px solid #dfdfdf;
+	z-index: 10;
+	cursor: pointer;
+}
+
+@media (hover: hover) {
+	.delete:hover {
+		opacity: 0.7;
+	}
+}

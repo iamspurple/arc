@@ -14,8 +14,13 @@ export const productImageRepository = {
 			where: { id: productImageId },
 		});
 	},
+	productImageListByOptionId: async (optionId: string): Promise<ProductImage[]> => {
+		return prisma.productImage.findMany({
+			where: { optionId: optionId },
+		});
+	},
 	createProductImage: async (
-		productImage: { id: string } & Omit<ProductImageCreateEntity, 'fileObj'>
+		productImage: { id: string } & Omit<ProductImageCreateEntity, "fileObj">
 	): Promise<ProductImage> => {
 		return prisma.productImage.create({
 			data: {

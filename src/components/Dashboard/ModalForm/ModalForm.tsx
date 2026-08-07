@@ -25,6 +25,7 @@ export const ModalForm = ({
 	const [step, setStep] = useState(0);
 
 	const [internalProductId, setInternalProductId] = useState<string>("");
+	const [productName, setProductName] = useState<string>("");
 	const productId = externalProductId || internalProductId;
 	const isEditMode = !!productId;
 
@@ -33,16 +34,18 @@ export const ModalForm = ({
 	const onProductSubmit = async (data: ProductCreateEntity | ProductUpdateEntity) => {
 		try {
 			if (isEditMode && productId) {
-				await updateProductById(data as ProductUpdateEntity);
+				const updated = await updateProductById(data as ProductUpdateEntity);
+				setProductName(updated.name);
 				message.success("Модель успешно обновлена");
 			} else {
 				const created = await createProduct(data as ProductCreateEntity);
 				setInternalProductId(created.id);
+				setProductName(created.name);
 				message.success("Модель успешно создана");
 			}
 
 			setStep(1);
-			queryClient.invalidateQueries({ queryKey: PRODUCTS_QUERY_KEY });
+			queryClient.invalidateQueries({ queryKey: [PRODUCTS_QUERY_KEY] });
 		} catch (e) {
 			console.error(e);
 			message.error(isEditMode ? "Не удалось обновить модель" : "Не удалось создать модель");
@@ -72,6 +75,10 @@ export const ModalForm = ({
 						quantity: size.quantity,
 						parameters: size.parameters,
 					})),
+					images: option.images.map((image) => ({
+						id: image.id,
+						alt: image.alt,
+					})),
 				})),
 			}
 		: undefined;
@@ -100,6 +107,7 @@ export const ModalForm = ({
 			{step === 1 && productId && (
 				<Step2
 					productId={productId}
+					productName={productName}
 					queryClient={queryClient}
 					setStep={setStep}
 					initialValues={step2InitialValues}

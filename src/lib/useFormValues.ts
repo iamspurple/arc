@@ -10,6 +10,8 @@ import {
 	getProductSizesByOptionId,
 } from "@/entities/product/server";
 import type { Product } from "@prisma/client";
+import { getProductImageByOptionId } from "@/entities/product/services/productImage";
+import { getProductImagePublicUrl } from "@/lib/productImageUpload";
 
 export type FormValues = {
 	name: string;
@@ -28,11 +30,15 @@ export type FormValues = {
 			quantity: number;
 			parameters: string;
 		}>;
+		images: Array<{
+			id: string;
+			alt: string;
+			url: string;
+		}>;
 	}>;
 };
 
 export const useFormValues = (productId: string) => {
-
 	const { data: product, isLoading: isProductLoading } = useQuery<Product | null>({
 		queryKey: ["product", productId],
 		queryFn: () => getProductById(productId),
@@ -65,14 +71,27 @@ export const useFormValues = (productId: string) => {
 		})),
 	});
 
+	const imageQueries = useQueries({
+		queries: productOptions.map((option) => ({
+			queryKey: ["product-image", option.id],
+			queryFn: () => getProductImageByOptionId(option.id),
+			enabled: !!productId && !!option.id,
+			staleTime: 60_000,
+		})),
+	});
+
 	const formValues: FormValues | null = useMemo(() => {
 		if (!productId || !product || isProductLoading || isOptionsLoading) {
+			return null;
+		}
+		if (productOptions.length > 0 && imageQueries.some((q) => q.isLoading)) {
 			return null;
 		}
 
 		const options = productOptions.map((option, index) => {
 			const optionData = optionQueries[index]?.data;
 			const sizesData = sizeQueries[index]?.data || [];
+			const imagesData = imageQueries[index]?.data || [];
 
 			return {
 				id: option.id,
@@ -85,6 +104,11 @@ export const useFormValues = (productId: string) => {
 					size: size.size,
 					quantity: size.quantity,
 					parameters: size.parameters,
+				})),
+				images: imagesData.map((image) => ({
+					id: image.id,
+					alt: image.alt,
+					url: getProductImagePublicUrl(image.id),
 				})),
 			};
 		});
@@ -104,13 +128,15 @@ export const useFormValues = (productId: string) => {
 		productOptions,
 		optionQueries,
 		sizeQueries,
+		imageQueries,
 	]);
 
 	const isLoading =
 		isProductLoading ||
 		isOptionsLoading ||
 		optionQueries.some((query) => query.isLoading) ||
-		sizeQueries.some((query) => query.isLoading);
+		sizeQueries.some((query) => query.isLoading) ||
+		imageQueries.some((query) => query.isLoading);
 
 	return {
 		formValues,

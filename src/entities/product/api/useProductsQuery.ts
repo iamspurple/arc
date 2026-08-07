@@ -1,18 +1,22 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import type { Product, ProductSize } from "@prisma/client";
+import { ProductImage, type Product, type ProductSize } from "@prisma/client";
 import { getProductById, getProducts, getProductSizesByOptionId } from "../server";
 
 import type { ProductOption } from "@prisma/client";
 import { getProductOptionById, getProductOptions } from "../server";
+import { getProductImageByOptionId } from "../services/productImage";
 
-export const PRODUCTS_QUERY_KEY = ["products"];
-export const PRODUCT_OPTIONS_QUERY_KEY = ["product-options"];
+export const PRODUCTS_QUERY_KEY = "products";
+export const PRODUCT_QUERY_KEY = "product";
+export const PRODUCT_OPTIONS_QUERY_KEY = "product-options";
+export const PRODUCT_SIZE_QUERY_KEY = "product-size";
+export const PRODUCT_IMAGE_QUERY_KEY = "product-image";
 
 export const useProductsQuery = () => {
 	return useQuery<Product[]>({
-		queryKey: PRODUCTS_QUERY_KEY,
+		queryKey: [PRODUCTS_QUERY_KEY],
 		queryFn: () => getProducts(),
 		staleTime: 60_000,
 	});
@@ -20,7 +24,7 @@ export const useProductsQuery = () => {
 
 export const useProductByIdQuery = (id: string) => {
 	return useQuery<Product | null>({
-		queryKey: ["product", id],
+		queryKey: [PRODUCT_QUERY_KEY, id],
 		queryFn: () => getProductById(id),
 		staleTime: 60_000,
 	});
@@ -44,8 +48,16 @@ export const useProductOptionByIdQuery = (id: string) => {
 
 export const useProductSizesQuery = (id: string) => {
 	return useQuery<ProductSize[] | null>({
-		queryKey: ["product-size", id],
+		queryKey: [PRODUCT_SIZE_QUERY_KEY, id],
 		queryFn: () => getProductSizesByOptionId(id),
+		staleTime: 60_000,
+	});
+};
+
+export const useProductImagesQuery = (id: string) => {
+	return useQuery<ProductImage[] | null>({
+		queryKey: [PRODUCT_IMAGE_QUERY_KEY, id],
+		queryFn: () => getProductImageByOptionId(id),
 		staleTime: 60_000,
 	});
 };

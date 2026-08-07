@@ -19,7 +19,7 @@ import { createSlug } from "./slug";
 import type { Step2Props, FormData } from "@/components/Dashboard/ModalForm/Step2";
 import { UploadFile } from "antd";
 
-export const submitHandlers = (data: FormData, productId: string) => {
+export const submitHandlers = (data: FormData, productId: string, productName: string) => {
 	const handleUpdateSubmit = async (initialValues: Step2Props["initialValues"]) => {
 		const existingOptionIds = initialValues?.options.map((opt) => opt.id) || [];
 
@@ -41,7 +41,7 @@ export const submitHandlers = (data: FormData, productId: string) => {
 				const optionPayload: ProductOptionUpdateEntity = {
 					id: option.id,
 					title: option.title,
-					slug: createSlug(option.title),
+					slug: createSlug(`${productName}-${option.title}`),
 					price: option.price,
 					colorName: option.colorName,
 					hex: option.hex,
@@ -92,7 +92,7 @@ export const submitHandlers = (data: FormData, productId: string) => {
 			} else {
 				const optionPayload: ProductOptionCreateEntity = {
 					title: option.title,
-					slug: createSlug(option.title),
+					slug: createSlug(`${productName}-${option.title}`),
 					price: option.price,
 					colorName: option.colorName,
 					hex: option.hex,
@@ -121,7 +121,7 @@ export const submitHandlers = (data: FormData, productId: string) => {
 
 			const optionPayload: ProductOptionCreateEntity = {
 				title: option.title,
-				slug: createSlug(option.title),
+				slug: createSlug(`${productName}-${option.title}`),
 				price: option.price,
 				colorName: option.colorName,
 				hex: option.hex,
@@ -136,12 +136,14 @@ export const submitHandlers = (data: FormData, productId: string) => {
 				images = option.images.map<File>((img: UploadFile) => img.originFileObj);
 			}
 
-			console.log("foo", images[0]);
-			await createProductImages(images.map(img => ({
-				alt: '',
-				optionId: result.id,
-				fileObj: img
-			})));
+			console.log("foo", images);
+			await createProductImages(
+				images.map((img) => ({
+					alt: "",
+					optionId: result.id,
+					fileObj: img,
+				}))
+			);
 
 			for (const size of option.sizes || []) {
 				const sizePayload: ProductSizeCreateEntity = {
@@ -154,7 +156,7 @@ export const submitHandlers = (data: FormData, productId: string) => {
 
 				await createProductSize(sizePayload);
 			}
-			images = []
+			images = [];
 		}
 	};
 
