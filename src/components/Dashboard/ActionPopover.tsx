@@ -18,7 +18,7 @@ const Content = (
 	const handleDelete = async () => {
 		try {
 			deleteProductById(id);
-			await queryClient.invalidateQueries({ queryKey: PRODUCTS_QUERY_KEY });
+			await queryClient.invalidateQueries({ queryKey: [PRODUCTS_QUERY_KEY] });
 			message.success("Запись успешно удалена");
 		} catch {
 			message.error("Что-то пошло не так, попробуйте снова");

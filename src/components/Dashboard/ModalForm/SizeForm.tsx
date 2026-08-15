@@ -1,5 +1,5 @@
 import { Flex, Form, Input, Button, InputNumber } from "antd";
-import { CloseOutlined } from "@ant-design/icons";
+import { DeleteOutlined } from "@ant-design/icons";
 
 import type { FormListFieldData } from "antd";
 
@@ -16,6 +16,9 @@ export const SizeForm = (props: SizeFormProps) => {
 
 	return (
 		<Flex justify="flex-start" gap={10} style={{ position: "relative" }}>
+			<Form.Item name={[sizeField.name, "id"]} hidden>
+				<Input />
+			</Form.Item>
 			<Form.Item
 				label="Размер"
 				name={[sizeField.name, "size"]}
@@ -66,7 +69,7 @@ export const SizeForm = (props: SizeFormProps) => {
 					type="link"
 					size="small"
 					title="Удалить размер"
-					icon={<CloseOutlined />}
+					icon={<DeleteOutlined />}
 					style={{ position: "absolute", top: 0, right: 0 }}
 					onClick={() => removeSize(sizeIndex)}
 				/>

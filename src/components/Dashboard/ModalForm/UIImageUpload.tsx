@@ -1,6 +1,6 @@
 import { Image, Button } from "antd";
 import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
-import { ChangeEvent, SetStateAction, useRef, useState } from "react";
+import { ChangeEvent, useRef, Dispatch, SetStateAction } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import styles from "./UIImageUpload.module.scss";
@@ -9,16 +9,19 @@ type ImgInitialType = {
 	id: string;
 	trigger: "new" | "old";
 	src: string;
+	file?: File;
 };
 
 type UIImageUploadProps = {
 	initialData: ImgInitialType[];
+	setFiles: Dispatch<SetStateAction<Record<string, ImgInitialType[]>>>;
+	optionKey: string;
 };
 
 export const UIImageUpload = (props: UIImageUploadProps) => {
-	const inputFileRef = useRef<HTMLInputElement | null>(null);
+	const { initialData: files, setFiles, optionKey } = props;
 
-	const [files, setFiles] = useState(props.initialData);
+	const inputFileRef = useRef<HTMLInputElement | null>(null);
 
 	const onChangeFile = () => {
 		if (inputFileRef.current) {
@@ -34,7 +37,13 @@ export const UIImageUpload = (props: UIImageUploadProps) => {
 			fileReader.onload = (e) => {
 				setFiles((prev) => {
 					if (typeof e.target?.result == "string") {
-						return [...prev, { id: uuidv4(), trigger: "new", src: e.target.result }];
+						return {
+							...prev,
+							[optionKey]: [
+								...(prev[optionKey] ?? []),
+								{ id: uuidv4(), trigger: "new", src: e.target.result, file: f },
+							],
+						};
 					}
 
 					return prev;
@@ -45,11 +54,10 @@ export const UIImageUpload = (props: UIImageUploadProps) => {
 	};
 
 	const removeImg = (obj: ImgInitialType) => {
-		if (obj.trigger === "new") {
-			setFiles((p) => p.filter((img) => img.id !== obj.id));
-		} else if (obj.trigger === "old") {
-			// добавить запрос на сервер
-		}
+		setFiles((prev) => ({
+			...prev,
+			[optionKey]: prev[optionKey].filter((f) => f.id !== obj.id),
+		}));
 	};
 
 	return (

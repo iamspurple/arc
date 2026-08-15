@@ -66,7 +66,13 @@ export default function Product() {
 			<Header handleSearch={(value) => setSearch(value)} showModal={showModal} />
 			<DataTable columns={columns} dataSource={data} />
 
-			<Modal loading={isFormValuesLoading} footer={null} open={isModalOpen} onCancel={handleCancel}>
+			<Modal
+				loading={isFormValuesLoading}
+				footer={null}
+				open={isModalOpen}
+				onCancel={handleCancel}
+				destroyOnHidden
+			>
 				<ModalForm
 					key={productId || "create"}
 					formValues={formValues}

@@ -65,6 +65,7 @@ export const ModalForm = ({
 		? {
 				options: formValues.options.map((option) => ({
 					id: option.id,
+					fieldKey: option.id,
 					title: option.title,
 					price: option.price,
 					hex: option.hex,

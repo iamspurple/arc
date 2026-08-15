@@ -3,6 +3,7 @@ import type {
 	ProductSizeUpdateEntity,
 	ProductSizeCreateEntity,
 	ProductOptionCreateEntity,
+	ProductImageCreateEntity,
 } from "@/entities/product";
 import {
 	deleteProductOptionById,
@@ -12,14 +13,20 @@ import {
 	createProductSize,
 	createProductOption,
 	createProductImages,
+	deleteProductImageById,
+	createProductImage,
 } from "@/entities/product/server";
 import { createOrder } from ".";
 import { createSlug } from "./slug";
 
-import type { Step2Props, FormData } from "@/components/Dashboard/ModalForm/Step2";
-import { UploadFile } from "antd";
+import type { Step2Props, FormData, ImgInitialType } from "@/components/Dashboard/ModalForm/Step2";
 
-export const submitHandlers = (data: FormData, productId: string, productName: string) => {
+export const submitHandlers = (
+	data: FormData,
+	productId: string,
+	productName: string,
+	files: Record<string, ImgInitialType[]>
+) => {
 	const handleUpdateSubmit = async (initialValues: Step2Props["initialValues"]) => {
 		const existingOptionIds = initialValues?.options.map((opt) => opt.id) || [];
 
@@ -37,7 +44,7 @@ export const submitHandlers = (data: FormData, productId: string, productName: s
 		}
 
 		for (const option of data.options) {
-			if ("id" in option && option.id) {
+			if (option.id) {
 				const optionPayload: ProductOptionUpdateEntity = {
 					id: option.id,
 					title: option.title,
@@ -68,7 +75,7 @@ export const submitHandlers = (data: FormData, productId: string, productName: s
 				}
 
 				for (const size of option.sizes || []) {
-					if ("id" in size && size.id) {
+					if (size.id) {
 						const sizePayload: ProductSizeUpdateEntity = {
 							id: size.id,
 							order: createOrder(size.size),
@@ -89,6 +96,36 @@ export const submitHandlers = (data: FormData, productId: string, productName: s
 						await createProductSize(sizePayload);
 					}
 				}
+
+				const images: ImgInitialType[] = files[option.fieldKey] || [];
+
+				const existingImagesForOption =
+					initialValues?.options
+						.find((opt) => opt.id === option.id)
+						?.images.map((image) => image.id) || [];
+
+				const formImagesForOption = (images || [])
+					.map((img) => ("id" in img ? img.id : undefined))
+					.filter((id): id is string => !!id);
+				for (const existingImageId of existingImagesForOption) {
+					if (!formImagesForOption.some((imageId) => imageId === existingImageId)) {
+						try {
+							await deleteProductImageById(existingImageId);
+						} catch (error) {
+							console.error(`Не удалось удалить изображение ${existingImageId}:`, error);
+						}
+					}
+				}
+
+				const filtered = images
+					.filter((img) => img.trigger === "new" && img.file)
+					.map((img) => ({
+						alt: option.title,
+						optionId: option.id!,
+						fileObj: img.file!,
+					}));
+
+				await createProductImages(filtered);
 			} else {
 				const optionPayload: ProductOptionCreateEntity = {
 					title: option.title,
@@ -111,13 +148,25 @@ export const submitHandlers = (data: FormData, productId: string, productName: s
 					};
 					await createProductSize(sizePayload);
 				}
+
+				const images: ImgInitialType[] = files[option.fieldKey] || [];
+
+				const filtered = images
+					.filter((img) => img.trigger === "new" && img.file)
+					.map((img) => ({
+						alt: option.title,
+						optionId: result.id,
+						fileObj: img.file!,
+					}));
+
+				await createProductImages(filtered);
 			}
 		}
 	};
 
 	const handleCreateSubmit = async () => {
 		for (const option of data.options) {
-			let images: File[] = [];
+			const images: ImgInitialType[] = files[option.fieldKey] || [];
 
 			const optionPayload: ProductOptionCreateEntity = {
 				title: option.title,
@@ -130,20 +179,15 @@ export const submitHandlers = (data: FormData, productId: string, productName: s
 
 			const result = await createProductOption(optionPayload);
 
-			if ("images" in option && Array.isArray(option.images)) {
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-expect-error
-				images = option.images.map<File>((img: UploadFile) => img.originFileObj);
-			}
-
-			console.log("foo", images);
-			await createProductImages(
-				images.map((img) => ({
-					alt: "",
+			const filtered = images
+				.filter((img) => img.trigger === "new" && img.file)
+				.map((img) => ({
+					alt: option.title,
 					optionId: result.id,
-					fileObj: img,
-				}))
-			);
+					fileObj: img.file!,
+				}));
+
+			await createProductImages(filtered);
 
 			for (const size of option.sizes || []) {
 				const sizePayload: ProductSizeCreateEntity = {
@@ -156,7 +200,6 @@ export const submitHandlers = (data: FormData, productId: string, productName: s
 
 				await createProductSize(sizePayload);
 			}
-			images = [];
 		}
 	};
 
