@@ -9,13 +9,18 @@ export const productOptionRepository = {
 	productOptionList: async (): Promise<ProductOption[]> => {
 		return prisma.productOption.findMany();
 	},
+	productOptionListByProductId: async (productId: string): Promise<ProductOption[]> => {
+		return prisma.productOption.findMany({
+			where: { productId },
+		});
+	},
 	productOptionFirst: async (productOptionId: string): Promise<ProductOption | null> => {
 		return prisma.productOption.findFirst({
 			where: { id: productOptionId },
 		});
 	},
 	createProductOption: async (
-		productOption: Omit<ProductOptionCreateEntity, 'images'>
+		productOption: Omit<ProductOptionCreateEntity, "images">
 	): Promise<ProductOption> => {
 		return prisma.productOption.create({
 			data: productOption,
