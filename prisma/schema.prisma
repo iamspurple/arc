@@ -58,3 +58,38 @@ model ProductImage {
   @@map("product_image")
 }
 
+
+model Order {
+  id                        String                    @id @default(cuid())
+  customer                  String                    @db.VarChar(255)
+  status                    String                    @db.VarChar(255)
+  phone                     String                    @db.VarChar(255)
+  email                     String                    @db.VarChar(255)
+  contactWay                ContactWay                @default(EMAIL)  
+  total                     Int                            
+  status                    Status                    @default(PENDING)  
+  productOptionId           String                    @map("option_id")      
+}
+
+model OrderProductOption {
+  id                        String                    @id @default(cuid())
+  order                     Order                     @relation(fields: [orderId], references: [id], onDelete: Cascade)                     
+  orderId                   String                    @map("order_id")
+  option                    ProductOption             @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  optionId                  String                    @map("option_id")
+  size                      ProductSize               @relation(fields: [sizeId], references: [id], onDelete: Cascade)
+  sizeId                    String                    @map("size_id")
+  quantity                  Int                        
+}
+
+
+enum Status {
+  PENDING
+  COMPLETE
+}
+
+enum ContactWay {
+  EMAIL
+  WHATSAPP
+  TELEGRAM
+}

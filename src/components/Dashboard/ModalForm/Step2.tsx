@@ -1,19 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, Fragment } from "react";
 import { Button, Flex, Form, Input, InputNumber, Typography, ColorPicker, message } from "antd";
-import { DeleteOutlined, CloseOutlined, PlusSquareOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusSquareOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from "uuid";
 
-import type {
-	ProductOptionCreateEntity,
-	ProductOptionUpdateEntity,
-	ProductSizeCreateEntity,
-	ProductSizeUpdateEntity,
-} from "@/entities/product";
+import type { ProductOptionCreateEntity, ProductSizeCreateEntity } from "@/entities/product";
 
 import { PRODUCT_OPTIONS_QUERY_KEY } from "@/entities/product/api/useProductsQuery";
 
 import type { QueryClient } from "@tanstack/react-query";
-import { submitHandlers } from "@/lib/submitHandlers";
+import { useSubmitHandlers } from "@/lib/submitHandlers";
 import { SizeForm } from "./SizeForm";
 import { UIImageUpload } from "./UIImageUpload";
 
@@ -91,24 +86,22 @@ export const Step2 = (props: Step2Props) => {
 		return optionsImages;
 	});
 
+	const { handleCreateSubmit, handleUpdateSubmit } = useSubmitHandlers(
+		productId,
+		productName,
+		files
+	);
+
 	const handleSubmit = async (data: FormData) => {
-		console.log(data.options);
-		const { handleCreateSubmit, handleUpdateSubmit } = submitHandlers(
-			data,
-			productId,
-			productName,
-			files
-		);
 		try {
 			if (isEditMode) {
-				await handleUpdateSubmit(initialValues);
-
+				await handleUpdateSubmit(initialValues, data);
 				setTimeout(() => {
 					handleClose();
 					message.success("Варианты успешно обновлены");
 				}, 1500);
 			} else {
-				await handleCreateSubmit();
+				await handleCreateSubmit(data);
 				setTimeout(() => {
 					handleClose();
 					message.success("Варианты успешно созданы");
@@ -147,8 +140,8 @@ export const Step2 = (props: Step2Props) => {
 					{(fields, { add, remove }) => (
 						<>
 							{fields.map((field, index) => {
-								const isFirst = index == 0;
-								const isLast = index == fields.length - 1;
+								const isFirst = index === 0;
+								const isLast = index === fields.length - 1;
 
 								const fieldKey = form.getFieldValue(["options", field.name, "fieldKey"]);
 
@@ -249,27 +242,29 @@ export const Step2 = (props: Step2Props) => {
 												{(sizeFields, { add: addSize, remove: removeSize }) => (
 													<>
 														{sizeFields.map((sizeField, sizeIndex) => {
-															const isFirstSize = sizeIndex == 0;
+															const isFirstSize = sizeIndex === 0;
+															const isLastSize = sizeIndex === sizeFields.length - 1;
 															return (
-																<SizeForm
-																	key={sizeIndex}
-																	sizeField={sizeField}
-																	sizeIndex={sizeIndex}
-																	removeSize={removeSize}
-																	validateDebounceMs={validateDebounceMs}
-																	isFirstSize={isFirstSize}
-																/>
+																<Fragment key={sizeIndex}>
+																	<SizeForm
+																		sizeField={sizeField}
+																		sizeIndex={sizeIndex}
+																		removeSize={removeSize}
+																		validateDebounceMs={validateDebounceMs}
+																		isFirstSize={isFirstSize}
+																	/>
+																	{isLastSize && (
+																		<Button
+																			icon={<PlusSquareOutlined />}
+																			color="primary"
+																			onClick={addSize}
+																		>
+																			Добавить размер
+																		</Button>
+																	)}
+																</Fragment>
 															);
 														})}
-														{isLast && (
-															<Button
-																icon={<PlusSquareOutlined />}
-																color="primary"
-																onClick={addSize}
-															>
-																Добавить размер
-															</Button>
-														)}
 													</>
 												)}
 											</Form.List>

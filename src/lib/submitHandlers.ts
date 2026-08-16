@@ -14,20 +14,26 @@ import {
 	createProductOption,
 	createProductImages,
 	deleteProductImageById,
-	createProductImage,
 } from "@/entities/product/server";
 import { createOrder } from ".";
 import { createSlug } from "./slug";
 
+import { useQueryClient } from "@tanstack/react-query";
+import {
+	PRODUCT_SIZE_QUERY_KEY,
+	PRODUCT_IMAGE_QUERY_KEY,
+} from "@/entities/product/api/useProductsQuery";
+
 import type { Step2Props, FormData, ImgInitialType } from "@/components/Dashboard/ModalForm/Step2";
 
-export const submitHandlers = (
-	data: FormData,
+export const useSubmitHandlers = (
 	productId: string,
 	productName: string,
 	files: Record<string, ImgInitialType[]>
 ) => {
-	const handleUpdateSubmit = async (initialValues: Step2Props["initialValues"]) => {
+	const queryClient = useQueryClient();
+
+	const handleUpdateSubmit = async (initialValues: Step2Props["initialValues"], data: FormData) => {
 		const existingOptionIds = initialValues?.options.map((opt) => opt.id) || [];
 
 		const formOptionIds = data.options
@@ -117,7 +123,7 @@ export const submitHandlers = (
 					}
 				}
 
-				const filtered = images
+				const filtered: ProductImageCreateEntity[] = images
 					.filter((img) => img.trigger === "new" && img.file)
 					.map((img) => ({
 						alt: option.title,
@@ -126,6 +132,9 @@ export const submitHandlers = (
 					}));
 
 				await createProductImages(filtered);
+
+				queryClient.invalidateQueries({ queryKey: [PRODUCT_IMAGE_QUERY_KEY, option.id] });
+				queryClient.invalidateQueries({ queryKey: [PRODUCT_SIZE_QUERY_KEY, option.id] });
 			} else {
 				const optionPayload: ProductOptionCreateEntity = {
 					title: option.title,
@@ -151,7 +160,7 @@ export const submitHandlers = (
 
 				const images: ImgInitialType[] = files[option.fieldKey] || [];
 
-				const filtered = images
+				const filtered: ProductImageCreateEntity[] = images
 					.filter((img) => img.trigger === "new" && img.file)
 					.map((img) => ({
 						alt: option.title,
@@ -160,11 +169,14 @@ export const submitHandlers = (
 					}));
 
 				await createProductImages(filtered);
+
+				queryClient.invalidateQueries({ queryKey: [PRODUCT_IMAGE_QUERY_KEY, result.id] });
+				queryClient.invalidateQueries({ queryKey: [PRODUCT_SIZE_QUERY_KEY, result.id] });
 			}
 		}
 	};
 
-	const handleCreateSubmit = async () => {
+	const handleCreateSubmit = async (data: FormData) => {
 		for (const option of data.options) {
 			const images: ImgInitialType[] = files[option.fieldKey] || [];
 
@@ -200,6 +212,8 @@ export const submitHandlers = (
 
 				await createProductSize(sizePayload);
 			}
+			queryClient.invalidateQueries({ queryKey: [PRODUCT_IMAGE_QUERY_KEY, result.id] });
+			queryClient.invalidateQueries({ queryKey: [PRODUCT_SIZE_QUERY_KEY, result.id] });
 		}
 	};
 

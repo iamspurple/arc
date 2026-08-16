@@ -119,8 +119,7 @@ export const deleteImagesByOptionId = async (optionId: string) => {
 		const images = await getProductImageByOptionId(optionId);
 
 		for (const image of images) {
-			const deletedImage = await productImageRepository.deleteProductImage(image.id);
-			await deleteProductImageByFileName(deletedImage.id);
+			await deleteProductImageById(image.id);
 		}
 		return true;
 	} catch {
