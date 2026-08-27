@@ -30,8 +30,10 @@ model ProductOption {
     updatedAt               DateTime                    @updatedAt @map("updated_at")
     products                Product                     @relation(fields: [productId], references: [id], onDelete: Cascade)
     productId               String                      @map("product_id")
+    article                 String                      @unique @db.VarChar(20)
     sizes                   ProductSize[]
     images                  ProductImage[]
+    OrderProductOptions       OrderProductOption[]
     @@map("product_option")
 }
 
@@ -45,6 +47,7 @@ model ProductSize {
     updatedAt               DateTime                            @updatedAt @map("updated_at")
     option                  ProductOption                       @relation(fields: [optionId], references: [id], onDelete: Cascade)
     optionId                String                              @map("option_id")
+    OrderProductOptions       OrderProductOption[]
     @@map("product_size")
 }
 
@@ -62,13 +65,14 @@ model ProductImage {
 model Order {
   id                        String                    @id @default(cuid())
   customer                  String                    @db.VarChar(255)
-  status                    String                    @db.VarChar(255)
   phone                     String                    @db.VarChar(255)
   email                     String                    @db.VarChar(255)
-  contactWay                ContactWay                @default(EMAIL)  
-  total                     Int                            
-  status                    Status                    @default(PENDING)  
-  productOptionId           String                    @map("option_id")      
+  contactWay                ContactWay                @default(EMAIL)                      
+  status                    Status                    @default(NEW)  
+  createdAt                 DateTime                  @default(now()) @map("created_at")
+  updatedAt                 DateTime                  @updatedAt @map("updated_at")
+  OrderProductOptions       OrderProductOption[]
+  @@map("order")
 }
 
 model OrderProductOption {
@@ -79,13 +83,18 @@ model OrderProductOption {
   optionId                  String                    @map("option_id")
   size                      ProductSize               @relation(fields: [sizeId], references: [id], onDelete: Cascade)
   sizeId                    String                    @map("size_id")
-  quantity                  Int                        
+  quantity                  Int
+  createdAt                 DateTime                  @default(now()) @map("created_at")
+  updatedAt                 DateTime                  @updatedAt @map("updated_at")
+  @@map("order_product_option")
 }
 
 
 enum Status {
-  PENDING
+  NEW
+  PROCESSING
   COMPLETE
+  CANCELLED
 }
 
 enum ContactWay {

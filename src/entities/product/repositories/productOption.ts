@@ -22,8 +22,14 @@ export const productOptionRepository = {
 	createProductOption: async (
 		productOption: Omit<ProductOptionCreateEntity, "images">
 	): Promise<ProductOption> => {
+		const result = await prisma.$queryRaw<{ article: number }[]>`
+    SELECT nextval('product_article_seq') AS article
+  `;
+
+		const article = result[0].article.toString();
+
 		return prisma.productOption.create({
-			data: productOption,
+			data: { ...productOption, article },
 		});
 	},
 	updateProductOption: async (productOption: ProductOptionUpdateEntity): Promise<ProductOption> => {
