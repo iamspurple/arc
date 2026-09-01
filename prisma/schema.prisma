@@ -64,6 +64,7 @@ model ProductImage {
 
 model Order {
   id                        String                    @id @default(cuid())
+  number                    String                    @unique @db.VarChar(20)
   customer                  String                    @db.VarChar(255)
   phone                     String                    @db.VarChar(255)
   email                     String                    @db.VarChar(255)
