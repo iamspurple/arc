@@ -17,7 +17,7 @@ export const orderRepository = {
 	},
 	createOrder: async (order: OrderCreateEntity): Promise<Order> => {
 		const result = await prisma.$queryRaw<{ number: number }[]>`
-    SELECT nextval('order_seq') as order_number
+    SELECT nextval('order_seq') as number
   `;
 
 		const number = result[0].number.toString();
