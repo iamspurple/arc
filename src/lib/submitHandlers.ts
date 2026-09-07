@@ -15,7 +15,7 @@ import {
 	createProductImages,
 	deleteProductImageById,
 } from "@/entities/product/server";
-import { createOrder } from ".";
+import { createSizeOrder } from ".";
 import { createSlug } from "./slug";
 
 import { useQueryClient } from "@tanstack/react-query";
@@ -84,7 +84,7 @@ export const useSubmitHandlers = (
 					if (size.id) {
 						const sizePayload: ProductSizeUpdateEntity = {
 							id: size.id,
-							order: createOrder(size.size),
+							order: createSizeOrder(size.size),
 							size: size.size,
 							quantity: size.quantity,
 							parameters: size.parameters,
@@ -93,7 +93,7 @@ export const useSubmitHandlers = (
 						await updateProductSizeById(sizePayload);
 					} else {
 						const sizePayload: ProductSizeCreateEntity = {
-							order: createOrder(size.size),
+							order: createSizeOrder(size.size),
 							size: size.size,
 							quantity: size.quantity,
 							parameters: size.parameters,
@@ -149,7 +149,7 @@ export const useSubmitHandlers = (
 
 				for (const size of option.sizes || []) {
 					const sizePayload: ProductSizeCreateEntity = {
-						order: createOrder(size.size),
+						order: createSizeOrder(size.size),
 						size: size.size,
 						quantity: size.quantity,
 						parameters: size.parameters,
@@ -203,7 +203,7 @@ export const useSubmitHandlers = (
 
 			for (const size of option.sizes || []) {
 				const sizePayload: ProductSizeCreateEntity = {
-					order: createOrder(size.size),
+					order: createSizeOrder(size.size),
 					size: size.size,
 					quantity: size.quantity,
 					parameters: size.parameters,

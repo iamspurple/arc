@@ -2,7 +2,7 @@ export const formatPrice = (price: number) => {
 	return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 };
 
-export const createOrder = (size: string): number => {
+export const createSizeOrder = (size: string): number => {
 	const str = size.toLowerCase();
 
 	switch (str) {
