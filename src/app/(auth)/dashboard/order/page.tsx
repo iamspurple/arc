@@ -1,54 +1,70 @@
-import type { TableColumnsType } from "antd";
+"use client";
 
-import { DataTable } from "@/components/Dashboard/DataTable/DataTable";
+import type { TableColumnsType } from "antd";
+import { Modal } from "antd";
+
+import { useMemo, useState } from "react";
+import { useOrdersQuery, useOrderProductOptionsQuery } from "@/entities/order/api/useOrdersQuery";
+
+import { DataTable } from "@/components/Dashboard/Order/DataTable/DataTable";
 import { Header } from "@/components/Dashboard/Header";
+import { Columns } from "@/components/Dashboard/Order/DataTable/Columns";
+import { ModalForm } from "@/components/Dashboard/Order/ModalForm/ModalForm";
 
 export default function Order() {
-	const columns: TableColumnsType = [
-		{
-			title: "ID",
-			dataIndex: "id",
-		},
+	const columns: TableColumnsType = Columns();
+	const [search, setSearch] = useState("");
+	const [isModalOpen, setIsModalOpen] = useState(true);
 
-		{
-			title: "Статус",
-			dataIndex: "status",
-		},
-		{
-			title: "Дата",
-			dataIndex: "date",
-		},
+	const showEditModal = () => {
+		setIsModalOpen(true);
+	};
 
-		{
-			title: "Сумма",
-			dataIndex: "amount",
-		},
+	const showModal = () => {
+		setIsModalOpen(true);
+	};
 
-		{
-			title: "Заказчик",
-			dataIndex: "customer",
-		},
+	const handleCancel = () => {
+		setIsModalOpen(false);
+	};
 
-		{
-			title: "Номер телефона",
-			dataIndex: "phone",
-		},
+	const { data: orders = [], isLoading, isError } = useOrdersQuery();
+	const { data: orderProductOptions = [] } = useOrderProductOptionsQuery();
 
-		{
-			title: "E-mail",
-			dataIndex: "email",
-		},
-
-		{
-			title: "",
-			dataIndex: "actions",
-		},
-	];
+	const data = useMemo(
+		() =>
+			orders
+				.filter((order) => order.customer.toLowerCase().includes(search.toLowerCase()))
+				.map((order) => ({
+					number: order.number,
+					key: order.id,
+					id: order.id,
+					customer: order.customer,
+					phone: order.phone,
+					email: order.email,
+					date: order.createdAt.toLocaleDateString(),
+					contactWay: order.contactWay,
+					status: order.status,
+					optionsQuantity: orderProductOptions.filter((option) => option.orderId === order.id)
+						.length,
+				})),
+		[orders, search, orderProductOptions]
+	);
 
 	return (
 		<>
-			<Header />
-			<DataTable columns={columns} />
+			<Header handleSearch={(value) => setSearch(value)} showModal={showModal} />
+			<DataTable columns={columns} dataSource={data} />
+			<Modal
+				width={800}
+				loading={isLoading}
+				footer={null}
+				open={isModalOpen}
+				onCancel={handleCancel}
+				destroyOnHidden
+			>
+				<ModalForm />
+			</Modal>
 		</>
 	);
 }
