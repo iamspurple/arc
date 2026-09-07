@@ -1,17 +1,9 @@
-import {
-	Form,
-	Input,
-	Typography,
-	InputNumber,
-	Flex,
-	Button,
-	Select,
-	Image,
-	SelectProps,
-} from "antd";
+import { Form, Input, Typography, InputNumber, Button, Select, Image, SelectProps } from "antd";
 
 import { DeleteOutlined } from "@ant-design/icons";
 import type { FormListFieldData, FormInstance } from "antd";
+
+import styles from "./Step2.module.scss";
 
 type OptionFormProps = {
 	optionField: FormListFieldData;
@@ -45,10 +37,7 @@ export const OptionForm = (props: OptionFormProps) => {
 	const { optionField, allSizes, remove, index, form } = props;
 
 	const option = form.getFieldValue(["options", optionField.name]);
-	console.log(option);
-
 	const optionId = Form.useWatch(["options", optionField.name, "optionId"], form);
-
 	const sizeName = Form.useWatch(["options", optionField.name, "sizeId"], form);
 
 	const sizes: Record<string, number> = {};
@@ -61,47 +50,56 @@ export const OptionForm = (props: OptionFormProps) => {
 	});
 
 	return (
-		<Form.Item>
-			<Flex justify="space-between" key={optionId}>
-				<Flex justify="space-between">
-					<Image
-						width={50}
-						height={50}
-						src={`/static/products/${option.image}`}
-						alt={`${option?.productName} ${option.optionName}`}
-					/>
-					<Flex vertical>
-						<Typography.Text strong style={{ textWrap: "nowrap" }}>
-							{option.productName} | {option.optionName}
-						</Typography.Text>
-						<Typography.Text type="secondary">{option.article}</Typography.Text>
-					</Flex>
-					<Form.Item hidden name={[optionField.name, "optionId"]}>
-						<Input hidden />
-					</Form.Item>
-					<Flex>
-						<Form.Item name={[optionField.name, "sizeId"]}>
-							<Select placeholder="Выберите размер" options={sizesOptions} />
-						</Form.Item>
-						<Form.Item name={[optionField.name, "quantity"]}>
-							<InputNumber
-								disabled={!sizeName}
-								min={1}
-								placeholder="0"
-								mode="spinner"
-								max={sizes[sizeName]}
-							/>
-						</Form.Item>
-					</Flex>
-				</Flex>
-				<Button
-					danger
-					type="text"
-					title="Удалить"
-					icon={<DeleteOutlined />}
-					onClick={() => remove(index)}
+		<div className={styles.optionRow} key={optionId}>
+			<Image
+				width={50}
+				height={50}
+				src={`/static/products/${option.image}`}
+				alt={`${option?.productName} ${option.optionName}`}
+				preview={false}
+			/>
+
+			<div className={styles.optionInfo}>
+				<Typography.Text strong className={styles.optionTitle}>
+					{option.productName} | {option.optionName}
+				</Typography.Text>
+				<Typography.Text type="secondary">{option.article}</Typography.Text>
+			</div>
+
+			<Form.Item hidden name={[optionField.name, "optionId"]}>
+				<Input hidden />
+			</Form.Item>
+
+			<Form.Item
+				rules={[{ required: true, message: "Выберите размер" }]}
+				name={[optionField.name, "sizeId"]}
+				className={`${styles.optionField} ${styles.optionControl}`}
+			>
+				<Select placeholder="Выберите размер" options={sizesOptions} />
+			</Form.Item>
+
+			<Form.Item
+				rules={[{ required: true, message: "Укажите количество" }]}
+				name={[optionField.name, "quantity"]}
+				className={`${styles.optionField} ${styles.optionControl}`}
+			>
+				<InputNumber
+					required
+					disabled={!sizeName}
+					min={1}
+					placeholder="0"
+					mode="spinner"
+					max={sizes[sizeName]}
 				/>
-			</Flex>
-		</Form.Item>
+			</Form.Item>
+
+			<Button
+				danger
+				type="text"
+				title="Удалить"
+				icon={<DeleteOutlined />}
+				onClick={() => remove(index)}
+			/>
+		</div>
 	);
 };

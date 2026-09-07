@@ -1,13 +1,14 @@
-import { Flex, Image, Typography } from "antd";
+import { Image, Typography } from "antd";
 
 import type { Option } from "./Step2";
+import styles from "./Step2.module.scss";
 
 type DropdownListProps = {
 	item: Option;
 	add: (obj: {
 		optionId: string;
 		sizeId: "";
-		quantity: 0;
+		quantity: null;
 		productName: string;
 		optionName: string;
 		image: string;
@@ -18,14 +19,13 @@ type DropdownListProps = {
 export const DropdownList = (props: DropdownListProps) => {
 	const { item, add } = props;
 	return (
-		<Flex
-			gap="middle"
-			align="flex-start"
+		<div
+			className={styles.dropdownItem}
 			onClick={() => {
 				add({
 					optionId: item.id,
 					sizeId: "",
-					quantity: 0,
+					quantity: null,
 					productName: item.productName,
 					optionName: item.optionName,
 					image: item.image,
@@ -38,15 +38,16 @@ export const DropdownList = (props: DropdownListProps) => {
 				height={50}
 				src={`/static/products/${item?.image}`}
 				alt={`${item?.productName} ${item?.optionName}`}
+				preview={false}
 			/>
 
-			<Flex vertical flex="auto" style={{ minWidth: 0 }}>
-				<Flex justify="space-between" gap="small">
+			<div className={styles.dropdownInfo}>
+				<div className={styles.dropdownRow}>
 					<Typography.Text strong>{item?.productName}</Typography.Text>
 					<Typography.Text type="secondary">{item?.article}</Typography.Text>
-				</Flex>
+				</div>
 				<Typography.Text type="secondary">{item?.optionName}</Typography.Text>
-			</Flex>
-		</Flex>
+			</div>
+		</div>
 	);
 };

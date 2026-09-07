@@ -9,7 +9,7 @@ import { Step2 } from "./Step2";
 
 export const ModalForm = () => {
 	const queryClient = useQueryClient();
-	const [step, setStep] = useState(1);
+	const [step, setStep] = useState(0);
 	const [orderId, setOrderId] = useState("");
 
 	const onOrderSubmit = async (data: OrderCreateEntity) => {
@@ -38,7 +38,7 @@ export const ModalForm = () => {
 				]}
 			/>
 			{step === 0 && <Step1 onSubmit={onOrderSubmit} />}
-			{step === 1 && <Step2 />}
+			{step === 1 && <Step2 orderId={orderId} />}
 		</div>
 	);
 };
