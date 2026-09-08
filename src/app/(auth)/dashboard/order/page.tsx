@@ -3,6 +3,9 @@
 import type { TableColumnsType } from "antd";
 import { Modal } from "antd";
 
+import { Loading } from "@/components/Dashboard/Loading";
+import { Error } from "@/components/Dashboard/Error";
+
 import { useMemo, useState } from "react";
 import { useOrdersQuery, useOrderProductOptionsQuery } from "@/entities/order/api/useOrdersQuery";
 
@@ -12,12 +15,13 @@ import { Columns } from "@/components/Dashboard/Order/DataTable/Columns";
 import { ModalForm } from "@/components/Dashboard/Order/ModalForm/ModalForm";
 
 export default function Order() {
-	const columns: TableColumnsType = Columns();
+	const [orderId, setOrderId] = useState<string | null>(null);
 	const [search, setSearch] = useState("");
-	const [isModalOpen, setIsModalOpen] = useState(true);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
-	const showEditModal = () => {
+	const showEditModal = (id: string) => {
 		setIsModalOpen(true);
+		setOrderId(id);
 	};
 
 	const showModal = () => {
@@ -27,6 +31,8 @@ export default function Order() {
 	const handleCancel = () => {
 		setIsModalOpen(false);
 	};
+
+	const columns: TableColumnsType = Columns(showEditModal);
 
 	const { data: orders = [], isLoading, isError } = useOrdersQuery();
 	const { data: orderProductOptions = [] } = useOrderProductOptionsQuery();
@@ -50,6 +56,9 @@ export default function Order() {
 				})),
 		[orders, search, orderProductOptions]
 	);
+
+	if (isLoading) return <Loading />;
+	if (isError) return <Error />;
 
 	return (
 		<>

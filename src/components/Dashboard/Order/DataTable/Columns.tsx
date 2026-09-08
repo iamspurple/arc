@@ -5,8 +5,8 @@ import type { TableColumnsType } from "antd";
 
 import ActionPopover from "@/components/Dashboard/ActionPopover";
 
-export const Columns = () => {
-	const { handleOpenSider } = useContentSider();
+export const Columns = (showEditModal: (id: string) => void) => {
+	const { handleOpenOrderSider } = useContentSider();
 
 	const columns: TableColumnsType = [
 		{
@@ -41,20 +41,23 @@ export const Columns = () => {
 		{
 			title: "Количество позиций",
 			dataIndex: "optionsQuantity",
-			render(quantity) {
-				return <Button type="link">{quantity}</Button>;
+			render(quantity, record) {
+				return (
+					<Button type="link" onClick={() => handleOpenOrderSider(record.id)}>
+						{quantity}
+					</Button>
+				);
 			},
+		},
+		{
+			title: "",
+			dataIndex: "actions",
+			render(_, record) {
+				return <ActionPopover id={record.id} showEditModal={showEditModal} />;
+			},
+			width: 70,
 		},
 	];
 
 	return columns;
 };
-
-// {
-// 			title: "",
-// 			dataIndex: "actions",
-// 			render(_, record) {
-// 				return <ActionPopover id={record.id} showEditModal={showEditModal} />;
-// 			},
-// 			width: 70,
-// 		},

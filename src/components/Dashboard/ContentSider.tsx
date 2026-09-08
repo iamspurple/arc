@@ -8,7 +8,19 @@ import {
 
 import { useContentSider } from "@/context/ContentSiderContext";
 
-import { Layout, Flex, Typography, Image, Tag, Collapse, Button } from "antd";
+import {
+	Layout,
+	Flex,
+	Typography,
+	Image,
+	Tag,
+	Collapse,
+	Button,
+	Divider,
+	Empty,
+	Skeleton,
+} from "antd";
+import { CloseOutlined } from "@ant-design/icons";
 
 const { Sider } = Layout;
 
@@ -16,15 +28,33 @@ const siderStyle: CSSProperties = {
 	color: "#101828",
 	backgroundColor: "#fff",
 	borderLeft: "1px solid #e4e7ec",
-	padding: "24px",
+	padding: 0,
 	overflowY: "auto",
 	position: "sticky",
+	top: 0,
+	height: "100vh",
 	scrollbarWidth: "thin",
 	scrollbarGutter: "stable",
 };
 
+const headerStyle: CSSProperties = {
+	position: "sticky",
+	top: 0,
+	zIndex: 2,
+	backgroundColor: "#fff",
+	padding: "16px 24px",
+	borderBottom: "1px solid #e4e7ec",
+};
+
+const bodyStyle: CSSProperties = {
+	padding: "20px 24px 32px",
+};
+
 const tagStyle: CSSProperties = {
-	fontSize: 16,
+	fontSize: 15,
+	margin: 0,
+	padding: "2px 10px",
+	borderRadius: 8,
 };
 
 export const ContentSider = () => {
@@ -40,59 +70,109 @@ export const ContentSider = () => {
 			return {
 				key: size.id,
 				label: (
-					<Flex justify="space-between">
-						<Tag style={tagStyle}>{size.size} </Tag>
-						<Tag style={tagStyle} color={"blue"}>
-							{size.quantity}шт.
+					<Flex justify="space-between" align="center" style={{ width: "100%" }}>
+						<Tag style={tagStyle}>{size.size}</Tag>
+						<Tag style={tagStyle} color="blue">
+							{size.quantity} шт.
 						</Tag>
 					</Flex>
 				),
 
-				children: <p>{size.parameters}</p>,
+				children: (
+					<Typography.Paragraph type="secondary" style={{ margin: 0 }}>
+						{size.parameters || "—"}
+					</Typography.Paragraph>
+				),
 			};
 		});
 
 	if (!isSiderOpen) {
 		return null;
 	}
+
 	return (
 		<Sider width={"25%"} style={siderStyle}>
-			<Flex vertical>
-				<Button onClick={handleCloseSider} style={{ marginBottom: 16 }}>
-					Закрыть
-				</Button>
-				<Flex wrap gap={4} style={{ marginBottom: 16 }}>
-					<Image.PreviewGroup>
-						{images?.map((image) => (
-							<Image
-								key={image.id}
-								alt="img"
-								width={80}
-								height={80}
-								style={{ objectFit: "cover" }}
-								src={`/static/products/${image.id}`}
-							/>
-						))}
-					</Image.PreviewGroup>
-				</Flex>
-				<Typography.Title level={4}>{option?.title}</Typography.Title>
-				<Typography.Text strong>Цена: {option?.price}</Typography.Text>
-				<Flex gap={10} align="center">
-					<Typography.Text strong>Цвет: {option?.colorName}</Typography.Text>
-					<div
-						style={{
-							width: 15,
-							height: 15,
-							backgroundColor: option?.hex,
-							borderRadius: "50%",
-							border: "1px solid #000000be",
-						}}
-					></div>
-				</Flex>
-
-				<Typography.Text strong>Размеры:</Typography.Text>
-				<Collapse ghost items={sizeItems} expandIconPlacement="end" />
+			<Flex align="center" justify="space-between" style={headerStyle}>
+				<Typography.Text strong style={{ fontSize: 16 }}>
+					Информация о товаре
+				</Typography.Text>
+				<Button
+					type="text"
+					shape="circle"
+					icon={<CloseOutlined />}
+					onClick={handleCloseSider}
+					aria-label="Закрыть"
+				/>
 			</Flex>
+
+			<div style={bodyStyle}>
+				{isLoading ? (
+					<Skeleton active avatar paragraph={{ rows: 6 }} />
+				) : isError ? (
+					<Empty description="Не удалось загрузить товар" />
+				) : (
+					<Flex vertical gap={16}>
+						{images && images.length > 0 && (
+							<Flex wrap gap={8}>
+								<Image.PreviewGroup>
+									{images.map((image) => (
+										<Image
+											key={image.id}
+											alt="img"
+											width={84}
+											height={84}
+											style={{
+												objectFit: "cover",
+												borderRadius: 10,
+												border: "1px solid #e4e7ec",
+											}}
+											src={`/static/products/${image.id}`}
+										/>
+									))}
+								</Image.PreviewGroup>
+							</Flex>
+						)}
+
+						<Flex vertical gap={4}>
+							<Typography.Title level={4} style={{ margin: 0 }}>
+								{option?.title}
+							</Typography.Title>
+							<Typography.Text style={{ fontSize: 18, fontWeight: 600, color: "#101828" }}>
+								{option?.price} ₽
+							</Typography.Text>
+						</Flex>
+
+						<Flex gap={10} align="center">
+							<Typography.Text type="secondary">Цвет</Typography.Text>
+							<Flex gap={8} align="center">
+								<div
+									style={{
+										width: 16,
+										height: 16,
+										backgroundColor: option?.hex,
+										borderRadius: "50%",
+										border: "1px solid #d0d5dd",
+									}}
+								/>
+								<Typography.Text strong>{option?.colorName}</Typography.Text>
+							</Flex>
+						</Flex>
+
+						<Divider style={{ margin: "4px 0" }} />
+
+						<Flex vertical gap={8}>
+							<Typography.Text strong style={{ fontSize: 15 }}>
+								Размеры
+							</Typography.Text>
+							{sizeItems && sizeItems.length > 0 ? (
+								<Collapse ghost items={sizeItems} expandIconPlacement="end" />
+							) : (
+								<Typography.Text type="secondary">Нет доступных размеров</Typography.Text>
+							)}
+						</Flex>
+					</Flex>
+				)}
+			</div>
 		</Sider>
 	);
 };

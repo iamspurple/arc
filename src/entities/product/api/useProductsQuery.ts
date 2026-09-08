@@ -2,7 +2,13 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { ProductImage, type Product, type ProductSize } from "@prisma/client";
-import { getProductById, getProducts, getProductSizes, getProductSizesByOptionId } from "../server";
+import {
+	getProductById,
+	getProducts,
+	getProductSizes,
+	getProductSizesByOptionId,
+	getProductSizeById,
+} from "../server";
 
 import type { ProductOption } from "@prisma/client";
 import { getProductOptionById, getProductOptions } from "../server";
@@ -58,6 +64,14 @@ export const useProductSizesQuery = (id: string) => {
 	return useQuery<ProductSize[] | null>({
 		queryKey: [PRODUCT_SIZE_QUERY_KEY, id],
 		queryFn: () => getProductSizesByOptionId(id),
+		staleTime: 60_000,
+	});
+};
+
+export const useProductSizeByIdQuery = (id: string) => {
+	return useQuery<ProductSize | null>({
+		queryKey: [PRODUCT_SIZE_QUERY_KEY, id],
+		queryFn: () => getProductSizeById(id),
 		staleTime: 60_000,
 	});
 };

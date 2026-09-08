@@ -7,13 +7,19 @@ type ContentSiderContextType = {
 	isSiderOpen: boolean;
 	handleOpenSider: (id: string) => void;
 	handleCloseSider: () => void;
+	orderId: string;
+	isOrderSiderOpen: boolean;
+	handleOpenOrderSider: (id: string) => void;
+	handleCloseOrderSider: () => void;
 };
 
 const ContentSiderContext = createContext<ContentSiderContextType | undefined>(undefined);
 
 export function ContentSiderProvider({ children }: { children: ReactNode }) {
 	const [optionId, setOptionId] = useState("");
+	const [orderId, setOrderId] = useState("");
 	const [isSiderOpen, setIsSiderOpen] = useState(false);
+	const [isOrderSiderOpen, setIsOrderSiderOpen] = useState(false);
 
 	const handleOpenSider = (id: string) => {
 		setOptionId(id);
@@ -25,6 +31,16 @@ export function ContentSiderProvider({ children }: { children: ReactNode }) {
 		setIsSiderOpen(false);
 	};
 
+	const handleOpenOrderSider = (id: string) => {
+		setOrderId(id);
+		setIsOrderSiderOpen(true);
+	};
+
+	const handleCloseOrderSider = () => {
+		setOrderId("");
+		setIsOrderSiderOpen(false);
+	};
+
 	return (
 		<ContentSiderContext.Provider
 			value={{
@@ -32,6 +48,10 @@ export function ContentSiderProvider({ children }: { children: ReactNode }) {
 				isSiderOpen,
 				handleOpenSider,
 				handleCloseSider,
+				orderId,
+				isOrderSiderOpen,
+				handleOpenOrderSider,
+				handleCloseOrderSider,
 			}}
 		>
 			{children}

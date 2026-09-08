@@ -4,6 +4,7 @@ import { Layout } from "antd";
 import { DashboardSider } from "./DashboardSider";
 import { ContentSider } from "@/components/Dashboard/ContentSider";
 import { ContentSiderProvider } from "@/context/ContentSiderContext";
+import { ContentSider as OrderContentSider } from "@/components/Dashboard/Order/ContentSider";
 
 const { Content } = Layout;
 
@@ -31,6 +32,7 @@ export const DashboardLayout = ({ children }: { children: React.ReactNode }) => 
 					<Content style={contentStyle}>{children}</Content>
 				</Layout>
 				<ContentSider />
+				<OrderContentSider />
 			</Layout>
 		</ContentSiderProvider>
 	);
