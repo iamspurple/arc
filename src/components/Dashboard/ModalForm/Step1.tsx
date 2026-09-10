@@ -35,7 +35,6 @@ export const Step1 = ({ onSubmit, initialValues, productId }: Step1Props) => {
 	} = useForm<ProductCreateEntity | ProductUpdateEntity>({
 		resolver: zodResolver(schema),
 		defaultValues: {
-			...(isEditMode && productId ? { id: productId } : {}),
 			name: "",
 			description: "",
 			composition: "",
