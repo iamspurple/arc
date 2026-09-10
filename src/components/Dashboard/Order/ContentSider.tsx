@@ -69,7 +69,7 @@ export const ContentSider = () => {
 				productName: products?.find((product) => product.id === option.productId)?.name as string,
 				optionName: option.title,
 				article: option.article,
-				image: images?.filter((image) => image.optionId === option.id)[0].id as string,
+				image: images?.find((image) => image.optionId === option.id)?.id as string,
 			};
 		});
 	}, [products, options, images]);
@@ -80,6 +80,7 @@ export const ContentSider = () => {
 			const size = sizes?.find((s) => s.id === orderOption.sizeId);
 			return {
 				...item,
+				id: orderOption.id,
 				quantity: orderOption.quantity,
 				size: size?.size,
 			};
@@ -88,7 +89,7 @@ export const ContentSider = () => {
 
 	const totalQuantity = useMemo(
 		() => orderItems?.reduce((sum, item) => sum + (item.quantity ?? 0), 0) ?? 0,
-		[orderItems],
+		[orderItems]
 	);
 
 	if (!isOrderSiderOpen) {
@@ -121,9 +122,7 @@ export const ContentSider = () => {
 				) : orderItems && orderItems.length > 0 ? (
 					<Flex vertical gap={12}>
 						<Flex justify="space-between" align="center">
-							<Typography.Text type="secondary">
-								Товаров: {orderItems.length}
-							</Typography.Text>
+							<Typography.Text type="secondary">Товаров: {orderItems.length}</Typography.Text>
 							<Tag color="blue" style={{ margin: 0, borderRadius: 8 }}>
 								Всего {totalQuantity} шт.
 							</Tag>

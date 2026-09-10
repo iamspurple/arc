@@ -72,7 +72,7 @@ export default function Order() {
 				onCancel={handleCancel}
 				destroyOnHidden
 			>
-				<ModalForm />
+				<ModalForm externalOrderId={orderId || undefined} />
 			</Modal>
 		</>
 	);

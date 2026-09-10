@@ -40,6 +40,10 @@ export const OptionForm = (props: OptionFormProps) => {
 	const optionId = Form.useWatch(["options", optionField.name, "optionId"], form);
 	const sizeName = Form.useWatch(["options", optionField.name, "sizeId"], form);
 
+	// При удалении строки antd успевает перерендерить удаляемый компонент до размонтирования,
+	// и getFieldValue по устаревшему индексу возвращает undefined — без этой проверки падаем на option.image
+	if (!option) return null;
+
 	const sizes: Record<string, number> = {};
 	const sizesOptions: SelectProps["options"] = [];
 	allSizes?.forEach((size) => {

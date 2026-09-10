@@ -3,42 +3,79 @@ import { useState } from "react";
 import { Step1 } from "./Step1";
 import { useQueryClient } from "@tanstack/react-query";
 import { ORDERS_QUERY_KEY } from "@/entities/order/api/useOrdersQuery";
-import { OrderCreateEntity } from "@/entities/order/types/order";
-import { createOrder } from "@/entities/order/services/order";
+import { OrderCreateEntity, OrderUpdateEntity } from "@/entities/order/types/order";
+import { createOrder, updateOrderById } from "@/entities/order/services/order";
 import { Step2 } from "./Step2";
+import { useOrderFormValues } from "@/lib/useOrderFormValues";
 
-export const ModalForm = () => {
+export const ModalForm = ({ externalOrderId }: { externalOrderId: string | undefined }) => {
 	const queryClient = useQueryClient();
 	const [step, setStep] = useState(0);
-	const [orderId, setOrderId] = useState("");
+	const [internalOrderId, setInternalOrderId] = useState("");
+	const orderId = externalOrderId || internalOrderId;
 
-	const onOrderSubmit = async (data: OrderCreateEntity) => {
+	const isEditMode = !!orderId;
+
+	const onOrderSubmit = async (data: OrderCreateEntity | OrderUpdateEntity) => {
 		try {
-			const order = await createOrder(data);
-			setOrderId(order.id);
-			setStep(1);
-		} catch (e) {
-			console.error(e);
-			message.error("Не удалось создать заказ");
+			if (isEditMode && orderId) {
+				await updateOrderById(data as OrderUpdateEntity);
+				message.success("Контакты покупателя обновлены");
+				setStep(1);
+			} else {
+				const order = await createOrder(data as OrderCreateEntity);
+				setInternalOrderId(order.id);
+				setStep(1);
+				message.success("Заказ создан, контакты покупателя сохранены");
+			}
+		} catch {
+			message.error(isEditMode ? "Не удалось обновить заказ" : "Не удалось создать заказ");
 		}
 		queryClient.invalidateQueries({ queryKey: [ORDERS_QUERY_KEY] });
-		console.log(data);
 	};
+
+	const formValues = useOrderFormValues(orderId);
+
+	const step1InitialValues = formValues
+		? {
+				id: formValues.id,
+				customer: formValues.customer,
+				phone: formValues.phone,
+				email: formValues.email,
+				contactWay: formValues.contactWay,
+				status: formValues.status,
+			}
+		: undefined;
+
+	const step2InitialValues = formValues
+		? {
+				options: formValues.options,
+			}
+		: undefined;
 
 	return (
 		<div style={{ paddingTop: 30, display: "flex", flexDirection: "column", gap: 25 }}>
 			<Steps
 				current={step}
 				items={[
-					{ title: "Шаг 1 ", content: "Контакты заказчика" },
+					{ title: "Шаг 1 ", content: "Контакты покупателя" },
 					{
 						title: "Шаг 2",
 						content: "Позиции заказа",
 					},
 				]}
 			/>
-			{step === 0 && <Step1 onSubmit={onOrderSubmit} />}
-			{step === 1 && <Step2 orderId={orderId} />}
+			{step === 0 && (
+				<Step1
+					initialValues={step1InitialValues}
+					onSubmit={onOrderSubmit}
+					isEditMode={isEditMode}
+					orderId={orderId}
+				/>
+			)}
+			{step === 1 && (
+				<Step2 initialValues={step2InitialValues} orderId={orderId} isEditMode={isEditMode} />
+			)}
 		</div>
 	);
 };

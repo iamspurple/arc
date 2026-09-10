@@ -1,5 +1,5 @@
 import { Form, Input, Typography, Listy, Button, message } from "antd";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import type { ChangeEvent } from "react";
 
 import {
@@ -14,6 +14,13 @@ import styles from "./Step2.module.scss";
 
 import { useSubmitHandlers } from "@/lib/order/submitHandlers";
 
+import type { FormValues } from "@/lib/useOrderFormValues";
+import { OrderProductOptionCreateEntity } from "@/entities/order/types/order";
+
+import { useQueryClient } from "@tanstack/react-query";
+
+import { ORDER_PRODUCT_OPTIONS_QUERY_KEY } from "@/entities/order/api/useOrdersQuery";
+
 export interface Option {
 	id: string;
 	productName: string;
@@ -22,15 +29,23 @@ export interface Option {
 	image: string;
 }
 
+type FormOptions = Omit<OrderProductOptionCreateEntity, "orderId"> & { id?: string };
+
 export type FormData = {
-	options: {
-		optionId: string;
-		sizeId: string;
-		quantity: number;
-	}[];
+	options: FormOptions[];
 };
 
-export const Step2 = (orderId: { orderId: string }) => {
+export type Step2Props = {
+	orderId: string;
+	isEditMode: boolean;
+	initialValues: Pick<FormValues, "options"> | undefined;
+};
+
+export const Step2 = (props: Step2Props) => {
+	const { orderId, isEditMode, initialValues } = props;
+
+	const queryClient = useQueryClient();
+
 	const [search, setSearch] = useState("");
 	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
 		setSearch(e.target.value);
@@ -49,7 +64,7 @@ export const Step2 = (orderId: { orderId: string }) => {
 				productName: products?.find((product) => product.id === option.productId)?.name as string,
 				optionName: option.title,
 				article: option.article,
-				image: images?.filter((image) => image.optionId === option.id)[0].id as string,
+				image: images?.find((image) => image.optionId === option.id)?.id as string,
 			};
 		});
 	}, [products, options, images]);
@@ -66,16 +81,38 @@ export const Step2 = (orderId: { orderId: string }) => {
 		);
 	}, [items, search]);
 
-	const { handleCreateSubmit } = useSubmitHandlers(orderId);
+	const { handleCreateSubmit, handleUpdateSubmit } = useSubmitHandlers(orderId);
 
 	const handleSubmit = async (data: FormData) => {
 		try {
-			await handleCreateSubmit(data);
-			message.success("Позиции в заказе сохранены");
+			if (isEditMode && orderId) {
+				await handleUpdateSubmit(data, initialValues);
+				message.success("Позиции в заказе обновлены");
+			} else {
+				await handleCreateSubmit(data);
+				message.success("Позиции в заказе сохранены");
+			}
+			queryClient.invalidateQueries({ queryKey: [ORDER_PRODUCT_OPTIONS_QUERY_KEY] });
 		} catch {
-			message.error("Не удалось сохранить позиции в заказе");
+			message.error(
+				isEditMode
+					? "Не удалось обновить позиции в заказе"
+					: "Не удалось сохранить позиции в заказе"
+			);
 		}
 	};
+
+	const defaultValues: Pick<FormValues, "options"> = useMemo(() => {
+		return { options: [] };
+	}, []);
+
+	useEffect(() => {
+		if (initialValues) {
+			form.setFieldsValue(initialValues);
+		} else {
+			form.setFieldsValue(defaultValues);
+		}
+	}, [form, initialValues, defaultValues]);
 
 	return (
 		<div className={styles.step}>

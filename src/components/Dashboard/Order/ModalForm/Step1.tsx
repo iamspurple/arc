@@ -1,15 +1,42 @@
 import { Form, Input, Select, Button } from "antd";
 import { useForm, Controller } from "react-hook-form";
-import { OrderCreateEntity, orderEntityCreateSchema } from "@/entities/order/types/order";
+import {
+	OrderCreateEntity,
+	OrderUpdateEntity,
+	orderEntityCreateSchema,
+	orderEntityUpdateSchema,
+} from "@/entities/order/types/order";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
+import type { FormValues } from "@/lib/useOrderFormValues";
 
-export const Step1 = ({ onSubmit }: { onSubmit: (data: OrderCreateEntity) => Promise<void> }) => {
+export const Step1 = ({
+	onSubmit,
+	orderId,
+	isEditMode,
+	initialValues,
+}: {
+	onSubmit: (data: OrderCreateEntity | OrderUpdateEntity) => Promise<void>;
+	orderId: string | undefined;
+	isEditMode: boolean;
+	initialValues?: {
+		id?: string | undefined;
+		customer: string;
+		phone: string;
+		email: string;
+		contactWay: "EMAIL" | "WHATSAPP" | "TELEGRAM" | undefined;
+		status: "NEW" | "PROCESSING" | "COMPLETE" | "CANCELLED" | undefined;
+	};
+}) => {
+	const schema = isEditMode ? orderEntityUpdateSchema : orderEntityCreateSchema;
+
 	const {
 		control,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<OrderCreateEntity>({
-		resolver: zodResolver(orderEntityCreateSchema),
+		reset,
+	} = useForm<OrderCreateEntity | OrderUpdateEntity>({
+		resolver: zodResolver(schema),
 		defaultValues: {
 			customer: "",
 			phone: "",
@@ -18,6 +45,18 @@ export const Step1 = ({ onSubmit }: { onSubmit: (data: OrderCreateEntity) => Pro
 			contactWay: "TELEGRAM",
 		},
 	});
+
+	useEffect(() => {
+		if (initialValues) {
+			reset({
+				...(isEditMode && orderId ? { id: orderId } : {}),
+				...initialValues,
+			});
+		}
+		return () => {
+			reset();
+		};
+	}, [reset, initialValues, isEditMode, orderId]);
 
 	return (
 		<Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
