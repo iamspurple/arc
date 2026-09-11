@@ -11,6 +11,8 @@ import { Error } from "@/components/Dashboard/Error";
 import { Header } from "@/components/Dashboard/Header";
 import { Loading } from "@/components/Dashboard/Loading";
 import { ModalForm } from "@/components/Dashboard/ModalForm/ModalForm";
+import { CloseConfirm } from "@/components/Dashboard/CloseConfirm";
+
 import { useFormValues } from "@/lib/useFormValues";
 
 export default function Product() {
@@ -19,6 +21,7 @@ export default function Product() {
 
 	const [search, setSearch] = useState("");
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
 	const showEditModal = (productId: string) => {
 		setIsModalOpen(true);
@@ -31,7 +34,16 @@ export default function Product() {
 	};
 
 	const handleCancel = () => {
+		setIsConfirmOpen(true);
+	};
+
+	const handleCloseConfirm = () => {
+		setIsConfirmOpen(false);
+	};
+
+	const handleCloseAll = () => {
 		setIsModalOpen(false);
+		setIsConfirmOpen(false);
 		setProductId(null);
 	};
 
@@ -72,15 +84,23 @@ export default function Product() {
 				open={isModalOpen}
 				onCancel={handleCancel}
 				destroyOnHidden
+				width={550}
 			>
 				<ModalForm
 					key={productId || "create"}
 					formValues={formValues}
 					isLoading={isFormValuesLoading}
 					productId={productId || undefined}
-					handleClose={handleCancel}
+					handleClose={handleCloseAll}
 				/>
 			</Modal>
+			{isConfirmOpen && (
+				<CloseConfirm
+					isConfirmOpen={isConfirmOpen}
+					handleCloseAll={handleCloseAll}
+					handleCloseConfirm={handleCloseConfirm}
+				/>
+			)}
 		</>
 	);
 }

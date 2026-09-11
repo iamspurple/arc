@@ -92,7 +92,7 @@ export const ModalForm = ({
 					{ title: "Шаг 1 ", content: formValues ? "Редактирование модели" : "Создание модели" },
 					{
 						title: "Шаг 2",
-						content: formValues ? "Редактирование вариантов" : "Создание вариантов",
+						content: formValues ? "Редактирование позиций" : "Создание позиций",
 					},
 				]}
 			/>

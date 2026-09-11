@@ -100,13 +100,13 @@ export const Step2 = (props: Step2Props) => {
 				await handleUpdateSubmit(initialValues, data);
 				setTimeout(() => {
 					handleClose();
-					message.success("Варианты успешно обновлены");
+					message.success("Позиции успешно обновлены");
 				}, 1500);
 			} else {
 				await handleCreateSubmit(data);
 				setTimeout(() => {
 					handleClose();
-					message.success("Варианты успешно созданы");
+					message.success("Позиции успешно созданы");
 				}, 1500);
 			}
 
@@ -115,7 +115,7 @@ export const Step2 = (props: Step2Props) => {
 			form.resetFields();
 		} catch (e) {
 			console.error(e);
-			message.error(isEditMode ? "Не удалось обновить варианты" : "Не удалось создать варианты");
+			message.error(isEditMode ? "Не удалось обновить позиции" : "Не удалось создать позиции");
 		}
 	};
 
@@ -150,7 +150,7 @@ export const Step2 = (props: Step2Props) => {
 								return (
 									<div key={field.key}>
 										<Flex gap={20}>
-											<Typography.Title level={4}>Вариант {index + 1}</Typography.Title>
+											<Typography.Title level={4}>Позиция {index + 1}</Typography.Title>
 											{!isLast && (
 												<Button
 													danger
@@ -177,7 +177,7 @@ export const Step2 = (props: Step2Props) => {
 											<Input />
 										</Form.Item>
 										<Form.Item
-											label="Название варианта"
+											label="Название позиции"
 											name={[field.name, "title"]}
 											validateDebounce={validateDebounceMs}
 											rules={[
@@ -286,7 +286,7 @@ export const Step2 = (props: Step2Props) => {
 										.catch((err) => err);
 								}}
 							>
-								Добавить ещё один вариант
+								Добавить ещё одну позицию
 							</Button>
 						</>
 					)}

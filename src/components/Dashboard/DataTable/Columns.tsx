@@ -10,11 +10,6 @@ export const Columns = (showEditModal: (id: string) => void) => {
 
 	const columns: TableColumnsType = [
 		{
-			title: "ID",
-			dataIndex: "id",
-		},
-
-		{
 			title: "Наименование модели",
 			dataIndex: "name",
 		},
@@ -34,7 +29,7 @@ export const Columns = (showEditModal: (id: string) => void) => {
 		},
 
 		{
-			title: "Варианты",
+			title: "Позиции",
 			dataIndex: "options",
 			render(options: { title: string; id: string }[]) {
 				return (

@@ -39,10 +39,11 @@ export type Step2Props = {
 	orderId: string;
 	isEditMode: boolean;
 	initialValues: Pick<FormValues, "options"> | undefined;
+	handleClose: () => void;
 };
 
 export const Step2 = (props: Step2Props) => {
-	const { orderId, isEditMode, initialValues } = props;
+	const { orderId, isEditMode, initialValues, handleClose } = props;
 
 	const queryClient = useQueryClient();
 
@@ -87,10 +88,16 @@ export const Step2 = (props: Step2Props) => {
 		try {
 			if (isEditMode && orderId) {
 				await handleUpdateSubmit(data, initialValues);
-				message.success("Позиции в заказе обновлены");
+				setTimeout(() => {
+					handleClose();
+					message.success("Позиции в заказе успешно обновлены");
+				}, 1500);
 			} else {
 				await handleCreateSubmit(data);
-				message.success("Позиции в заказе сохранены");
+				setTimeout(() => {
+					handleClose();
+					message.success("Позиции в заказе успешно сохранены");
+				}, 1500);
 			}
 			queryClient.invalidateQueries({ queryKey: [ORDER_PRODUCT_OPTIONS_QUERY_KEY] });
 		} catch {

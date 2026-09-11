@@ -13,11 +13,13 @@ import { DataTable } from "@/components/Dashboard/Order/DataTable/DataTable";
 import { Header } from "@/components/Dashboard/Header";
 import { Columns } from "@/components/Dashboard/Order/DataTable/Columns";
 import { ModalForm } from "@/components/Dashboard/Order/ModalForm/ModalForm";
+import { CloseConfirm } from "@/components/Dashboard/CloseConfirm";
 
 export default function Order() {
 	const [orderId, setOrderId] = useState<string | null>(null);
 	const [search, setSearch] = useState("");
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
 	const showEditModal = (id: string) => {
 		setIsModalOpen(true);
@@ -26,10 +28,21 @@ export default function Order() {
 
 	const showModal = () => {
 		setIsModalOpen(true);
+		setOrderId(null);
 	};
 
 	const handleCancel = () => {
+		setIsConfirmOpen(true);
+	};
+
+	const handleCloseConfirm = () => {
+		setIsConfirmOpen(false);
+	};
+
+	const handleCloseAll = () => {
 		setIsModalOpen(false);
+		setIsConfirmOpen(false);
+		setOrderId(null);
 	};
 
 	const columns: TableColumnsType = Columns(showEditModal);
@@ -72,8 +85,15 @@ export default function Order() {
 				onCancel={handleCancel}
 				destroyOnHidden
 			>
-				<ModalForm externalOrderId={orderId || undefined} />
+				<ModalForm handleClose={handleCloseAll} externalOrderId={orderId || undefined} />
 			</Modal>
+			{isConfirmOpen && (
+				<CloseConfirm
+					isConfirmOpen={isConfirmOpen}
+					handleCloseAll={handleCloseAll}
+					handleCloseConfirm={handleCloseConfirm}
+				/>
+			)}
 		</>
 	);
 }

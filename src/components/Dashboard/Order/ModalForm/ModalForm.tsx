@@ -8,7 +8,13 @@ import { createOrder, updateOrderById } from "@/entities/order/services/order";
 import { Step2 } from "./Step2";
 import { useOrderFormValues } from "@/lib/useOrderFormValues";
 
-export const ModalForm = ({ externalOrderId }: { externalOrderId: string | undefined }) => {
+export const ModalForm = ({
+	externalOrderId,
+	handleClose,
+}: {
+	externalOrderId: string | undefined;
+	handleClose: () => void;
+}) => {
 	const queryClient = useQueryClient();
 	const [step, setStep] = useState(0);
 	const [internalOrderId, setInternalOrderId] = useState("");
@@ -74,7 +80,12 @@ export const ModalForm = ({ externalOrderId }: { externalOrderId: string | undef
 				/>
 			)}
 			{step === 1 && (
-				<Step2 initialValues={step2InitialValues} orderId={orderId} isEditMode={isEditMode} />
+				<Step2
+					handleClose={handleClose}
+					initialValues={step2InitialValues}
+					orderId={orderId}
+					isEditMode={isEditMode}
+				/>
 			)}
 		</div>
 	);
