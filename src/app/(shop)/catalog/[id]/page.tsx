@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import style from "./product.module.scss";
 
-import { formatPrice } from "@/services";
+import { formatPrice } from "@/lib";
 
 type Params = {
 	params: Promise<{ id: string }>;

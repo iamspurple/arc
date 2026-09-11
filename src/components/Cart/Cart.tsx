@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
-import { useCart } from "@/context/CartContext";
-import { formatPrice } from "@/services";
+import { useCartData, useCartUI, useCartActions } from "@/context/CartContext";
+import { formatPrice } from "@/lib";
 import { routes } from "@/constants/routes";
 
 import CartItem from "./CartItem";
@@ -12,7 +12,9 @@ import CartItem from "./CartItem";
 import styles from "./Cart.module.scss";
 
 const Cart = () => {
-	const { items, isOpen, closeCart, updateQuantity, clearCart, totalPrice } = useCart();
+	const { items, totalPrice } = useCartData();
+	const { isOpen } = useCartUI();
+	const { closeCart, updateQuantity, clearCart } = useCartActions();
 	const [isClosing, setIsClosing] = useState(false);
 	const timerID = useRef<NodeJS.Timeout | null>(null);
 

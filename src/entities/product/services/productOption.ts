@@ -5,10 +5,19 @@ import {
 } from "@/entities/product/types/product";
 import { ProductOption } from "@prisma/client";
 import { productOptionRepository } from "@/entities/product/repositories/productOption";
+import { deleteImagesByOptionId } from "./productImage";
 
 export const getProductOptions = async (): Promise<ProductOption[]> => {
 	try {
 		return await productOptionRepository.productOptionList();
+	} catch {
+		throw new Error("Ошибка");
+	}
+};
+
+export const getProductOptionsByProductId = async (productId: string): Promise<ProductOption[]> => {
+	try {
+		return await productOptionRepository.productOptionListByProductId(productId);
 	} catch {
 		throw new Error("Ошибка");
 	}
@@ -25,7 +34,7 @@ export const getProductOptionById = async (
 };
 
 export const createProductOption = async (
-	productOption: ProductOptionCreateEntity
+	productOption: Omit<ProductOptionCreateEntity, "images">
 ): Promise<ProductOption> => {
 	try {
 		return await productOptionRepository.createProductOption(productOption);
@@ -46,6 +55,7 @@ export const updateProductOptionById = async (
 
 export const deleteProductOptionById = async (productOptionId: string) => {
 	try {
+		await deleteImagesByOptionId(productOptionId);
 		await productOptionRepository.deleteProductOption(productOptionId);
 		return true;
 	} catch {

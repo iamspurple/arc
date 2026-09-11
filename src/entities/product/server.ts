@@ -15,6 +15,7 @@ export {
 export {
 	getProductSizes,
 	getProductSizeById,
+	getProductSizesByOptionId,
 	createProductSize,
 	updateProductSizeById,
 	deleteProductSizeById,
@@ -25,4 +26,5 @@ export {
 	createProductImage,
 	updateProductImageById,
 	deleteProductImageById,
+	createProductImages
 } from "./services/productImage";

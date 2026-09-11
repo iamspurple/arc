@@ -9,14 +9,27 @@ export const productOptionRepository = {
 	productOptionList: async (): Promise<ProductOption[]> => {
 		return prisma.productOption.findMany();
 	},
+	productOptionListByProductId: async (productId: string): Promise<ProductOption[]> => {
+		return prisma.productOption.findMany({
+			where: { productId },
+		});
+	},
 	productOptionFirst: async (productOptionId: string): Promise<ProductOption | null> => {
 		return prisma.productOption.findFirst({
 			where: { id: productOptionId },
 		});
 	},
-	createProductOption: async (productOption: ProductOptionCreateEntity): Promise<ProductOption> => {
+	createProductOption: async (
+		productOption: Omit<ProductOptionCreateEntity, "images">
+	): Promise<ProductOption> => {
+		const result = await prisma.$queryRaw<{ article: number }[]>`
+    SELECT nextval('product_article_seq') AS article
+  `;
+
+		const article = result[0].article.toString();
+
 		return prisma.productOption.create({
-			data: productOption,
+			data: { ...productOption, article },
 		});
 	},
 	updateProductOption: async (productOption: ProductOptionUpdateEntity): Promise<ProductOption> => {
