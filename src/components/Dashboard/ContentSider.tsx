@@ -8,6 +8,8 @@ import {
 
 import { useContentSider } from "@/context/ContentSiderContext";
 
+import { getProductImagePublicUrl } from "@/lib/productImageUpload";
+
 import {
 	Layout,
 	Flex,
@@ -126,7 +128,7 @@ export const ContentSider = () => {
 												borderRadius: 10,
 												border: "1px solid #e4e7ec",
 											}}
-											src={`/static/products/${image.id}`}
+											src={getProductImagePublicUrl(image.id)}
 										/>
 									))}
 								</Image.PreviewGroup>

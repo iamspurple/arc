@@ -12,6 +12,8 @@ import { useSubmitHandlers } from "@/lib/submitHandlers";
 import { SizeForm } from "./SizeForm";
 import { UIImageUpload } from "./UIImageUpload";
 
+import { getProductImagePublicUrl } from "@/lib/productImageUpload";
+
 type SizeFormData = Omit<ProductSizeCreateEntity, "order" | "optionId"> & {
 	id?: string;
 };
@@ -77,7 +79,7 @@ export const Step2 = (props: Step2Props) => {
 				const imgObj: ImgInitialType = {
 					id: image.id,
 					trigger: "old",
-					src: `/static/products/${image.id}`,
+					src: getProductImagePublicUrl(image.id),
 				};
 				imagesArray.push(imgObj);
 			});

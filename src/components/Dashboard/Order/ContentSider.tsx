@@ -15,6 +15,8 @@ import { CloseOutlined } from "@ant-design/icons";
 import { useMemo } from "react";
 import { CSSProperties } from "react";
 
+import { getProductImagePublicUrl } from "@/lib/productImageUpload";
+
 const siderStyle: CSSProperties = {
 	color: "#101828",
 	backgroundColor: "#fff",
@@ -133,7 +135,7 @@ export const ContentSider = () => {
 								<Image
 									width={56}
 									height={56}
-									src={`/static/products/${item?.image}`}
+									src={getProductImagePublicUrl(item?.image as string)}
 									alt={`${item?.productName} ${item?.optionName}`}
 									preview={false}
 									style={{

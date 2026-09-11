@@ -3,6 +3,8 @@ import { Image, Typography } from "antd";
 import type { Option } from "./Step2";
 import styles from "./Step2.module.scss";
 
+import { getProductImagePublicUrl } from "@/lib/productImageUpload";
+
 type DropdownListProps = {
 	item: Option;
 	add: (obj: {
@@ -36,7 +38,7 @@ export const DropdownList = (props: DropdownListProps) => {
 			<Image
 				width={50}
 				height={50}
-				src={`/static/products/${item?.image}`}
+				src={getProductImagePublicUrl(item?.image)}
 				alt={`${item?.productName} ${item?.optionName}`}
 				preview={false}
 			/>

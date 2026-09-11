@@ -2,6 +2,7 @@ import { Form, Input, Typography, InputNumber, Button, Select, Image, SelectProp
 
 import { DeleteOutlined } from "@ant-design/icons";
 import type { FormListFieldData, FormInstance } from "antd";
+import { getProductImagePublicUrl } from "@/lib/productImageUpload";
 
 import styles from "./Step2.module.scss";
 
@@ -40,8 +41,6 @@ export const OptionForm = (props: OptionFormProps) => {
 	const optionId = Form.useWatch(["options", optionField.name, "optionId"], form);
 	const sizeName = Form.useWatch(["options", optionField.name, "sizeId"], form);
 
-	// При удалении строки antd успевает перерендерить удаляемый компонент до размонтирования,
-	// и getFieldValue по устаревшему индексу возвращает undefined — без этой проверки падаем на option.image
 	if (!option) return null;
 
 	const sizes: Record<string, number> = {};
@@ -58,7 +57,7 @@ export const OptionForm = (props: OptionFormProps) => {
 			<Image
 				width={50}
 				height={50}
-				src={`/static/products/${option.image}`}
+				src={getProductImagePublicUrl(option.image)}
 				alt={`${option?.productName} ${option.optionName}`}
 				preview={false}
 			/>
