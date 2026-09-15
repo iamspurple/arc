@@ -1,5 +1,15 @@
 import { useEffect, useMemo, useState, Fragment } from "react";
-import { Button, Flex, Form, Input, InputNumber, Typography, ColorPicker, message } from "antd";
+import {
+	Button,
+	Flex,
+	Form,
+	Input,
+	InputNumber,
+	Typography,
+	ColorPicker,
+	message,
+	Empty,
+} from "antd";
 import { DeleteOutlined, PlusSquareOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from "uuid";
 
@@ -137,6 +147,7 @@ export const Step2 = (props: Step2Props) => {
 				requiredMark="optional"
 				initialValues={initialValues || defaultValues}
 				onFinish={handleSubmit}
+				style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between" }}
 			>
 				<Form.List name="options">
 					{(fields, { add, remove }) => (
@@ -148,7 +159,7 @@ export const Step2 = (props: Step2Props) => {
 								const fieldKey = form.getFieldValue(["options", field.name, "fieldKey"]);
 
 								return (
-									<div key={field.key}>
+									<div style={{ width: "100%" }} key={field.key}>
 										<Flex gap={20}>
 											<Typography.Title level={4}>Позиция {index + 1}</Typography.Title>
 											{!isLast && (
@@ -232,7 +243,23 @@ export const Step2 = (props: Step2Props) => {
 												<ColorPicker format="hex" />
 											</Form.Item>
 										</Flex>
-										<Form.Item label="Изображения" rules={[{ required: true }]}>
+										<Form.Item
+											label="Изображения"
+											validateDebounce={validateDebounceMs}
+											rules={[
+												{ required: true },
+												{
+													validator: () => {
+														console.log(files[fieldKey].length);
+														if (files[fieldKey].length === 5) {
+															return Promise.resolve();
+														} else {
+															return Promise.reject(new Error("Изображений должно быть 5"));
+														}
+													},
+												},
+											]}
+										>
 											<UIImageUpload
 												initialData={files[fieldKey] ?? []}
 												setFiles={setFiles}
@@ -274,20 +301,40 @@ export const Step2 = (props: Step2Props) => {
 									</div>
 								);
 							})}
-							<Button
-								size="large"
-								color="primary"
-								variant="outlined"
-								style={{ marginRight: "7%" }}
-								onClick={() => {
-									form
-										.validateFields()
-										.then(() => add({ sizes: [{}], fieldKey: uuidv4() }))
-										.catch((err) => err);
-								}}
-							>
-								Добавить ещё одну позицию
-							</Button>
+							{fields.length == 0 ? (
+								<>
+									<Empty style={{ width: "100%" }} />
+
+									<Button
+										size="large"
+										color="primary"
+										variant="outlined"
+										style={{ marginRight: "7%" }}
+										onClick={() => {
+											form
+												.validateFields()
+												.then(() => add({ sizes: [{}], fieldKey: uuidv4() }))
+												.catch((err) => err);
+										}}
+									>
+										Создать позицию
+									</Button>
+								</>
+							) : (
+								<Button
+									size="large"
+									color="primary"
+									variant="outlined"
+									onClick={() => {
+										form
+											.validateFields()
+											.then(() => add({ sizes: [{}], fieldKey: uuidv4() }))
+											.catch((err) => err);
+									}}
+								>
+									Добавить ещё одну позицию
+								</Button>
+							)}
 						</>
 					)}
 				</Form.List>

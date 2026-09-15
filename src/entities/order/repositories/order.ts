@@ -6,7 +6,7 @@ export const orderRepository = {
 	orderList: async (): Promise<Order[]> => {
 		return prisma.order.findMany({
 			orderBy: {
-				createdAt: "asc",
+				createdAt: "desc",
 			},
 		});
 	},
