@@ -4,8 +4,8 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 
-import { useCart } from "@/context/CartContext";
-import { useMediaQuery } from "@/services/useMediaQuery";
+import { useCartActions } from "@/context/CartContext";
+import { useMediaQuery } from "@/lib/useMediaQuery";
 import { routes } from "@/constants/routes";
 
 import styles from "./Header.module.scss";
@@ -13,7 +13,7 @@ import styles from "./Header.module.scss";
 const CartButton = dynamic(() => import("./CartButton"), { ssr: false });
 
 const Header = () => {
-	const { openMenu } = useCart();
+	const { openMenu } = useCartActions();
 
 	const matches = useMediaQuery("(max-width: 768px)");
 

@@ -5,6 +5,7 @@ import {
 	type ProductUpdateEntity,
 } from "@/entities/product/types/product";
 import { Product } from "@prisma/client";
+import { deleteImagesByProductId } from "./productImage";
 
 export const getProducts = async (): Promise<Product[]> => {
 	try {
@@ -40,6 +41,7 @@ export const updateProductById = async (product: ProductUpdateEntity): Promise<P
 
 export const deleteProductById = async (productId: string) => {
 	try {
+		await deleteImagesByProductId(productId);
 		await productRepository.deleteProduct(productId);
 		return true;
 	} catch {

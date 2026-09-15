@@ -1,5 +1,5 @@
 import type { CartItem } from "@/context/CartContext";
-import { formatPrice } from "@/services";
+import { formatPrice } from "@/lib";
 import style from "./TotalList.module.scss";
 import Image from "next/image";
 

@@ -1,0 +1,116 @@
+.step {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.search {
+	position: relative;
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: 50px;
+
+	.button {
+		align-self: flex-end;
+	}
+}
+
+.dropdown {
+	position: absolute;
+	top: calc(100% + 4px);
+	left: 0;
+	right: 0;
+	z-index: 10;
+	max-height: 320px;
+	overflow-y: auto;
+	background: #fff;
+	border: 1px solid #d9d9d9;
+	border-radius: 8px;
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.dropdownItem {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 8px 12px;
+	cursor: pointer;
+	transition: background 0.2s;
+
+	&:hover {
+		background: #f5f5f5;
+	}
+
+	& + & {
+		border-top: 1px solid #f0f0f0;
+	}
+}
+
+.dropdownInfo {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	min-width: 0;
+}
+
+.dropdownRow {
+	display: flex;
+	justify-content: space-between;
+	gap: 8px;
+}
+
+.dropdownEmpty {
+	padding: 12px;
+	text-align: center;
+	color: rgba(0, 0, 0, 0.45);
+}
+
+.positions {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	min-height: 124px;
+	height: 100%;
+	max-height: 372px;
+	overflow-y: scroll;
+}
+
+.optionRow {
+	display: grid;
+	grid-template-columns: 50px minmax(0, 1fr) 160px 150px 40px;
+	align-items: center;
+	gap: 12px;
+	border: 1px solid #d9d9d9;
+
+	:global(.ant-form-item) {
+		margin-bottom: 0;
+	}
+}
+
+.optionInfo {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+
+	.optionTitle {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+}
+
+.optionControl {
+	width: 100%;
+	margin-bottom: 0;
+	:global(.ant-select),
+	:global(.ant-input-number) {
+		width: 100%;
+	}
+}
+
+.optionField {
+	margin-bottom: 0;
+}

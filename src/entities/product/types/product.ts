@@ -1,23 +1,29 @@
 import { z } from "zod";
 
 export const productEntityCreateSchema = z.object({
+	name: z
+		.string()
+		.min(1, { message: "Обязательно к заполнению" })
+		.max(255, { message: "Максимальная длина 255 символов" }),
+
 	description: z
 		.string()
-		.max(255, { message: "Максимальная длина 255 символов" })
-		.optional(),
+		.min(1, { message: "Обязательно к заполнению" })
+		.max(255, { message: "Максимальная длина 255 символов" }),
 	composition: z
 		.string()
-		.max(255, { message: "Максимальная длина 255 символов" })
-		.optional(),
+		.min(1, { message: "Обязательно к заполнению" })
+		.max(255, { message: "Максимальная длина 255 символов" }),
 	care: z
 		.string()
-		.max(255, { message: "Максимальная длина 255 символов" })
-		.optional(),
+		.min(1, { message: "Обязательно к заполнению" })
+		.max(255, { message: "Максимальная длина 255 символов" }),
 });
 export const productEntityUpdateSchema = z
 	.object({
 		id: z.string().min(1, { message: "Обязателен к заполнению" }),
-}).merge(productEntityCreateSchema);
+	})
+	.merge(productEntityCreateSchema);
 
 export const productOptionCreateEntitySchema = z.object({
 	title: z
@@ -32,21 +38,19 @@ export const productOptionCreateEntitySchema = z.object({
 		.number()
 		.min(1, { message: "Обязательно к заполнению" })
 		.max(2147483647, { message: "Максимальное значение 2147483647" }),
-	hex: z
-		.string()
-		.min(1, { message: "Обязательно к заполнению" })
-		.max(12, { message: "Максимальная длина 12 символов" }),
+	hex: z.string().min(1, { message: "Обязательно к заполнению" }),
 	colorName: z
 		.string()
 		.min(1, { message: "Обязательно к заполнению" })
 		.max(12, { message: "Максимальная длина 12 символов" }),
 	productId: z.string().min(1, { message: "Обязателен к заполнению" }),
-	imagesId: z.array(z.string()).optional(),
+	images: z.array(z.file()).optional(),
 });
 export const productOptionUpdateEntitySchema = z
 	.object({
 		id: z.string().min(1, { message: "Обязателен к заполнению" }),
-	}).merge(productOptionCreateEntitySchema);
+	})
+	.merge(productOptionCreateEntitySchema);
 
 export const productSizeCreateEntitySchema = z.object({
 	order: z
@@ -65,9 +69,7 @@ export const productSizeCreateEntitySchema = z.object({
 		.string()
 		.min(1, { message: "Обязательно к заполнению" })
 		.max(255, { message: "Максимальная длина 255 символов" }),
-	optionId: z
-		.string()
-		.min(1, { message: "Обязателен к заполнению" }),
+	optionId: z.string().min(1),
 });
 export const productSizeUpdateEntitySchema = z
 	.object({
@@ -81,6 +83,7 @@ export const productImageCreateEntitySchema = z.object({
 		.min(1, { message: "Обязательно к заполнению" })
 		.max(255, { message: "Максимальная длина 255 символов" }),
 	optionId: z.string().min(1, { message: "Обязателен к заполнению" }),
+	fileObj: z.file()
 });
 export const productImageUpdateEntitySchema = z
 	.object({
@@ -96,6 +99,3 @@ export type ProductSizeCreateEntity = z.infer<typeof productSizeCreateEntitySche
 export type ProductSizeUpdateEntity = z.infer<typeof productSizeUpdateEntitySchema>;
 export type ProductImageCreateEntity = z.infer<typeof productImageCreateEntitySchema>;
 export type ProductImageUpdateEntity = z.infer<typeof productImageUpdateEntitySchema>;
-
-
-

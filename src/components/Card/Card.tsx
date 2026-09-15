@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import style from "./Card.module.scss";
-import { formatPrice } from "@/services";
+import { formatPrice } from "@/lib";
 
 type ProductImage = {
 	id: string;

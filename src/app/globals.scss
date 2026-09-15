@@ -86,3 +86,10 @@ a {
 		transform: rotate(360deg);
 	}
 }
+
+
+.ant-color-picker,
+.ant-color-picker *,
+[class*="ant-color-picker"] {
+	touch-action: none !important;
+}
