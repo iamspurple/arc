@@ -1,7 +1,5 @@
+import { StatisticData } from "@/components/Dashboard/Statistic";
+
 export default function Dashboard() {
-	return (
-		<>
-			<h3>Главная страница панели управления</h3>
-		</>
-	);
+	return <StatisticData />;
 }
