@@ -9,7 +9,7 @@ import {
 	getProductOptionById,
 	getProductSizesByOptionId,
 } from "@/entities/product/server";
-import type { Product } from "@prisma/client";
+import type { Product } from "@/generated/prisma/client";
 import { getProductImageByOptionId } from "@/entities/product/services/productImage";
 import { getProductImagePublicUrl } from "@/lib/productImageUpload";
 

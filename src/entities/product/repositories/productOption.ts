@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { ProductOption } from "@prisma/client";
+import { ProductOption } from "@/generated/prisma/client";
 import {
 	ProductOptionCreateEntity,
 	ProductOptionUpdateEntity,

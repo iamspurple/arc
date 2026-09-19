@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { Product } from "@prisma/client";
+import { Product } from "@/generated/prisma/client";
 import { ProductCreateEntity, ProductUpdateEntity } from "@/entities/product/types/product";
 
 export const productRepository = {
