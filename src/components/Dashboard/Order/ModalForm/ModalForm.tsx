@@ -2,7 +2,7 @@ import { Steps, message } from "antd";
 import { useState } from "react";
 import { Step1 } from "./Step1";
 import { useQueryClient } from "@tanstack/react-query";
-import { ORDERS_QUERY_KEY } from "@/entities/order/api/useOrdersQuery";
+import { ORDERS_QUERY_KEY, ORDER_QUERY_KEY } from "@/entities/order/api/useOrdersQuery";
 import { OrderCreateEntity, OrderUpdateEntity } from "@/entities/order/types/order";
 import { createOrder, updateOrderById } from "@/entities/order/services/order";
 import { Step2 } from "./Step2";
@@ -38,6 +38,7 @@ export const ModalForm = ({
 			message.error(isEditMode ? "Не удалось обновить заказ" : "Не удалось создать заказ");
 		}
 		queryClient.invalidateQueries({ queryKey: [ORDERS_QUERY_KEY] });
+		queryClient.invalidateQueries({ queryKey: [ORDER_QUERY_KEY, orderId] });
 	};
 
 	const formValues = useOrderFormValues(orderId);
