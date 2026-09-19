@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { ProductImage } from "@prisma/client";
+import { ProductImage } from "@/generated/prisma/client";
 import {
 	ProductImageCreateEntity,
 	ProductImageUpdateEntity,
