@@ -1,26 +1,28 @@
 "use client";
-import Link from "next/link";
-
-import { DASHBOARD_ROUTES } from "@/shared/config/routes";
-
 import { Form, Input, Button } from "antd";
+import { useLogin } from './hooks/useLogin'
+import style from "./login.module.scss";
+
 
 export default function Login() {
+	const {handleSubmit, handleError, contextHolder} = useLogin();
+
 	return (
 		<>
-			<div
-				style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}
-			>
+			{contextHolder}
+			<div className={style.Login}>
 				<Form
-					name="loginForm"
-					style={{ maxWidth: 400, width: "55%" }}
+					name="login"
+					className={style.Form}
 					layout="vertical"
 					autoComplete="off"
+					onFinish={handleSubmit}
+					onFinishFailed={handleError}
 				>
 					<Form.Item
-						label="Username"
-						name="username"
-						rules={[{ required: true, message: "Please input your username!" }]}
+						label="Email"
+						name="email"
+						rules={[{ required: true, message: "Поле обязателен к заполнению!" }]}
 					>
 						<Input />
 					</Form.Item>
@@ -28,17 +30,15 @@ export default function Login() {
 					<Form.Item
 						label="Password"
 						name="password"
-						rules={[{ required: true, message: "Please input your password!" }]}
+						rules={[{ required: true, message: "Поле обязателен к заполнению!" }]}
 					>
 						<Input.Password />
 					</Form.Item>
 
 					<Form.Item label={null}>
-						<Link href={DASHBOARD_ROUTES.main}>
-							<Button type="primary" htmlType="submit">
-								Submit
-							</Button>
-						</Link>
+						<Button type="primary" htmlType="submit">
+							Войти
+						</Button>
 					</Form.Item>
 				</Form>
 			</div>
