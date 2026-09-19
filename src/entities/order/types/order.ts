@@ -1,12 +1,21 @@
 import { z } from "zod";
 import { Status, ContactWay } from "@prisma/client";
 
+const phoneSchema = z
+	.string()
+	.trim()
+	.transform((value) => value.replace(/[^\d+]/g, ""))
+	.refine((value) => /^(\+7|7|8)\d{10}$/.test(value), {
+		message: "Введите корректный номер телефона",
+	})
+	.transform((value) => `+7${value.replace(/\D/g, "").slice(-10)}`);
+
 export const orderEntityCreateSchema = z.object({
 	customer: z
 		.string()
 		.min(1, { message: "Обязательно к заполнению" })
 		.max(255, { message: "Максимальная длина 255 символов" }),
-	phone: z.e164(),
+	phone: phoneSchema,
 	email: z.email(),
 	contactWay: z.enum(ContactWay),
 	status: z.enum(Status),
