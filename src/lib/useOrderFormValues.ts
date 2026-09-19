@@ -9,7 +9,7 @@ import {
 } from "@/entities/product/api/useProductsQuery";
 import { useMemo } from "react";
 
-import type { Status, ContactWay } from "@prisma/client";
+import type { Status, ContactWay } from "@/generated/prisma/client";
 
 export type FormValues = {
 	id: string;
