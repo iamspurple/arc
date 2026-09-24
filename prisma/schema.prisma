@@ -1,10 +1,20 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                        String                      @id @default(cuid())
+  email                     String                      @unique
+  passwordHash              String
+  role                      Role                        @default(CUSTOMER)
+  createdAt                 DateTime                    @default(now()) @map("created_at")
+  updatedAt                 DateTime                    @updatedAt @map("updated_at")
+  @@map("user")
 }
 
 model Product {
@@ -102,4 +112,9 @@ enum ContactWay {
   EMAIL
   WHATSAPP
   TELEGRAM
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
 }
