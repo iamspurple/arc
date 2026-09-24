@@ -78,7 +78,13 @@ export const UIImageUpload = (props: UIImageUploadProps) => {
 				<Image.PreviewGroup>
 					{files.map((f) => (
 						<div className={styles.imageWrapper} key={f.id}>
-							<Image src={f.src} width={"100%"} height={"100%"} alt={f.id} />
+							<Image
+								src={f.src}
+								width={"100%"}
+								height={"100%"}
+								alt={f.id}
+								style={{ objectFit: "cover" }}
+							/>
 							<button title="Удалить" className={styles.delete} onClick={removeImg.bind(null, f)}>
 								<DeleteOutlined style={{ color: "black" }} />
 							</button>

@@ -79,7 +79,7 @@ export default function Product() {
 			<DataTable columns={columns} dataSource={data} />
 
 			<Modal
-				loading={isFormValuesLoading}
+				loading={isLoading}
 				footer={null}
 				open={isModalOpen}
 				onCancel={handleCancel}
@@ -87,7 +87,6 @@ export default function Product() {
 				width={550}
 			>
 				<ModalForm
-					key={productId || "create"}
 					formValues={formValues}
 					isLoading={isFormValuesLoading}
 					productId={productId || undefined}
