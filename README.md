@@ -8,6 +8,11 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 - PostgreSQL 14+
 - npm или yarn
 
+Для установки зависимостей в проект нужно использовать ```npm ci```
+```bash
+npm ci
+```
+
 ### Настройка базы данных
 
 Перед запуском проекта необходимо настроить PostgreSQL. Подробная инструкция по установке PostgreSQL на другом компьютере находится в файле [SETUP_POSTGRES.md](./SETUP_POSTGRES.md).
@@ -20,6 +25,15 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ```env
 DATABASE_URL="postgresql://пользователь:пароль@localhost:5432/база_данных?schema=public"
+DATABASE_URL="..."
+ADMIN_EMAIL="..."
+ADMIN_PASSWORD="..."
+NEXTAUTH_SECRET=""
+```
+
+Сгенерировать ```NEXTAUTH_SECRET``` можно через: ```openssl```
+```bash
+openssl rand -base64 32
 ```
 
 4. Примените миграции:
@@ -27,6 +41,12 @@ DATABASE_URL="postgresql://пользователь:пароль@localhost:5432/
 ```bash
 npx prisma generate
 npx prisma migrate deploy
+npm prisma:seed
+```
+
+Можно воспользоваться ```prisma:setup``` который объединяет в себя генерацию типов, прогона миграцию в БД, создание пользователя через seed
+```bash
+npm prisma:setup
 ```
 
 ## Getting Started

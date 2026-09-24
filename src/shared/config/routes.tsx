@@ -1,6 +1,8 @@
 import { HomeOutlined, OrderedListOutlined, ProductOutlined } from "@ant-design/icons";
 
 const DASHBOARD_PREFIX = "/dashboard" as const;
+export const LOGIN_PAGE = "/login" as const;
+export const PROTECTED_PAGE_PATTERN = `${DASHBOARD_PREFIX}/:path*`;
 
 export const DASHBOARD_ROUTES = {
 	main: `${DASHBOARD_PREFIX}`,

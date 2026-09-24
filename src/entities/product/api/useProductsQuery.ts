@@ -1,7 +1,12 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { ProductImage, type Product, type ProductSize } from "@prisma/client";
+import type {
+	ProductImage,
+	Product,
+	ProductSize,
+	ProductOption
+} from "@/generated/prisma/client";
 import {
 	getProductById,
 	getProducts,
@@ -10,7 +15,6 @@ import {
 	getProductSizeById,
 } from "../server";
 
-import type { ProductOption } from "@prisma/client";
 import { getProductOptionById, getProductOptions } from "../server";
 import { getProductImageByOptionId, getProductImages } from "../services/productImage";
 

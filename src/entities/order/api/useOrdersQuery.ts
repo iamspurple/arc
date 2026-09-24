@@ -1,4 +1,4 @@
-import { Order, OrderProductOption } from "@prisma/client";
+import { Order, OrderProductOption } from "@/generated/prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { getOrderById, getOrders } from "../services/order";
 import {

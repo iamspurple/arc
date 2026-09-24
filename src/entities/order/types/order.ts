@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Status, ContactWay } from "@prisma/client";
+import { Status, ContactWay } from "@/generated/prisma/client";
 
 export const orderEntityCreateSchema = z.object({
 	customer: z

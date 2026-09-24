@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { ProductSize } from "@prisma/client";
+import { ProductSize } from "@/generated/prisma/client";
 import { ProductSizeCreateEntity, ProductSizeUpdateEntity } from "@/entities/product/types/product";
 
 export const productSizeRepository = {

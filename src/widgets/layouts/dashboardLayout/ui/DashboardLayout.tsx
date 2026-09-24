@@ -1,7 +1,7 @@
 "use client";
 import { CSSProperties } from "react";
 import { Layout } from "antd";
-import { DashboardSider } from "./DashboardSider";
+import { DashboardSidebar } from "./DashboardSidebar";
 import { ContentSider } from "@/components/Dashboard/ContentSider";
 import { ContentSiderProvider } from "@/context/ContentSiderContext";
 import { ContentSider as OrderContentSider } from "@/components/Dashboard/Order/ContentSider";
@@ -27,7 +27,7 @@ export const DashboardLayout = ({ children }: { children: React.ReactNode }) => 
 	return (
 		<ContentSiderProvider>
 			<Layout style={layoutStyle}>
-				<DashboardSider />
+				<DashboardSidebar />
 				<Layout>
 					<Content style={contentStyle}>{children}</Content>
 				</Layout>

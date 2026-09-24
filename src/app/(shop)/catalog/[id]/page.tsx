@@ -12,42 +12,47 @@ type Params = {
 	params: Promise<{ id: string }>;
 };
 
-async function getProduct(slug: string) {
-	const product = await prisma.product.findUnique({
-		where: { slug },
-		include: { images: true },
-	});
-
-	return product;
-}
+// TODO используем только из entities
+// async function getProduct(slug: string) {
+// 	const product = await prisma.product.findUnique({
+// 		where: { slug },
+// 		include: { images: true },
+// 	});
+//
+// 	return product;
+// }
 
 const ProductPage = async ({ params }: Params) => {
 	const { id: slug } = await params;
-	const product = await getProduct(slug);
+	// const product = await getProduct(slug);
 
-	if (!product) {
-		notFound();
-	}
+	// if (!product) {
+	// 	notFound();
+	// }
 
 	return (
 		<div className={style.product_page}>
 			<div className={style.content}>
-				<ImagePicker images={product.images} title={product.title} />
+				{/*<ImagePicker images={product.images} title={product.description} />*/}
 
 				<div className={style.info}>
 					<div className={style.info_container}>
-						<h1 className={style.title}>{product.title}</h1>
+						{/*TODO*/}
+						{/*<h1 className={style.title}>{product.description}</h1>*/}
 
-						<span className={style.price}>{formatPrice(product.price)}</span>
+						{/*TODO*/}
+						{/*<span className={style.price}>{formatPrice(product.price)}</span>*/}
 					</div>
 
-					<ProductActions product={product} />
+					{/*TODO*/}
+					{/*<ProductActions product={product} />*/}
 
-					<DescriptionPicker
-						description={product.description}
-						composition={product.composition}
-						care={product.care}
-					/>
+					{/*TODO*/}
+					{/*<DescriptionPicker*/}
+					{/*	description={product.description}*/}
+					{/*	composition={product.composition}*/}
+					{/*	care={product.care}*/}
+					{/*/>*/}
 				</div>
 			</div>
 		</div>
