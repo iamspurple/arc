@@ -4,9 +4,9 @@ import { Step1 } from "./Step1";
 import { useQueryClient } from "@tanstack/react-query";
 import { ORDERS_QUERY_KEY } from "@/entities/order/api/useOrdersQuery";
 import { OrderCreateEntity, OrderUpdateEntity } from "@/entities/order/types/order";
-import { createOrder, updateOrderById } from "@/entities/order/services/order";
 import { Step2 } from "./Step2";
 import { useOrderFormValues } from "@/lib/useOrderFormValues";
+import { useCreateOrderMutation, useUpdateOrderMutation } from "@/entities/order"
 
 export const ModalForm = ({
 	externalOrderId,
@@ -22,17 +22,26 @@ export const ModalForm = ({
 
 	const isEditMode = !!orderId;
 
+	const createOrderMutation = useCreateOrderMutation();
+	const updateOrderMutation = useUpdateOrderMutation();
+
 	const onOrderSubmit = async (data: OrderCreateEntity | OrderUpdateEntity) => {
 		try {
 			if (isEditMode && orderId) {
-				await updateOrderById(data as OrderUpdateEntity);
+				updateOrderMutation.mutate(data as OrderUpdateEntity);
 				message.success("Контакты покупателя обновлены");
 				setStep(1);
 			} else {
-				const order = await createOrder(data as OrderCreateEntity);
-				setInternalOrderId(order.id);
-				setStep(1);
-				message.success("Заказ создан, контакты покупателя сохранены");
+				createOrderMutation.mutate(data as OrderCreateEntity, {
+					onSuccess: (data) => {
+						setInternalOrderId(data.id);
+						setStep(1);
+						message.success("Заказ создан, контакты покупателя сохранены");
+					},
+					onError: (error) => {
+						message.error(error.message);
+					}
+				});
 			}
 		} catch {
 			message.error(isEditMode ? "Не удалось обновить заказ" : "Не удалось создать заказ");

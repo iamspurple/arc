@@ -1,5 +1,17 @@
 import { z } from "zod";
-import { Status, ContactWay } from "@/generated/prisma/client";
+
+export const ContactWay = {
+	EMAIL: "EMAIL",
+	WHATSAPP: "WHATSAPP",
+	TELEGRAM: "TELEGRAM",
+} as const;
+
+export const Status = {
+	NEW: "NEW",
+	PROCESSING: "PROCESSING",
+	COMPLETE: "COMPLETE",
+	CANCELLED: "CANCELLED",
+} as const;
 
 export const orderEntityCreateSchema = z.object({
 	customer: z
