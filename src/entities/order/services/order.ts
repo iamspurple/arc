@@ -1,6 +1,6 @@
 "use server";
 import { orderRepository } from "@/entities/order/repositories/order";
-import { type OrderCreateEntity, type OrderUpdateEntity } from "@/entities/order/types/order";
+import { type OrderCreateEntity, type OrderUpdateEntity } from "@/entities/order";
 import { Order } from "@/generated/prisma/client";
 import { requireRole } from "@/lib/auth/requireAuth";
 

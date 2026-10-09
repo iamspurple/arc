@@ -3,11 +3,11 @@ import {
 	createOrderProductOption,
 	deleteOrderProductOptionById,
 	updateOrderProductOptionById,
-} from "@/entities/order/services/orderProductOption";
-import {
+} from "@/entities/order/server";
+import type {
 	OrderProductOptionCreateEntity,
 	OrderProductOptionUpdateEntity,
-} from "@/entities/order/types/order";
+} from "@/entities/order";
 
 import type { Step2Props } from "@/components/Dashboard/Order/ModalForm/Step2";
 

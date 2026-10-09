@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { Order } from "@/generated/prisma/client";
-import { OrderCreateEntity, OrderUpdateEntity } from "../types/order";
+import type { OrderCreateEntity, OrderUpdateEntity } from "@/entities/order";
 
 export const orderRepository = {
 	orderList: async (): Promise<Order[]> => {

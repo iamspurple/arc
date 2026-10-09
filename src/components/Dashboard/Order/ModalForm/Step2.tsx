@@ -15,7 +15,7 @@ import styles from "./Step2.module.scss";
 import { useSubmitHandlers } from "@/lib/order/submitHandlers";
 
 import type { FormValues } from "@/lib/useOrderFormValues";
-import { OrderProductOptionCreateEntity } from "@/entities/order/types/order";
+import type { OrderProductOptionCreateEntity } from "@/entities/order";
 
 import { useQueryClient } from "@tanstack/react-query";
 

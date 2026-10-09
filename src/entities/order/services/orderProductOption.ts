@@ -1,8 +1,8 @@
 "use server";
-import {
+import type {
 	OrderProductOptionCreateEntity,
 	OrderProductOptionUpdateEntity,
-} from "@/entities/order/types/order";
+} from "@/entities/order";
 import { OrderProductOption } from "@/generated/prisma/client";
 import { orderProductOptionRepository } from "@/entities/order/repositories/orderProductOption";
 import { requireRole } from "@/lib/auth/requireAuth";

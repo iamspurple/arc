@@ -1,11 +1,11 @@
 import { Form, Input, Select, Button } from "antd";
 import { useForm, Controller } from "react-hook-form";
 import {
-	OrderCreateEntity,
-	OrderUpdateEntity,
+	type OrderCreateEntity,
+	type OrderUpdateEntity,
 	orderEntityCreateSchema,
 	orderEntityUpdateSchema,
-} from "@/entities/order/types/order";
+} from "@/entities/order";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import type { FormValues } from "@/lib/useOrderFormValues";

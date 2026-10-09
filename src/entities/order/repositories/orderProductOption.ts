@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { OrderProductOption } from "@/generated/prisma/client";
-import { OrderProductOptionCreateEntity, OrderProductOptionUpdateEntity } from "../types/order";
+import type { OrderProductOptionCreateEntity, OrderProductOptionUpdateEntity } from "@/entities/order";
 
 export const orderProductOptionRepository = {
 	orderProductOptionList: async (): Promise<OrderProductOption[]> => {
