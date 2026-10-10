@@ -2,4 +2,4 @@
 
 import dynamic from "next/dynamic";
 
-export const ImagePicker = dynamic(() => import("./ImagePicker"), { ssr: false });
+export const ImagePicker = dynamic(() => import("./ImagePicker"));

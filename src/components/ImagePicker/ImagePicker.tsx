@@ -25,6 +25,8 @@ const ImagePicker = ({ images, title }: Params) => {
 
 	const matches = useMediaQuery("(max-width: 768px)");
 
+	console.log(images);
+
 	if (matches) {
 		return (
 			<div className={style.slider_container}>
