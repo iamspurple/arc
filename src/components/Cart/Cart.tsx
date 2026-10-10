@@ -57,7 +57,7 @@ const Cart = () => {
 						<ul className={styles.items}>
 							{items.map((item) => (
 								<CartItem
-									key={`${item.id}-${item.size}`}
+									key={`${item.id}-${item.sizeId}`}
 									item={item}
 									handleClose={handleClose}
 									onUpdateQuantity={updateQuantity}

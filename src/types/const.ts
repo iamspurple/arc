@@ -1,0 +1,4 @@
+export const CATALOG_IMAGES_STORAGE_URL = "static";
+export const CATALOG_IMAGE_STORAGE_SUB_PATH = "products";
+export const PRODUCT_PLACEHOLDER_IMAGE_NAME = 'placeholder.png';
+export const PRODUCT_IMAGE_FULL_PATH = `/${CATALOG_IMAGES_STORAGE_URL}/${CATALOG_IMAGE_STORAGE_SUB_PATH}`;

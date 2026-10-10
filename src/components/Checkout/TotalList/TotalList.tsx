@@ -7,7 +7,7 @@ const TotalList = ({ items }: { items: CartItem[] }) => {
 	return (
 		<ul className={style.list}>
 			{items.map((item) => (
-				<li key={`${item.id}-${item.size}`}>
+				<li key={`${item.id}-${item.sizeId}`}>
 					<div className={style.item}>
 						{item.image && (
 							<div className={style.item_image}>
@@ -22,7 +22,7 @@ const TotalList = ({ items }: { items: CartItem[] }) => {
 						)}
 
 						<span>
-							{item.title}, {item.size} <br />
+							{item.title}, {item.sizeName} <br />
 							{item.quantity}шт.
 						</span>
 					</div>

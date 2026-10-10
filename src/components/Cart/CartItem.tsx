@@ -30,14 +30,14 @@ const CartItem = ({ item, handleClose, onUpdateQuantity }: Props) => {
 				)}
 				<div className={styles["item-info"]}>
 					<span className={styles["item-title"]}>{item.title}</span>
-					<span className={styles["item-size"]}>Размер: {item.size}</span>
+					<span className={styles["item-size"]}>Размер: {item.sizeName}</span>
 					<span className={styles["item-unit-price"]}>{formatPrice(item.price)} за шт.</span>
 				</div>
 			</Link>
 			<div className={styles["item-controls"]}>
 				<button
 					className={styles["quantity-btn"]}
-					onClick={() => onUpdateQuantity(item.id, item.size, item.quantity - 1)}
+					onClick={() => onUpdateQuantity(item.id, item.sizeId, item.quantity - 1)}
 					aria-label="Уменьшить количество"
 				>
 					−
@@ -45,7 +45,7 @@ const CartItem = ({ item, handleClose, onUpdateQuantity }: Props) => {
 				<span className={styles["quantity"]}>{item.quantity}шт</span>
 				<button
 					className={styles["quantity-btn"]}
-					onClick={() => onUpdateQuantity(item.id, item.size, item.quantity + 1)}
+					onClick={() => onUpdateQuantity(item.id, item.sizeId, item.quantity + 1)}
 					aria-label="Увеличить количество"
 				>
 					+

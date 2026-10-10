@@ -15,4 +15,5 @@ export {
 	type ProductSizeUpdateEntity,
 	type ProductImageCreateEntity,
 	type ProductImageUpdateEntity,
-} from "./types/product"
+} from "./types/product";
+export { productRepository } from "./repositories/product";

@@ -1,26 +1,31 @@
-import Card, { Product } from "@/components/Card/Card";
+import { Metadata } from "next";
+import Card from "@/components/Card/Card";
+import { getCatalogs } from "@/entities/catalog/lib/get-catalogs";
 import style from "./catalog.module.scss";
 
+export async function generateMetadata(): Promise<Metadata> {
+	const title = 'Каталог товаров - купить онлайн';
+	const description = 'Каталог товаров: подробные описания, характеристики, цены и фотографии. Выберите подходящий товар и оформите заказ онлайн.';
 
-async function getProducts(): Promise<Product[]> {
-	// const res = await fetch("http://localhost:3000/api/products", {
-	// 	cache: "no-store",
-	// });
-	//
-	// if (!res.ok) throw new Error("Failed to fetch products");
-
-	// return res.json() as Promise<Product[]>;
-	return [];
+	return {
+		title,
+		description,
+		openGraph: {
+			title,
+			description,
+			type: "website",
+		},
+	};
 }
 
 const CatalogPage = async () => {
-	const products = await getProducts();
+	const catalogs = await getCatalogs();
 
 	return (
 		<main className={style.catalog_page}>
 			<div className={style.catalog_page__grid}>
-				{products.map((product) => (
-					<Card key={product.id} product={product} />
+				{catalogs.map((catalog) => (
+					<Card key={catalog.id} catalog={catalog} />
 				))}
 			</div>
 		</main>

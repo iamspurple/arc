@@ -1,44 +1,42 @@
 "use client";
 
-import { useEffect, useEffectEvent, useState } from "react";
+import { useEffect, useEffectEvent, useMemo, useState } from "react";
 
 import { useCartData, useCartActions } from "@/context/CartContext";
 
+import { CatalogItem } from "@/entities/catalog";
+
 import style from "./AddToCartButton.module.scss";
+import { getPreviewForTheCard } from "@/lib/getPreviewForTheCard";
 
 type Props = {
-	product: {
-		id: string;
-		slug: string;
-		title: string;
-		price: number;
-		inStock: boolean;
-		images?: { url: string }[];
-	};
-	selectedSize: string | null;
+	product: CatalogItem;
+	selectedSizeId: string | null;
 	onNoSize?: () => void;
 };
 
 const addToCart = "Добавить в корзину";
 const goToCart = "Перейти в корзину";
 
-const AddToCartButton = ({ product, selectedSize, onNoSize }: Props) => {
+const AddToCartButton = ({ product, selectedSizeId, onNoSize }: Props) => {
 	const { items } = useCartData();
 	const { addItem, openCart } = useCartActions();
 	const [isInCart, setIsInCart] = useState(() => {
-		return items.some((item) => item.id == product.id && item.size == selectedSize);
+		return items.some((item) => item.id == product.id && item.sizeId == selectedSizeId);
 	});
 
 	const handleSetIsInCart = useEffectEvent(() => {
-		setIsInCart(items.some((item) => item.id == product.id && item.size == selectedSize));
+		setIsInCart(items.some((item) => item.id == product.id && item.sizeId == selectedSizeId));
 	});
+
+	const selectedSize = useMemo(() => product.sizes.find((item) => item.id === selectedSizeId), [selectedSizeId]);
 
 	useEffect(() => {
 		handleSetIsInCart();
-	}, [items, selectedSize]);
+	}, [items, selectedSizeId]);
 
 	const handleAddToCart = () => {
-		if (!selectedSize) {
+		if (!selectedSizeId) {
 			onNoSize?.();
 			return;
 		}
@@ -48,12 +46,13 @@ const AddToCartButton = ({ product, selectedSize, onNoSize }: Props) => {
 			slug: product.slug,
 			title: product.title,
 			price: product.price,
-			size: selectedSize,
-			image: product.images?.[0]?.url,
+			sizeId: selectedSizeId,
+			sizeName: selectedSize ? selectedSize.size : '',
+			image: getPreviewForTheCard(product.images),
 		});
 	};
 
-	if (!product.inStock) {
+	if (selectedSize && selectedSize.quantity === 0) {
 		return (
 			<button className={style.button} disabled>
 				Нет в наличии
