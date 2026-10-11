@@ -4,7 +4,7 @@ import { getCatalogs } from "@/entities/catalog/lib/get-catalogs";
 import style from "./catalog.module.scss";
 
 export async function generateMetadata(): Promise<Metadata> {
-	const title = 'Каталог товаров - купить онлайн';
+	const title = "Каталог товаров - купить онлайн | arc";
 	const description = 'Каталог товаров: подробные описания, характеристики, цены и фотографии. Выберите подходящий товар и оформите заказ онлайн.';
 
 	return {
