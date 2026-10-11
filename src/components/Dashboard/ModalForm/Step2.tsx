@@ -250,7 +250,6 @@ export const Step2 = (props: Step2Props) => {
 												{ required: true },
 												{
 													validator: () => {
-														console.log(files[fieldKey].length);
 														if (files[fieldKey].length === 5) {
 															return Promise.resolve();
 														} else {
