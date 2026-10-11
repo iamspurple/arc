@@ -15,7 +15,7 @@ npm ci
 ### Настройка файла `.env`
 
 ```bash
-cp .env_example .env
+cp env_example.txt .env
 ```
 
 Сгенерировать ```NEXTAUTH_SECRET``` можно через: ```openssl```
