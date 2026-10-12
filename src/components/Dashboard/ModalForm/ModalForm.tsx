@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { createProduct, updateProductById } from "@/entities/product/server";
-import { PRODUCTS_QUERY_KEY } from "@/entities/product/api/useProductsQuery";
+import { PRODUCT_QUERY_KEY, PRODUCTS_QUERY_KEY } from "@/entities/product/api/useProductsQuery";
 import type { ProductCreateEntity, ProductUpdateEntity } from "@/entities/product/types/product";
 
 import { Steps, message } from "antd";
@@ -46,6 +46,7 @@ export const ModalForm = ({
 
 			setStep(1);
 			queryClient.invalidateQueries({ queryKey: [PRODUCTS_QUERY_KEY] });
+			queryClient.invalidateQueries({ queryKey: [PRODUCT_QUERY_KEY, productId] });
 		} catch (e) {
 			console.error(e);
 			message.error(isEditMode ? "Не удалось обновить модель" : "Не удалось создать модель");
