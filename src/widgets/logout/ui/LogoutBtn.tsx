@@ -3,7 +3,7 @@ import { LogoutOutlined } from "@ant-design/icons";
 import { signOut } from "next-auth/react";
 import { useCallback } from "react";
 
-export const Logout = () => {
+export const LogoutBtn = () => {
 	const onLogout = useCallback(async () => {
 		await signOut({ callbackUrl: "/login" });
 	}, []);

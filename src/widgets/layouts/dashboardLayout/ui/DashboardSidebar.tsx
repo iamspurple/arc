@@ -2,7 +2,7 @@ import { CSSProperties } from "react";
 import Link from "next/link";
 import { Layout, Menu } from "antd";
 import { DASHBOARD_ROUTES_MENU_CONFIG } from "@/shared/config/routes";
-import { Logout } from "@/widgets/logout"
+import { LogoutBtn } from "@/widgets/logout"
 import styles from "./dashboardSidebar.module.scss";
 
 const { Sider } = Layout;
@@ -21,7 +21,7 @@ export const DashboardSidebar = () => {
 		<Sider breakpoint="lg" style={siderStyle}>
 			<div className={styles.SidebarHeader}>
 				<h3>ARC</h3>
-				<Logout />
+				<LogoutBtn />
 			</div>
 			<Menu
 				theme="light"
