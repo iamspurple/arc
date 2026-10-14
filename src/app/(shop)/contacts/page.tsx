@@ -1,5 +1,22 @@
 import style from "./contacts.module.scss";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+	const title = "Контакты | arc";
+	const description =
+		"Если у вас возникнут вопросы или сложности с заказом, пожалуйста, свяжитесь с нами.";
+
+	return {
+		title,
+		description,
+		openGraph: {
+			title,
+			description,
+			type: "website",
+		},
+	};
+}
 
 const Page = () => {
 	return (

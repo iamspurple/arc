@@ -11,6 +11,8 @@ import { v4 as uuid } from "uuid";
 import { deleteProductImageByFileName } from "../utils/deleteProductImageByFileName";
 import { getProductOptionsByProductId } from "./productOption";
 import { requireRole } from "@/lib/auth/requireAuth";
+import { updateTag } from "next/cache";
+import { productsCacheTagName } from "@/types/const";
 
 export const getProductImages = async (): Promise<ProductImage[]> => {
 	try {
@@ -62,6 +64,8 @@ export const createProductImage = async (
 			optionId: productImage.optionId,
 		});
 
+		updateTag(productsCacheTagName);
+
 		return createdImg;
 	} catch {
 		throw new Error("Ошибка");
@@ -94,6 +98,9 @@ export const createProductImages = async (
 			});
 			result.push(createdImg);
 		}
+
+		updateTag(productsCacheTagName);
+
 		return result;
 	} catch {
 		throw new Error("Ошибка");
@@ -105,7 +112,9 @@ export const updateProductImageById = async (
 ): Promise<ProductImage> => {
 	try {
 		await requireRole("ADMIN");
-		return await productImageRepository.updateProductImage(productImage);
+		const updateProductImage = await productImageRepository.updateProductImage(productImage);
+		updateTag(productsCacheTagName);
+		return updateProductImage;
 	} catch {
 		throw Error("Ошибка");
 	}
@@ -116,6 +125,7 @@ export const deleteProductImageById = async (productImageId: string) => {
 		await requireRole("ADMIN");
 		const deletedImage = await productImageRepository.deleteProductImage(productImageId);
 		await deleteProductImageByFileName(deletedImage.id);
+		updateTag(productsCacheTagName);
 		return true;
 	} catch (e) {
 		console.error(`Не удалось удалить файл ${productImageId}:`, e);
@@ -131,6 +141,9 @@ export const deleteImagesByOptionId = async (optionId: string) => {
 		for (const image of images) {
 			await deleteProductImageById(image.id);
 		}
+
+		updateTag(productsCacheTagName);
+
 		return true;
 	} catch {
 		throw Error("Ошибка");
@@ -146,6 +159,8 @@ export const deleteImagesByProductId = async (productId: string) => {
 		for (const option of options) {
 			await deleteImagesByOptionId(option.id);
 		}
+
+		updateTag(productsCacheTagName);
 
 		return true;
 	} catch {

@@ -16,7 +16,8 @@ export type CartItem = {
 	slug: string;
 	title: string;
 	price: number;
-	size: string;
+	sizeId: string;
+	sizeName: string
 	quantity: number;
 	image?: string;
 };
@@ -99,7 +100,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 	const addItem = useCallback((newItem: Omit<CartItem, "quantity">) => {
 		setItems((prev) => {
 			const existingIndex = prev.findIndex(
-				(item) => item.id === newItem.id && item.size === newItem.size
+				(item) => item.id === newItem.id && item.sizeId === newItem.sizeId
 			);
 
 			if (existingIndex > -1) {
@@ -112,19 +113,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
 		});
 	}, []);
 
-	const removeItem = useCallback((id: string, size: string) => {
-		setItems((prev) => prev.filter((item) => !(item.id === id && item.size === size)));
+	const removeItem = useCallback((id: string, sizeId: string) => {
+		setItems((prev) => prev.filter((item) => !(item.id === id && item.sizeId === sizeId)));
 	}, []);
 
 	const updateQuantity = useCallback(
-		(id: string, size: string, quantity: number) => {
+		(id: string, sizeId: string, quantity: number) => {
 			if (quantity <= 0) {
-				removeItem(id, size);
+				removeItem(id, sizeId);
 				return;
 			}
 
 			setItems((prev) =>
-				prev.map((item) => (item.id === id && item.size === size ? { ...item, quantity } : item))
+				prev.map((item) => (item.id === id && item.sizeId === sizeId ? { ...item, quantity } : item))
 			);
 		},
 		[removeItem]

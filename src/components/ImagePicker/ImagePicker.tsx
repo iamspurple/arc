@@ -4,11 +4,13 @@ import { useState } from "react";
 import Image from "next/image";
 
 import { useMediaQuery } from "@/lib/useMediaQuery";
+import {CatalogItemType} from "@/entities/catalog"
+import { getProductImageUrl } from "../../lib/getProductImageUrl";
 
 import style from "./ImagePicker.module.scss";
 
 type Params = {
-	images: { id: string; url: string; productId: string }[];
+	images: CatalogItemType['images'];
 	title: string;
 };
 
@@ -29,7 +31,14 @@ const ImagePicker = ({ images, title }: Params) => {
 				<div className={style.slider}>
 					{images.map((image) => (
 						<div className={style.slide} key={image.id}>
-							<Image src={image.url} alt={title} fill sizes="(max-width: 768px) 60%" priority />
+							<Image
+								src={getProductImageUrl(image.id)}
+								alt={title}
+								fill
+								loading="eager"
+								sizes="(max-width: 768px) 60%"
+								priority
+							/>
 						</div>
 					))}
 				</div>
@@ -43,7 +52,7 @@ const ImagePicker = ({ images, title }: Params) => {
 				{images.map((image, index) => (
 					<div key={image.id} className={style.gallery_item}>
 						<Image
-							src={image.url}
+							src={getProductImageUrl(image.id)}
 							alt={title}
 							fill
 							sizes="(max-width: 900px) 100vw, 50vw"
@@ -57,7 +66,7 @@ const ImagePicker = ({ images, title }: Params) => {
 			{mainImage && (
 				<div className={style.main_image}>
 					<Image
-						src={mainImage.url}
+						src={getProductImageUrl(mainImage.id)}
 						alt={title}
 						fill
 						sizes="(max-width: 900px) 100vw, 50vw"
