@@ -1,5 +1,8 @@
+"use client";
+
 import { CSSProperties } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Layout, Menu } from "antd";
 import { DASHBOARD_ROUTES_MENU_CONFIG } from "@/shared/config/routes";
 import { LogoutBtn } from "@/widgets/logout"
@@ -17,6 +20,11 @@ const siderStyle: CSSProperties = {
 };
 
 export const DashboardSidebar = () => {
+	const pathname = usePathname();
+	const selectedKeys = DASHBOARD_ROUTES_MENU_CONFIG.filter(
+		(item) => item.href === pathname,
+	).map((item) => item.href);
+
 	return (
 		<Sider breakpoint="lg" style={siderStyle}>
 			<div className={styles.SidebarHeader}>
@@ -26,7 +34,7 @@ export const DashboardSidebar = () => {
 			<Menu
 				theme="light"
 				mode="inline"
-				defaultSelectedKeys={["/dashboard"]}
+				selectedKeys={selectedKeys}
 				items={DASHBOARD_ROUTES_MENU_CONFIG.map((item) => ({
 					key: item.href,
 					label: item.label,
