@@ -3,6 +3,8 @@ import { ProductSizeCreateEntity, ProductSizeUpdateEntity } from "@/entities/pro
 import { ProductSize } from "@/generated/prisma/client";
 import { productSizeRepository } from "@/entities/product/repositories/productSize";
 import { requireRole } from "@/lib/auth/requireAuth";
+import { updateTag } from "next/cache";
+import { productsCacheTagName } from "@/types/const";
 
 export const getProductSizes = async (): Promise<ProductSize[]> => {
 	try {
@@ -38,7 +40,9 @@ export const createProductSize = async (
 ): Promise<ProductSize> => {
 	try {
 		await requireRole("ADMIN");
-		return await productSizeRepository.createProductSize(productSize);
+		const newProductSize = await productSizeRepository.createProductSize(productSize);
+		updateTag(productsCacheTagName);
+		return newProductSize;
 	} catch {
 		throw new Error("Ошибка");
 	}
@@ -49,7 +53,9 @@ export const updateProductSizeById = async (
 ): Promise<ProductSize> => {
 	try {
 		await requireRole("ADMIN");
-		return await productSizeRepository.updateProductSize(productSize);
+		const updateProductSize = await productSizeRepository.updateProductSize(productSize);
+		updateTag(productsCacheTagName);
+		return updateProductSize;
 	} catch {
 		throw Error("Ошибка");
 	}
@@ -59,6 +65,7 @@ export const deleteProductSizeById = async (productSizeId: string) => {
 	try {
 		await requireRole("ADMIN");
 		await productSizeRepository.deleteProductSize(productSizeId);
+		updateTag(productsCacheTagName);
 		return true;
 	} catch {
 		throw Error("Ошибка");

@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client'
+import { prisma } from "../src/lib/prisma";
 import { createSlug } from '../src/lib/slug'
-
-const prisma = new PrismaClient()
 
 async function main() {
   console.log('Начинаем миграцию slug...')
@@ -9,13 +7,13 @@ async function main() {
   // Проверяем, существует ли уже поле slug
   try {
     // Пытаемся проверить существование поля slug
-    await prisma.$queryRaw`SELECT slug FROM "Product" LIMIT 1`
+    await prisma.$queryRaw`SELECT slug FROM "Product" LIMIT 1`;
     console.log('Поле slug уже существует')
   } catch (error: any) {
     // Если поле slug не существует, создаем его
     if (error.message?.includes('столбец "slug" не существует') || error.message?.includes('column "slug" does not exist')) {
       console.log('Создаем поле slug...')
-      
+
       await prisma.$executeRaw`
         ALTER TABLE "Product" ADD COLUMN "slug" TEXT
       `
@@ -69,7 +67,7 @@ async function main() {
     await prisma.$executeRaw`
       ALTER TABLE "Product" ALTER COLUMN "slug" SET NOT NULL
     `
-    
+
     await prisma.$executeRaw`
       CREATE UNIQUE INDEX IF NOT EXISTS "Product_slug_key" ON "Product"("slug")
     `

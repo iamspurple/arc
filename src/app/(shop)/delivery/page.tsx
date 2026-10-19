@@ -1,4 +1,21 @@
 import style from "./delivery.module.scss";
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+	const title = "Доставка | arc";
+	const description =
+		"Условия по доставке и возврату.";
+
+	return {
+		title,
+		description,
+		openGraph: {
+			title,
+			description,
+			type: "website",
+		},
+	};
+}
 
 const page = () => {
 	return (

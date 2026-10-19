@@ -32,7 +32,7 @@ model Product {
 model ProductOption {
     id                      String                      @id @default(cuid())
     title                   String                      @db.VarChar(255)
-    slug                    String                      @db.VarChar(255)
+    slug                    String                      @db.VarChar(255) @unique
     price                   Int
     hex                     String                      @db.VarChar(12)
     colorName               String                      @db.VarChar(255) @map("color_name")
@@ -78,8 +78,8 @@ model Order {
   customer                  String                    @db.VarChar(255)
   phone                     String                    @db.VarChar(255)
   email                     String                    @db.VarChar(255)
-  contactWay                ContactWay                @default(EMAIL)                      
-  status                    Status                    @default(NEW)  
+  contactWay                ContactWay                @default(EMAIL)
+  status                    Status                    @default(NEW)
   createdAt                 DateTime                  @default(now()) @map("created_at")
   updatedAt                 DateTime                  @updatedAt @map("updated_at")
   OrderProductOptions       OrderProductOption[]
@@ -88,7 +88,7 @@ model Order {
 
 model OrderProductOption {
   id                        String                    @id @default(cuid())
-  order                     Order                     @relation(fields: [orderId], references: [id], onDelete: Cascade)                     
+  order                     Order                     @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId                   String                    @map("order_id")
   option                    ProductOption             @relation(fields: [optionId], references: [id], onDelete: Cascade)
   optionId                  String                    @map("option_id")

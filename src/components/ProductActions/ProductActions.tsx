@@ -4,25 +4,18 @@ import AddToCartButton from "@/components/AddToCartButton/AddToCartButton";
 import SizePicker from "@/components/SizePicker/SizePicker";
 import { useState } from "react";
 import style from "./ProductActions.module.scss";
+import { CatalogItem } from "@/entities/catalog";
 
 type Props = {
-	product: {
-		id: string;
-		slug: string;
-		title: string;
-		price: number;
-		inStock: boolean;
-		sizes: string | null;
-		images?: { url: string }[];
-	};
+	product: CatalogItem;
 };
 
 const ProductActions = ({ product }: Props) => {
-	const [selectedSize, setSelectedSize] = useState<string | null>(null);
+	const [selectedSizeId, setSelectedSizeId] = useState<string | null>(null);
 	const [showSizeError, setShowSizeError] = useState(false);
 
-	const handleSizeChange = (size: string | null) => {
-		setSelectedSize(size);
+	const handleSizeChange = (sizeId: string | null) => {
+		setSelectedSizeId(sizeId);
 		setShowSizeError(false);
 	};
 
@@ -34,7 +27,7 @@ const ProductActions = ({ product }: Props) => {
 		<div className={style.product_actions}>
 			<SizePicker sizes={product.sizes} onSizeChange={handleSizeChange} />
 			{showSizeError && <span className={style.error}>Выберите размер</span>}
-			<AddToCartButton product={product} selectedSize={selectedSize} onNoSize={handleNoSize} />
+			<AddToCartButton product={product} selectedSizeId={selectedSizeId} onNoSize={handleNoSize} />
 		</div>
 	);
 };

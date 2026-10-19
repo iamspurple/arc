@@ -1,4 +1,21 @@
 import style from "./about.module.scss";
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+	const title = "О продукте | arc";
+	const description =
+		"Arc — бренд о пути и изменениях. Название отсылает к арке персонажа — внутреннему движению, которое проходит каждый человек. Одежда здесь становится частью этой истории: отражает состояние, помогает фиксировать момент и говорит за вас там, где не нужны слова.";
+
+	return {
+		title,
+		description,
+		openGraph: {
+			title,
+			description,
+			type: "website",
+		},
+	};
+}
 
 const About = () => {
 	return (

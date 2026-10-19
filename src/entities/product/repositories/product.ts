@@ -1,24 +1,26 @@
 import { prisma } from "@/lib/prisma";
 import { Product } from "@/generated/prisma/client";
 import { ProductCreateEntity, ProductUpdateEntity } from "@/entities/product/types/product";
+import { updateTag } from "next/cache";
+import { productsCacheTagName } from "@/types/const";
 
 export const productRepository = {
 	productList: async (): Promise<Product[]> => {
 		return prisma.product.findMany({
 			orderBy: {
-				createdAt: "asc"
-			}
+				createdAt: "asc",
+			},
 		});
 	},
 	productFirst: async (productId: string): Promise<Product | null> => {
 		return prisma.product.findFirst({
-			where: {id: productId}
-		})
+			where: { id: productId },
+		});
 	},
 	createProduct: async (product: ProductCreateEntity): Promise<Product> => {
 		return prisma.product.create({
 			data: product,
-		})
+		});
 	},
 	updateProduct: async (product: ProductUpdateEntity): Promise<Product> => {
 		return prisma.product.update({
@@ -26,13 +28,13 @@ export const productRepository = {
 			data: {
 				description: product.description,
 				composition: product.composition,
-				care: product.care
+				care: product.care,
 			},
 		});
 	},
 	deleteProduct: async (productId: string): Promise<Product> => {
 		return prisma.product.delete({
-			where: {id: productId}
-		})
-	}
+			where: { id: productId },
+		});
+	},
 };
