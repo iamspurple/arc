@@ -111,7 +111,6 @@ export const ModalForm = ({
 					productId={productId}
 					productName={productName}
 					queryClient={queryClient}
-					setStep={setStep}
 					initialValues={step2InitialValues}
 					handleClose={handleClose}
 				/>

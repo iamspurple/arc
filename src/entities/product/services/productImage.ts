@@ -3,16 +3,20 @@ import {
 	ProductImageCreateEntity,
 	ProductImageUpdateEntity,
 } from "@/entities/product/types/product";
-import { ProductImage } from "@prisma/client";
+import { ProductImage } from "@/generated/prisma/client";
 import { productImageRepository } from "@/entities/product/repositories/productImage";
 import path from "node:path";
 import fs from "node:fs";
 import { v4 as uuid } from "uuid";
 import { deleteProductImageByFileName } from "../utils/deleteProductImageByFileName";
 import { getProductOptionsByProductId } from "./productOption";
+import { requireRole } from "@/lib/auth/requireAuth";
+import { updateTag } from "next/cache";
+import { productsCacheTagName } from "@/types/const";
 
 export const getProductImages = async (): Promise<ProductImage[]> => {
 	try {
+		await requireRole("ADMIN");
 		return await productImageRepository.productImageList();
 	} catch {
 		throw new Error("Ошибка");
@@ -21,6 +25,7 @@ export const getProductImages = async (): Promise<ProductImage[]> => {
 
 export const getProductImageById = async (productImageId: string): Promise<ProductImage | null> => {
 	try {
+		await requireRole("ADMIN");
 		return await productImageRepository.productImageFirst(productImageId);
 	} catch {
 		throw new Error("Ошибка");
@@ -29,6 +34,7 @@ export const getProductImageById = async (productImageId: string): Promise<Produ
 
 export const getProductImageByOptionId = async (optionId: string): Promise<ProductImage[]> => {
 	try {
+		await requireRole("ADMIN");
 		return await productImageRepository.productImageListByOptionId(optionId);
 	} catch {
 		throw new Error("Ошибка");
@@ -39,6 +45,7 @@ export const createProductImage = async (
 	productImage: ProductImageCreateEntity
 ): Promise<ProductImage> => {
 	try {
+		await requireRole("ADMIN");
 		const fileName = `${uuid()}.${productImage.fileObj.name.split(".")[1]}`;
 		const filePath = path.resolve(process.cwd(), "static", "products");
 
@@ -57,6 +64,8 @@ export const createProductImage = async (
 			optionId: productImage.optionId,
 		});
 
+		updateTag(productsCacheTagName);
+
 		return createdImg;
 	} catch {
 		throw new Error("Ошибка");
@@ -67,6 +76,7 @@ export const createProductImages = async (
 	productImages: ProductImageCreateEntity[]
 ): Promise<ProductImage[]> => {
 	try {
+		await requireRole("ADMIN");
 		const result: ProductImage[] = [];
 		for (const productImage of productImages) {
 			const fileName = `${uuid()}.${productImage.fileObj.name.split(".")[1]}`;
@@ -88,6 +98,9 @@ export const createProductImages = async (
 			});
 			result.push(createdImg);
 		}
+
+		updateTag(productsCacheTagName);
+
 		return result;
 	} catch {
 		throw new Error("Ошибка");
@@ -98,7 +111,10 @@ export const updateProductImageById = async (
 	productImage: ProductImageUpdateEntity
 ): Promise<ProductImage> => {
 	try {
-		return await productImageRepository.updateProductImage(productImage);
+		await requireRole("ADMIN");
+		const updateProductImage = await productImageRepository.updateProductImage(productImage);
+		updateTag(productsCacheTagName);
+		return updateProductImage;
 	} catch {
 		throw Error("Ошибка");
 	}
@@ -106,8 +122,10 @@ export const updateProductImageById = async (
 
 export const deleteProductImageById = async (productImageId: string) => {
 	try {
+		await requireRole("ADMIN");
 		const deletedImage = await productImageRepository.deleteProductImage(productImageId);
 		await deleteProductImageByFileName(deletedImage.id);
+		updateTag(productsCacheTagName);
 		return true;
 	} catch (e) {
 		console.error(`Не удалось удалить файл ${productImageId}:`, e);
@@ -116,11 +134,16 @@ export const deleteProductImageById = async (productImageId: string) => {
 
 export const deleteImagesByOptionId = async (optionId: string) => {
 	try {
+		await requireRole("ADMIN");
+
 		const images = await getProductImageByOptionId(optionId);
 
 		for (const image of images) {
 			await deleteProductImageById(image.id);
 		}
+
+		updateTag(productsCacheTagName);
+
 		return true;
 	} catch {
 		throw Error("Ошибка");
@@ -129,11 +152,15 @@ export const deleteImagesByOptionId = async (optionId: string) => {
 
 export const deleteImagesByProductId = async (productId: string) => {
 	try {
+		await requireRole("ADMIN");
+
 		const options = await getProductOptionsByProductId(productId);
 
 		for (const option of options) {
 			await deleteImagesByOptionId(option.id);
 		}
+
+		updateTag(productsCacheTagName);
 
 		return true;
 	} catch {

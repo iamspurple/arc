@@ -1,7 +1,7 @@
 import { Table } from "antd";
 import type { TableColumnsType } from "antd";
 
-import type { Status, ContactWay } from "@prisma/client";
+import type { Status, ContactWay } from "@/generated/prisma/client";
 
 type DataType = {
 	key: string;

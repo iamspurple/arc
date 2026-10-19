@@ -48,7 +48,7 @@ export type Step2Props = {
 	productId: string;
 	productName: string;
 	queryClient: QueryClient;
-	setStep: (step: number) => void;
+
 	handleClose: () => void;
 	initialValues?: {
 		options: Array<{
@@ -73,7 +73,7 @@ export type Step2Props = {
 };
 
 export const Step2 = (props: Step2Props) => {
-	const { productId, productName, queryClient, setStep, initialValues, handleClose } = props;
+	const { productId, productName, queryClient, initialValues, handleClose } = props;
 	const [form] = Form.useForm();
 	const isEditMode = !!initialValues;
 
@@ -98,6 +98,8 @@ export const Step2 = (props: Step2Props) => {
 		return optionsImages;
 	});
 
+	const [showImageErrors, setShowImageErrors] = useState(false);
+
 	const { handleCreateSubmit, handleUpdateSubmit } = useSubmitHandlers(
 		productId,
 		productName,
@@ -105,6 +107,18 @@ export const Step2 = (props: Step2Props) => {
 	);
 
 	const handleSubmit = async (data: FormData) => {
+		const allImagesValid = data.options.every(
+			(option) => (files[option.fieldKey]?.length ?? 0) === 5
+		);
+
+		if (!allImagesValid) {
+			setShowImageErrors(true);
+			message.error("У каждой позиции должно быть ровно 5 изображений!");
+			return;
+		}
+
+		setShowImageErrors(false);
+
 		try {
 			if (isEditMode) {
 				await handleUpdateSubmit(initialValues, data);
@@ -120,9 +134,7 @@ export const Step2 = (props: Step2Props) => {
 				}, 1500);
 			}
 
-			setStep(0);
 			queryClient.invalidateQueries({ queryKey: [PRODUCT_OPTIONS_QUERY_KEY] });
-			form.resetFields();
 		} catch (e) {
 			console.error(e);
 			message.error(isEditMode ? "Не удалось обновить позиции" : "Не удалось создать позиции");
@@ -243,28 +255,15 @@ export const Step2 = (props: Step2Props) => {
 												<ColorPicker format="hex" />
 											</Form.Item>
 										</Flex>
-										<Form.Item
-											label="Изображения"
-											validateDebounce={validateDebounceMs}
-											rules={[
-												{ required: true },
-												{
-													validator: () => {
-														console.log(files[fieldKey].length);
-														if (files[fieldKey].length === 5) {
-															return Promise.resolve();
-														} else {
-															return Promise.reject(new Error("Изображений должно быть 5"));
-														}
-													},
-												},
-											]}
-										>
+										<Form.Item label="Изображения (5)" required>
 											<UIImageUpload
 												initialData={files[fieldKey] ?? []}
 												setFiles={setFiles}
 												optionKey={fieldKey}
 											/>
+											{showImageErrors && (files[fieldKey]?.length ?? 0) !== 5 && (
+												<Typography.Text type="danger">Изображений должно быть 5</Typography.Text>
+											)}
 										</Form.Item>
 										<Form.Item>
 											<Form.List name={[field.name, "sizes"]}>

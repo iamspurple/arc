@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { Order } from "@prisma/client";
+import { Order } from "@/generated/prisma/client";
 import { OrderCreateEntity, OrderUpdateEntity } from "../types/order";
 
 export const orderRepository = {

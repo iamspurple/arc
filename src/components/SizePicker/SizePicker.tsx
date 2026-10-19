@@ -2,27 +2,22 @@
 
 import { useState } from "react";
 import style from "./SizePicker.module.scss";
+import { CatalogItem } from "@/entities/catalog";
 
 type SizePickerProps = {
-	sizes: string | null;
 	onSizeChange?: (size: string | null) => void;
-};
+} & Pick<CatalogItem, "sizes">;
 
 const SizePicker = ({ sizes, onSizeChange }: SizePickerProps) => {
-	const availableSizes = sizes
-		?.split(",")
-		.map((size) => size.trim())
-		.filter(Boolean);
+	const [selectedSizeId, setSelectedSizeId] = useState<string | null>(null);
 
-	const [selectedSize, setSelectedSize] = useState<string | null>(null);
-
-	const handleSizeSelect = (size: string) => {
-		const newSize = selectedSize === size ? null : size;
-		setSelectedSize(newSize);
-		onSizeChange?.(newSize);
+	const handleSizeSelect = (sizeId: string) => {
+		const newSizeId = selectedSizeId === sizeId ? null : sizeId;
+		setSelectedSizeId(newSizeId);
+		onSizeChange?.(newSizeId);
 	};
 
-	if (availableSizes?.length === 0) {
+	if (sizes?.length === 0) {
 		return null;
 	}
 
@@ -30,14 +25,14 @@ const SizePicker = ({ sizes, onSizeChange }: SizePickerProps) => {
 		<div className={style.size_picker}>
 			<div className={style.label}>Размер:</div>
 			<div className={style.options}>
-				{availableSizes?.map((size) => (
+				{sizes?.map((size) => (
 					<button
-						key={size}
+						key={size.id}
 						type="button"
-						className={`${style.option} ${selectedSize === size ? style.option__selected : ""}`}
-						onClick={() => handleSizeSelect(size)}
+						className={`${style.option} ${selectedSizeId === size.id ? style.option__selected : ""}`}
+						onClick={() => handleSizeSelect(size.id)}
 					>
-						{size}
+						{size.size}
 					</button>
 				))}
 			</div>
