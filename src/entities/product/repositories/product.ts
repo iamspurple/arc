@@ -26,6 +26,7 @@ export const productRepository = {
 		return prisma.product.update({
 			where: { id: product.id },
 			data: {
+				name: product.name,
 				description: product.description,
 				composition: product.composition,
 				care: product.care,
