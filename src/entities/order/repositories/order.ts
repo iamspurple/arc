@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { Order } from "@/generated/prisma/client";
 import { OrderCreateEntity, OrderUpdateEntity } from "../types/order";
+import { getOrderStatusByOrderId } from "@/entities/order/services/order";
 
 export const orderRepository = {
 	orderList: async (): Promise<Order[]> => {
@@ -40,6 +41,13 @@ export const orderRepository = {
 	deleteOrder: async (orderId: string): Promise<Order> => {
 		return prisma.order.delete({
 			where: { id: orderId },
+		});
+	},
+	getOrderStatusByOrderId: async (orderNumber: string): Promise<Order | null> => {
+		return prisma.order.findUnique({
+			where: {
+				number: orderNumber,
+			},
 		});
 	},
 };

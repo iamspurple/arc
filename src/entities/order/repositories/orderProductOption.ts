@@ -25,6 +25,11 @@ export const orderProductOptionRepository = {
 			data: orderProductOption,
 		});
 	},
+	createOrderProductOptions: async (
+		orderProductOptions: OrderProductOptionCreateEntity[]
+	): Promise<{ count: number }> => {
+		return prisma.orderProductOption.createMany({ data: orderProductOptions });
+	},
 	updateOrderProductOption: async (
 		orderProductOption: OrderProductOptionUpdateEntity
 	): Promise<OrderProductOption> => {
