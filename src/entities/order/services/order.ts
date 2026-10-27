@@ -3,6 +3,7 @@ import { orderRepository } from "@/entities/order/repositories/order";
 import { type OrderCreateEntity, type OrderUpdateEntity } from "@/entities/order/types/order";
 import { Order } from "@/generated/prisma/client";
 import { requireRole } from "@/lib/auth/requireAuth";
+import {StatusType} from "../types/order"
 
 export const getOrders = async (): Promise<Order[]> => {
 	try {
@@ -49,3 +50,37 @@ export const deleteOrderById = async (orderId: string) => {
 		throw Error("Ошибка");
 	}
 };
+
+export const getOrderStatusByOrderId = async (orderNumber: string): Promise<string | null> => {
+	try {
+		await requireRole("ADMIN");
+		const order = await orderRepository.getOrderStatusByOrderId(orderNumber);
+
+		if (order) {
+			return {
+				NEW: "создан",
+				PROCESSING: "в обработке",
+				COMPLETE: "завершен",
+				CANCELLED: "отменен",
+			}[order.status];
+		}
+		return null
+	} catch {
+		throw Error("Ошибка");
+	}
+};
+
+export const getOrderNumberByOrderId = async (orderId: string): Promise<string | null> => {
+	try {
+		await requireRole("ADMIN");
+		const order =  await orderRepository.orderFirst(orderId);
+
+		if (order) {
+			return order.number;
+		}
+
+		return null
+	} catch {
+		throw new Error("Ошибка");
+	}
+}

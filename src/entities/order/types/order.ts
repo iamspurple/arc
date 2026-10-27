@@ -13,6 +13,9 @@ export const Status = {
 	CANCELLED: "CANCELLED",
 } as const;
 
+export type ContactWayType = keyof typeof ContactWay;
+export type StatusType = keyof typeof Status;
+
 const phoneSchema = z
 	.string()
 	.trim()

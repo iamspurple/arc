@@ -3,10 +3,12 @@ import { useState } from "react";
 import { Step1 } from "./Step1";
 import { useQueryClient } from "@tanstack/react-query";
 import { ORDERS_QUERY_KEY, ORDER_QUERY_KEY } from "@/entities/order/api/useOrdersQuery";
-import { OrderCreateEntity, OrderUpdateEntity } from "@/entities/order/types/order";
+import { ContactWayType, OrderCreateEntity, OrderUpdateEntity } from "@/entities/order/types/order";
 import { Step2 } from "./Step2";
 import { useOrderFormValues } from "@/lib/useOrderFormValues";
-import { useCreateOrderMutation, useUpdateOrderMutation } from "@/entities/order"
+import { getOrderNumberByOrderId, useCreateOrderMutation, useUpdateOrderMutation } from "@/entities/order"
+import { createdOrderTemplateForAdmin, orderChangeStatusTemplateForTelegramBot, sendEmail, sendTelegramBot } from "@/entities/notification";
+import { orderEmailTemplate } from "@/entities/notification/const/notification";
 
 export const ModalForm = ({
 	externalOrderId,
@@ -30,10 +32,66 @@ export const ModalForm = ({
 			if (isEditMode && orderId) {
 				updateOrderMutation.mutate(data as OrderUpdateEntity);
 				message.success("Контакты покупателя обновлены");
+
+				const orderNumber = await getOrderNumberByOrderId(orderId);
+
+				if (orderNumber) {
+					await sendTelegramBot({
+						message: orderChangeStatusTemplateForTelegramBot(orderNumber, data.status),
+					});
+				}
+
+				if (
+					orderNumber &&
+					data.contactWay === "EMAIL" &&
+					updateOrderMutation.status.toUpperCase() !== data.status
+				) {
+					await sendEmail({
+						to: data.email,
+						subject: "arc",
+						message: orderEmailTemplate({
+							customer: data.contactWay,
+							status: data.status,
+							contactWay: data.contactWay,
+							email: data.email,
+							phone: data.phone,
+							number: orderNumber,
+						}),
+					});
+				}
+
 				setStep(1);
 			} else {
 				createOrderMutation.mutate(data as OrderCreateEntity, {
-					onSuccess: (data) => {
+					onSuccess: async (data) => {
+						await sendTelegramBot({
+							message: createdOrderTemplateForAdmin({
+								phone: data.phone,
+								email: data.email,
+								contactWay: data.contactWay.toUpperCase() as ContactWayType,
+								number: data.number,
+								customer: data.customer,
+								createdAt: String(data.createdAt),
+								status: data.status,
+							}),
+						});
+
+
+						if (data.contactWay === "EMAIL") {
+							await sendEmail({
+								to: data.email,
+								subject: "arc",
+								message: orderEmailTemplate({
+									customer: data.contactWay,
+									status: data.status,
+									contactWay: data.contactWay,
+									email: data.email,
+									phone: data.phone,
+									number: data.number,
+								}),
+							});
+						}
+
 						setInternalOrderId(data.id);
 						setStep(1);
 						message.success("Заказ создан, контакты покупателя сохранены");

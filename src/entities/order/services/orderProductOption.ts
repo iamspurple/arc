@@ -49,6 +49,18 @@ export const createOrderProductOption = async (
 	}
 };
 
+export const createOrderProductOptions = async (
+	orderProductOptions: Omit<OrderProductOptionCreateEntity, "images">[]
+): Promise<{count: number}> => {
+	try {
+		await requireRole("ADMIN");
+		return await orderProductOptionRepository.createOrderProductOptions(orderProductOptions);
+	} catch {
+		throw new Error("Ошибка");
+	}
+};
+
+
 export const updateOrderProductOptionById = async (
 	orderProductOption: OrderProductOptionUpdateEntity
 ): Promise<OrderProductOption> => {
