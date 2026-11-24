@@ -17,6 +17,7 @@ type Params = {
 const ImagePicker = ({ images, title }: Params) => {
 	const [mainImageIndex, setMainImageIndex] = useState(0);
 	const mainImage = images[mainImageIndex];
+	console.log("foo", images);
 
 	const handleMainImageChange = (index: number) => {
 		if (index === mainImageIndex) return;
@@ -24,6 +25,23 @@ const ImagePicker = ({ images, title }: Params) => {
 	};
 
 	const matches = useMediaQuery("(max-width: 768px)");
+
+	if (!images.length) {
+		return (
+			<div className={style.images}>
+				<div className={style.main_image}>
+					<Image
+						src={getProductImageUrl('')}
+						alt={title}
+						fill
+						sizes="(max-width: 900px) 100vw, 50vw"
+						className={style.image}
+						priority
+					/>
+				</div>
+			</div>
+		);
+	}
 
 	if (matches) {
 		return (
